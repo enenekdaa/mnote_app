@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/page/appsetting_screen.dart';
 import 'package:mnote_app/page/home_screen.dart';
+import 'package:mnote_app/page/note_screen.dart';
+import 'package:mnote_app/page/profile_screen.dart';
 import 'package:mnote_app/page/sign_in_screen.dart';
 import 'package:mnote_app/page/sign_up_screen.dart';
 import 'package:mnote_app/page/splash_screen.dart';
-
-
-
+import 'package:mnote_app/page/premium_screen.dart';
 
 
 var routes = <String , WidgetBuilder>{
@@ -15,6 +16,10 @@ var routes = <String , WidgetBuilder>{
   "/splash": (BuildContext context) => SplashScreen(),
   "/sign_in": (BuildContext context) => SignInScreen(),
   "/sign_up": (BuildContext context) => SignUnScreen(),
+  "/note": (BuildContext context) => NoteScreen(),
+  "/premium": (BuildContext context) => PremiumScreen(),
+  "/app_setting": (BuildContext context) => AppSettingScreen(),
+  "/profile": (BuildContext context) => ProfileScreen(),
 };
 
 void main() {
