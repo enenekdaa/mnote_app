@@ -12,9 +12,7 @@ class _MainDialogState extends State<MainDialog>
   AnimationController controller;
   Animation<double> scaleAnimation;
 
-  List<String> noteItems = ['note 1' , 'note 2' , 'note 3'];
-
-
+  List<String> noteItems = ['무제_1', '무제_2', '무제_3'];
 
   @override
   void initState() {
@@ -41,54 +39,61 @@ class _MainDialogState extends State<MainDialog>
         child: ScaleTransition(
           scale: scaleAnimation,
           child: Container(
-            padding: EdgeInsets.all(10),
             width: maxSize / 1.3,
             height: maxSize / 1.2,
             decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0.0))),
-              child: Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text("저장할 노트를 선택하세요"),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: noteItems.length,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(padding : EdgeInsets.only(left: 20 , right: 20),
-                              width : maxSize,
-                              child: FlatButton(
-                                child: Text(noteItems[index]),
-                                onPressed: ()=>MyNavigator.goToNote(context),
-                                color: Colors.grey,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(25),
+                    child: Text("저장할 노트를 선택하세요"),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: noteItems.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            width: maxSize,
+                            height: 50,
+                            padding: EdgeInsets.only(bottom: 6, left: 10, right: 10),
+                            child: MaterialButton(
+                              child: Text(noteItems[index]),
+                              onPressed: () => MyNavigator.goToNote(context),
+                              elevation: 0,
+                              color: Colors.black,
+                              textColor: Colors.white,
                             ),
-                            );
-
-                          }),
-                    ),
-                    Container(
-                      width: maxSize,
-                      padding: EdgeInsets.only(right: 20 , left: 20),
-                      child: FlatButton(color: Colors.grey, onPressed: () => {}, child: Text(' + 새노트 작성')),
-                    ),
-                    MaterialButton(
-                      onPressed: () => Navigator.pop(context),
-                      padding: EdgeInsets.all(20),
-                      color: Colors.grey,
-                      child: Text('취소' , style: TextStyle(fontSize: 18, color: Colors.white),),
-                    ),
-                  ],
-
-                ),
+                          );
+                        }),
+                  ),
+                  Container(
+                    width: maxSize,
+                    height: 50,
+                    padding: EdgeInsets.only(top:6, bottom: 6, left: 10, right: 10),
+                    child: MaterialButton(
+                        elevation: 0,
+                        color: Colors.black,
+                        textColor: Colors.white,
+                        onPressed: () => {},
+                        child: Text(' + 새노트 작성')),
+                  ),
+                  MaterialButton(
+                    onPressed: () => Navigator.pop(context),
+                    elevation: 0,
+                    color: Colors.white,
+                    minWidth: maxSize,
+                    child: Text('취소',),
+                  ),
+                ],
               ),
-            
+            ),
           ),
         ),
       ),

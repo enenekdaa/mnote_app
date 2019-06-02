@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mnote_app/utils/mnote.dart';
 
 class NoteScreen extends StatefulWidget {
   @override
@@ -7,57 +9,86 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   bool _value1 = false;
-  void _value1Changed(bool value) => setState(() => _value1 = value);
 
+  void _value1Changed(bool value) => setState(() => _value1 = value);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:
-            FlatButton(onPressed: () => Navigator.pop(context), child: null),
+        leading: FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Image.asset('images/icons/00_top_menu.png')),
+        backgroundColor: Colors.black,
+        title: Text('무제노트'),
         actions: <Widget>[
           FlatButton(
-            child: Text('완결하기'),
+            child: Text(
+              '완결하기',
+              style: Mnote.appBarRightOkBtnText,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        color: Colors.white,
         child: Column(
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: 30, top: 10),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('가져온 제목' , style: TextStyle(fontSize: 50  ),),
-                  Text('가져온 소제목' , style: TextStyle(fontSize: 30),),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Checkbox(
-                        value: _value1,
-                        onChanged: _value1Changed,
-                        checkColor: Colors.black,
-                        activeColor: Colors.purple,
+            Expanded(
+              flex: 1,
+              child: Container(
+                margin: EdgeInsets.all(25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(
+                      '잘돼가? 무엇이든',
+                      style: Mnote.noteTitleFiledHint,
+                    ),
+                    Text(
+                      '이경미 첫번째 이야기',
+                      style: Mnote.noteSubTitleFiledHint,
+                    ),
+                    MergeSemantics(
+                      child: ListTile(
+                        trailing: CupertinoSwitch(
+                          value: _value1,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _value1 = value;
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _value1 = !_value1;
+                          });
+                        },
                       ),
-                      Text('공개하기'),
-                    ],
-                  ),
-                  Container(height: 2, color: Colors.grey,) ,
-                ],
+                    ),
+                  ],
+                ),
               ),
+            ),
+            Container(
+              height: 0.2,
+              color: Colors.grey,
             ),
             Expanded(
-              child: TextField(
-                maxLines: 25,
-                decoration: InputDecoration(hintText: '내용 입력...', filled: true),
-              ),
-            ),
+                flex: 3,
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: TextField(
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                        hintText: '노트에 대한 간단한 소개를 입력해 주세요.',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none),
+                  ),
+                )),
           ],
         ),
       ),
