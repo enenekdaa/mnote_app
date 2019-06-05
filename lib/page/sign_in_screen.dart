@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/Login.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
+import 'package:mnote_app/service/books_detail_service.dart';
+import 'package:mnote_app/service/books_my_service.dart';
 import 'package:mnote_app/utils/m_navigator.dart';
+import 'package:mnote_app/model/Book_info.dart';
+import 'package:mnote_app/model/Book_detail.dart';
+
 
 class SignInScreen extends StatefulWidget {
   @override
   _SignInScreen createState() => new _SignInScreen();
 }
 
+
+
 class _SignInScreen extends State<SignInScreen> {
   bool _value1 = false;
 
   //we omitted the brackets '{}' and are using fat arrow '=>' instead, this is dart syntax
   void _value1Changed(bool value) => setState(() => _value1 = value);
+  List<Login> list = [];
+  List<Book_detail> detailList = [];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +51,7 @@ class _SignInScreen extends State<SignInScreen> {
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
                       borderSide:
-                          BorderSide(width: 0.2, color: Colors.black38)),
+                      BorderSide(width: 0.2, color: Colors.black38)),
                   hintText: 'email..',
                   hintStyle: TextStyle(color: Colors.black12),
                 ),
@@ -50,7 +63,7 @@ class _SignInScreen extends State<SignInScreen> {
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
                       borderSide:
-                          BorderSide(width: 0.2, color: Colors.black38)),
+                      BorderSide(width: 0.2, color: Colors.black38)),
                   hintText: 'pass..',
                   hintStyle: TextStyle(color: Colors.black12),
                 ),
@@ -75,10 +88,30 @@ class _SignInScreen extends State<SignInScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20 , bottom: 10),
+              margin: EdgeInsets.only(top: 20, bottom: 10),
               child: MaterialButton(
-                onPressed: () => MyNavigator.goToHome(context),
-                minWidth: MediaQuery.of(context).size.width,
+                // 책 몰록 사용자 정보 ...
+//                onPressed: ()=> getBookInfoItem('http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php').then((bookInfo) {
+//                  print('로 그  : : : : : ' + bookInfo.book_title);
+//                }),
+              // 책 목록 리스트 < chapter_no ... 등등
+//                onPressed: ()=> getBookDetailItems('http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php').then((detailList) {
+//                  print('로 그  : : : : : ' + detailList.elementAt(0).chapter_title);
+//                }),
+              // 로그인 result ..
+//              onPressed: ()=> getloginResult('http://icomerict.cafe24.com/untitled_note/json/books_my.php').then((list) {
+//                print('로 그  : : : : : ' + list.elementAt(0).book_title);
+//              }),
+
+              onPressed: () => getChapterDetail('http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php').then((chapterDetail) {
+                print('로 그  : : : : : ' + chapterDetail.contents);
+              }),
+
+                    //  onPressed: () => MyNavigator.goToHome(context),
+                minWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 padding: EdgeInsets.all(15),
                 color: Colors.black,
                 child: Text(
@@ -121,4 +154,5 @@ class _SignInScreen extends State<SignInScreen> {
       ),
     );
   }
+
 }
