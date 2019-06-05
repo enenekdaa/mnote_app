@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/Book_writings.dart';
 import 'package:mnote_app/model/Login.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/service/books_my_service.dart';
+import 'package:mnote_app/service/books_today_service.dart';
+import 'package:mnote_app/service/books_writings_service.dart';
 import 'package:mnote_app/utils/m_navigator.dart';
 import 'package:mnote_app/model/Book_info.dart';
 import 'package:mnote_app/model/Book_detail.dart';
@@ -22,6 +25,7 @@ class _SignInScreen extends State<SignInScreen> {
   void _value1Changed(bool value) => setState(() => _value1 = value);
   List<Login> list = [];
   List<Book_detail> detailList = [];
+  List<Book_writings> writingList = [];
 
 
 
@@ -103,10 +107,21 @@ class _SignInScreen extends State<SignInScreen> {
 //                print('로 그  : : : : : ' + list.elementAt(0).book_title);
 //              }),
 
-              onPressed: () => getChapterDetail('http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php').then((chapterDetail) {
-                print('로 그  : : : : : ' + chapterDetail.contents);
-              }),
+//              onPressed: () => getChapterDetail('http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php').then((chapterDetail) {
+//                print('로 그  : : : : : ' + chapterDetail.contents);
+//              }),
 
+//              onPressed: () => getBooksToday('http://icomerict.cafe24.com/untitled_note/json/daily_today.php').then((booksToday) {
+//                print('로 그  : : : : : ' + booksToday.daily_sentence);
+//              }),
+
+//                onPressed: () => getBooksWritings('http://icomerict.cafe24.com/untitled_note/json/daily_my_writings.php').then((writingList) {
+//                  print('로 그  : : : : : ' + writingList.elementAt(0).chapter_title);
+//                }),
+
+                onPressed: () => getBooksWritings('http://icomerict.cafe24.com/untitled_note/json/daily_my_writings.php').then((writingList) {
+                  print('로 그  : : : : : ' + writingList.elementAt(0).chapter_title);
+                }),
                     //  onPressed: () => MyNavigator.goToHome(context),
                 minWidth: MediaQuery
                     .of(context)
