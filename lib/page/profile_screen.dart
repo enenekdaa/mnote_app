@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/utils/mnote.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -9,31 +11,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading:
-            FlatButton(onPressed: () => Navigator.pop(context), child: null),
-        title: Text('프로필 설정'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('저장'),
-            onPressed: () => Navigator.pop(context),
+        appBar: AppBar(
+          leading: FlatButton(
+              onPressed: () => Navigator.pop(context),
+              padding: EdgeInsets.only(left: 30),
+              child: Image.asset('images/icons/00_top_back.png')),
+          title: Text(
+            '프로필 설정',
+            style: Mnote.appBarCenterTitle,
           ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.all(40),
-        child: Column(
+          backgroundColor: Colors.white,
+          elevation: 0.5,
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                '저장',
+                style: Mnote.appBarRightOkBtnText,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
+            Container(
+              padding: EdgeInsets.all(30),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    alignment: Alignment(-1, 0),
-                    padding: EdgeInsets.all(10),
-                    child: Text('adsadsasd@asdasda.ccc'),
+                    child: Text(
+                      'adsadsasd@asdasda.ccc',
+                      style: Mnote.textFiledLabel,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom:
+                                BorderSide(color: Colors.black, width: 0.5))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,54 +62,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Expanded(
                           child: TextField(
                             decoration: InputDecoration(
-                              hintText: '나의 필명 ...',
-                              hintStyle: TextStyle(color: Colors.black12),
-                            ),
+                                hintText: '나의 필명',
+                                hintStyle: Mnote.textFiledHint,
+                                border: UnderlineInputBorder(
+                                    borderSide: BorderSide.none)),
                           ),
                         ),
-                        RaisedButton(child: Text('중복확인'), onPressed: () => {}),
+                        MaterialButton(
+                          onPressed: () => {},
+                          color: Colors.black,
+                          shape: StadiumBorder(),
+                          elevation: 0,
+                          child: Text(
+                            '중복확인',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment(-1, 0),
-                    padding: EdgeInsets.all(10),
-                    child: Text('나의 소개'),
+                  SizedBox(
+                    height: 30,
                   ),
                   Container(
-                    alignment: Alignment(-1, 0),
-                    padding: EdgeInsets.all(10),
-                    child: Text('주저리 주저리.....\nasdasdasdassd\nadasdasdad\n'),
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      '나의 소개',
+                      style: Mnote.textFiledLabel,
+                    ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 5, top: 40),
-                    alignment: Alignment(-1, 0),
-                    child: Text('비밀번호 재설정'),
+                    child: Text('내 소개 내용 여기 더블 터치하면 수정가능  최대 글자 \n' +
+                        '수 제한 50자 2줄까지 들어갈 수 있습니다. '),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      '비밀번호 재설정',
+                      style: Mnote.textFiledLabel,
+                    ),
                   ),
                   TextField(
+                    obscureText: true,
                     decoration: InputDecoration(hintText: '비밀번호 입력...'),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   TextField(
+                    obscureText: true,
                     decoration: InputDecoration(hintText: '비밀번호 재입력...'),
                   ),
-
-
                 ],
               ),
             ),
-
-               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  FlatButton(child: Text('프리미엄 구매'), color: Colors.black54,textColor: Colors.white, onPressed: ()=> {}, ),
-                  FlatButton(child: Text('로그아웃'),color: Colors.black54 , textColor: Colors.white, onPressed: ()=> {}, ),
-                ],
-              ),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                MaterialButton(
+                  onPressed: () => {MyNavigator.goToPremium(context)},
+                  height: 60,
+                  child: Text('프리미엄 구매', style: Mnote.screenBottomBtnWText),
+                  color: Mnote.orange,
+                  textColor: Colors.white,
+                  minWidth: MediaQuery.of(context).size.width / 2,
+                ),
+                MaterialButton(
+                  onPressed: () => {},
+                  height: 60,
+                  child: Text('로그아웃', style: Mnote.screenBottomBtnWText),
+                  color: Colors.black,
+                  textColor: Colors.white,
+                  minWidth: MediaQuery.of(context).size.width / 2,
+                ),
+              ],
+            ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

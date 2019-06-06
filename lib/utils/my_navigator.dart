@@ -17,8 +17,20 @@ class MyNavigator {
     Navigator.pushNamed(context, "/home");
   }
 
-  static void goToNote(BuildContext context) {
-    Navigator.pushNamed(context, "/note");
+  static void goToNoteBookView(BuildContext context) {
+    Navigator.pushNamed(context, "/note_book_view");
+  }
+
+  static void goToNoteBookEdit(BuildContext context) {
+    Navigator.pushNamed(context, "/note_book_eidt");
+  }
+
+  static void goToNoteView(BuildContext context) {
+    Navigator.pushNamed(context, "/note_view");
+  }
+
+  static void goToNoteEdit(BuildContext context) {
+    Navigator.pushNamed(context, "/note_edit");
   }
 
   static void goToPremium(BuildContext context) {
@@ -28,8 +40,13 @@ class MyNavigator {
   static void goToAppSetting(BuildContext context) {
     Navigator.pushNamed(context, "/app_setting");
   }
+
   static void goToProfile(BuildContext context) {
     Navigator.pushNamed(context, "/profile");
+  }
+
+  static void goToNavigation(BuildContext context) {
+    Navigator.pushNamed(context, "/navigation");
   }
 
 

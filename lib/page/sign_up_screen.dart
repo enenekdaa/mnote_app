@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mnote_app/utils/m_navigator.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class SignUnScreen extends StatefulWidget {
@@ -85,6 +85,7 @@ class _SignUnScreen extends State<SignUnScreen> {
                   TextField(
                     decoration: InputDecoration(
                         hintText: '비밀번호 입력', hintStyle: Mnote.textFiledHint),
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: 10,
@@ -92,6 +93,7 @@ class _SignUnScreen extends State<SignUnScreen> {
                   TextField(
                     decoration: InputDecoration(
                         hintText: '비밀번호 재입력', hintStyle: Mnote.textFiledHint),
+                    obscureText: true,
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mnote_app/utils/m_navigator.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -84,7 +84,10 @@ class _SignInScreen extends State<SignInScreen> {
                     margin:
                         EdgeInsets.only(top: 20, bottom: 10, left: 5, right: 5),
                     child: MaterialButton(
-                      onPressed: () => MyNavigator.goToHome(context),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        MyNavigator.goToHome(context);
+                      },
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(15),
                       color: Colors.black,

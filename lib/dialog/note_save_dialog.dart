@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'm_navigator.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 
-class MainDialog extends StatefulWidget {
+class NoteSaveDialog extends StatefulWidget {
   @override
-  _MainDialogState createState() => _MainDialogState();
+  _NoteSaveDialogState createState() => _NoteSaveDialogState();
 }
 
-class _MainDialogState extends State<MainDialog>
+class _NoteSaveDialogState extends State<NoteSaveDialog>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
@@ -65,7 +65,7 @@ class _MainDialogState extends State<MainDialog>
                             padding: EdgeInsets.only(bottom: 6, left: 10, right: 10),
                             child: MaterialButton(
                               child: Text(noteItems[index]),
-                              onPressed: () => MyNavigator.goToNote(context),
+                              onPressed: () => MyNavigator.goToNoteBookView(context),
                               elevation: 0,
                               color: Colors.black,
                               textColor: Colors.white,
