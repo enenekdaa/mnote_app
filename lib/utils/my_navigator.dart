@@ -33,6 +33,26 @@ class MyNavigator {
     Navigator.pushNamed(context, "/note_edit");
   }
 
+  static void goToTodayNoteMain(BuildContext context) {
+    Navigator.pushNamed(context, "/today_note_main");
+  }
+
+  static void goToTodayNoteEdit(BuildContext context) {
+    Navigator.pushNamed(context, "/today_note_edit");
+  }
+
+  static void goToTodayNoteSubject(BuildContext context) {
+    Navigator.pushNamed(context, "/today_note_subjects");
+  }
+
+  static void goToTodayNoteList(BuildContext context) {
+    Navigator.pushNamed(context, "/today_note_list");
+  }
+
+  static void goToTodayNoteView(BuildContext context) {
+    Navigator.pushNamed(context, "/today_note_view");
+  }
+
   static void goToPremium(BuildContext context) {
     Navigator.pushNamed(context, "/premium");
   }

@@ -21,6 +21,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
 
   bool visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
   bool visibilityTime = true; // 노트 화면 > 시간 보이기 on/off
+  bool visibilityOpenNote = false; // 공개노트설정버튼 보이기 on/off
+
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    visibilityOpenNote = ModalRoute.of(context).settings.name == '/today_note_edit';
     // TODO: implement build
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -63,22 +66,33 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // 제목 입력 영역
-                    TextField(
-                      minLines: 1,
-                      maxLines: 2,
-                      onChanged: (text){
-                        List<String> textList = text.split('\n');
-                        if (textList.length > 2){
-                          textList.removeAt(2);
-                          titleController.text = textList.join('\n');
-                        }
-                      },
-                      controller: titleController,
-                      style: Mnote.noteTitleFiledHint,
-                      decoration: InputDecoration(
-                          hintText: '제목을 입력해주세요.',
-                          hintStyle: Mnote.noteTitleFiledHint,
-                          border: InputBorder.none),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            minLines: 1,
+                            maxLines: 2,
+                            onChanged: (text) {
+                              List<String> textList = text.split('\n');
+                              if (textList.length > 2) {
+                                textList.removeAt(2);
+                                  titleController.text = textList.join('\n');
+                              }
+                            },
+                            controller: titleController,
+                            style: Mnote.noteTitleFiledHint,
+                            decoration: InputDecoration(
+                                hintText: '제목을 입력해주세요.',
+                                hintStyle: Mnote.noteTitleFiledHint,
+                                border: InputBorder.none),
+                          ),
+                        ),
+                        visibilityOpenNote
+                            ? SizedBox(
+                                child: Image.asset('images/icons/00_toggle_02_on.png', scale: 1.8,),
+                              )
+                            : SizedBox(width: 1,)
+                      ],
                     ),
                     // 날짜 영역
                     visibilityTime

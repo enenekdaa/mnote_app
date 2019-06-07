@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mnote_app/dialog/note_cover_dialog.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class NoteBookEditScreen extends StatefulWidget {
@@ -9,8 +10,14 @@ class NoteBookEditScreen extends StatefulWidget {
 
 class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
   bool _value1 = false;
-
   void _value1Changed(bool value) => setState(() => _value1 = value);
+
+  void _showNoteCoverDialog(){
+    showDialog(
+        context: context,
+        builder: (_) => NoteCoverDialog()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +25,10 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
       appBar: AppBar(
         leading: FlatButton(
             onPressed: () => Navigator.pop(context),
-            child: Image.asset('images/icons/00_top_menu.png')),
+            child: Image.asset('images/icons/00_chapter_pre.png')),
         backgroundColor: Colors.black,
         title: Text('무제노트'),
+        centerTitle: true,
         actions: <Widget>[
           FlatButton(
             child: Text(
@@ -29,6 +37,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
             ),
             onPressed: () => Navigator.pop(context),
           ),
+          SizedBox(width: 10,)
         ],
       ),
       body: Container(
@@ -63,7 +72,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         MaterialButton(
-                          onPressed: ()=>{},
+                          onPressed: ()=>_showNoteCoverDialog(),
                           shape: StadiumBorder(),
                           minWidth: MediaQuery.of(context).size.width / 5,
                           height: MediaQuery.of(context).size.height / 31,
@@ -72,8 +81,9 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
                           textColor: Colors.white,
                           child: Text('표지만들기', style: Mnote.toggleBtnWText,),
                         ),
-                        MaterialButton(
-                          onPressed: ()=>{},
+                        SizedBox(width: 10,),
+                        GestureDetector(
+                          onTap: ()=>{},
                           child: Image.asset('images/icons/00_toggle_02_on.png', scale: 1.8,),
                         ),
 //

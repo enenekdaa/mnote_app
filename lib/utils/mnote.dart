@@ -18,11 +18,11 @@ class Mnote {
 
   // 노트 제목 텍스트 필드 힌트 텍스트
   static TextStyle noteTitleFiledHint = TextStyle(
-      fontSize: 20, color: Colors.black);
+      fontSize: 24, color: Colors.black);
 
   // 노트 부제목 텍스트 필드 힌트 텍스트
-  static TextStyle noteSubTitleFiledHint = TextStyle(
-      fontSize: 15, color: Colors.grey);
+  static TextStyle noteSubTitleFiledHint = TextStyle(fontSize: 15, color: gray153);
+  static TextStyle noteSubTitleFiled = TextStyle(fontSize: 15, color: Colors.black);
 
   // 노트 BOX 하단 텍스트
   static TextStyle noteBoxBottomText = TextStyle(fontSize: 15, color: Colors.black);
@@ -33,10 +33,25 @@ class Mnote {
   static TextStyle screenBottomBtnWText = TextStyle(fontSize: 16, color: Colors.white);
   static TextStyle screenBottomBtnBText = TextStyle(fontSize: 16, color: Colors.black);
 
+  // 13.5 font
+  static TextStyle textBlack_13_5 = TextStyle(fontSize: 13.5, color: Colors.black);
+  static TextStyle textHint_13_5 = TextStyle(fontSize: 13.5, color: gray153);
+
+  // 20 font
+  static TextStyle textBlack_20 = TextStyle(fontSize: 20, color: Colors.black);
+  static TextStyle textHint_20 = TextStyle(fontSize: 20, color: gray153);
+
   // 토글 버튼
   static TextStyle toggleBtnWText = TextStyle(fontSize: 10, color: Colors.white);
 
   // 오렌지 컬러
   static Color orange = Color.fromRGBO(255, 113, 43, 1);
+
+  // 회색 컬러
+  static Color gray153 = Color.fromRGBO(153, 153, 153, 1);
+  static Color gray245 = Color.fromRGBO(245, 245, 245, 1);
+
+  // 블랙 컬러
+  static Color black = Color.fromRGBO(46, 46, 46, 1);
 
 }

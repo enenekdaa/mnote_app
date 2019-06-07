@@ -26,6 +26,7 @@ class _SignUnScreen extends State<SignUnScreen> {
               '입력완료',
               style: Mnote.appBarRightOkBtnText,
             ),
+            padding: EdgeInsets.only(right: 30),
             onPressed: () => MyNavigator.goToSignIn(context),
           )
         ],
@@ -48,10 +49,13 @@ class _SignUnScreen extends State<SignUnScreen> {
                     ),
                   ),
                   Row(
+
                     children: <Widget>[
                       Expanded(
                         child: TextField(
+
                           decoration: InputDecoration(
+                              border: InputBorder.none,
                               hintText: 'example@example.com',
                               hintStyle: Mnote.textFiledHint),
                         ),
@@ -59,15 +63,15 @@ class _SignUnScreen extends State<SignUnScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      MaterialButton(
-                        onPressed: () => {},
-                        color: Colors.black,
-                        textColor: Colors.white,
-                        shape: StadiumBorder(),
-                        child: Text('중복확인'),
+                      GestureDetector(
+                        onTap: () => {},
+                        child: Image.asset('images/icons/01_btn_confirm.png', scale: 1.5,),
                       ),
                     ],
                   ),
+                  Container(
+                    decoration: BoxDecoration(border: Border.all(color: Mnote.black, width: 0.3)),
+                  )
                 ],
               ),
             ),
@@ -112,19 +116,20 @@ class _SignUnScreen extends State<SignUnScreen> {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
+                              border: InputBorder.none,
                               hintText: '필명을 입력하세요.',
                               hintStyle: Mnote.textFiledHint),
                         ),
                       ),
-                      MaterialButton(
-                        onPressed: () => {},
-                        color: Colors.black,
-                        textColor: Colors.white,
-                        shape: StadiumBorder(),
-                        child: Text('중복확인'),
+                      GestureDetector(
+                        onTap: () => {},
+                        child: Image.asset('images/icons/01_btn_confirm.png', scale: 1.5,),
                       ),
                     ],
                   ),
+                  Container(
+                    decoration: BoxDecoration(border: Border.all(color: Mnote.black, width: 0.3)),
+                  )
                 ],
               ),
             ),

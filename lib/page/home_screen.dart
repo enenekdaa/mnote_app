@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               : FlatButton(
                   child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
+                  padding: EdgeInsets.only(right: 30),
                   onPressed: () {
                     showDialog(
                       context: context,

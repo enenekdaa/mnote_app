@@ -11,6 +11,11 @@ import 'package:mnote_app/page/sign_up_screen.dart';
 import 'package:mnote_app/page/splash_screen.dart';
 import 'package:mnote_app/page/premium_screen.dart';
 import 'package:mnote_app/page/navigation_screen.dart';
+import 'package:mnote_app/page/today_note_edit_screen.dart';
+import 'package:mnote_app/page/today_note_list_screen.dart';
+import 'package:mnote_app/page/today_note_subjects_screen.dart';
+import 'package:mnote_app/page/today_note_main_screen.dart';
+import 'package:mnote_app/page/today_note_view_screen.dart';
 
 var routes = <String, WidgetBuilder>{
   "/home": (BuildContext context) => HomeScreen(),
@@ -23,6 +28,11 @@ var routes = <String, WidgetBuilder>{
   "/note_book_eidt": (BuildContext context) => NoteBookEditScreen(),
   "/note_view": (BuildContext context) => NoteViewScreen(),
   "/note_eidt": (BuildContext context) => NoteEditScreen(),
+  "/today_note_main": (BuildContext context) => TodayNoteMainScreen(),
+  "/today_note_edit": (BuildContext context) => TodayNoteEditScreen(),
+  "/today_note_subjects": (BuildContext context) => TodayNoteSubjectsScreen(),
+  "/today_note_list": (BuildContext context) => TodayNoteListScreen(),
+  "/today_note_view": (BuildContext context) => TodayNoteViewScreen(),
   "/premium": (BuildContext context) => PremiumScreen(),
   "/app_setting": (BuildContext context) => AppSettingScreen(),
   "/profile": (BuildContext context) => ProfileScreen(),

@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 
-class NoteBookViewScreen extends StatefulWidget {
+class TodayNoteSubjectsScreen extends StatefulWidget {
   @override
-  _NoteBookViewScreenState createState() => new _NoteBookViewScreenState();
+  _TodayNoteSubjectsScreenState createState() => new _TodayNoteSubjectsScreenState();
 }
 
-class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
+class _TodayNoteSubjectsScreenState extends State<TodayNoteSubjectsScreen> {
   List<String> _noteList = [
-    '처음으로',
-    '이건 그냥 하는 농담이지만',
-    '실연당하는 게 끔찍할까, 시나리오 쓰는 게 더 끔찍할까끔찍할까끔찍할까?',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
+    '그리움',
+    '사과',
+    '딸기',
+    '선풍기',
+    '비',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
+    '하루 글감',
   ];
 
   @override
@@ -36,18 +36,9 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
             onPressed: () => Navigator.pop(context),
             child: Image.asset('images/icons/00_chapter_pre.png')),
         backgroundColor: Colors.black,
-        title: Text('무제노트'),
+        title: Text('무제 노트'),
         centerTitle: true,
-        actions: <Widget>[
-          FlatButton(
-            child: Text(
-              '완결하기',
-              style: Mnote.appBarRightOkBtnText,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
-          SizedBox(width: 10,)
-        ],
+        actions: <Widget>[],
       ),
       body: Container(
         color: Colors.white,
@@ -57,12 +48,11 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                constraints: BoxConstraints.expand(),
                 margin: EdgeInsets.only(
                     left: 25,
-                    top: MediaQuery.of(context).size.height / 20,
                     right: 25,
-                    bottom: MediaQuery.of(context).size.height / 60,
+                    top: 25,
+                    bottom: 10
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,25 +61,16 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                     GestureDetector(
                       onTap: () => {MyNavigator.goToNoteBookEdit(context)},
                       child: Text(
-                        '잘돼가? 무엇이든',
-                        maxLines: 1,
+                        '하루 글감',
                         style: Mnote.noteTitleFiledHint,
                       ),
                     ),
-                    Text(
-                      '이경미 첫번째 이야기',
-                      style: Mnote.noteSubTitleFiledHint,
-                    ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         GestureDetector(
                           onTap: () => {},
-                          child: Image.asset(
-                            'images/icons/00_toggle_02_on.png',
-                            scale: 1.8,
-                          ),
+                          child: Text('하지원',style: TextStyle(decoration: TextDecoration.underline, fontSize: 16),),
                         ),
                       ],
                     ),
@@ -102,15 +83,8 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
               margin: EdgeInsets.only(bottom: 20),
               color: Colors.grey,
             ),
-            FlatButton(
-              onPressed: () => {},
-              child: Text(
-                '+ 글쓰기',
-                style: TextStyle(fontSize: 15, color: Mnote.orange),
-              ),
-            ),
             Expanded(
-                flex: 3,
+                flex: 5,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: _noteList.length,
@@ -125,18 +99,18 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
 
   Widget _note(int index, List<String> noteList) {
     return GestureDetector(
-        onTap: () => MyNavigator.goToNoteView(context),
+        onTap: () => MyNavigator.goToTodayNoteList(context),
         child: Padding(
           padding: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(index.toString().padLeft(2, '0'), style: TextStyle(color: Mnote.gray153),),
+              Text('2019.06.'+(index+1).toString().padLeft(2, '0'), style: TextStyle(color: Mnote.gray153),),
               SizedBox(
                 width: 15,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width - 100,
+                width: MediaQuery.of(context).size.width / 1.8,
                 child: Text(
                   noteList[index],
                   maxLines: 2,

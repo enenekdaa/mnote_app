@@ -12,7 +12,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
   AnimationController controller;
   Animation<double> scaleAnimation;
 
-  List<String> noteItems = ['무제_1', '무제_2', '무제_3'];
+  List<String> noteItems = ['무제_1', '무제_2'];
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
           scale: scaleAnimation,
           child: Container(
             width: maxSize / 1.3,
-            height: maxSize / 1.2,
+            height: maxSize / 1.55,
             decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -75,13 +75,15 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
                   ),
                   Container(
                     width: maxSize,
-                    height: 50,
+                    height: 55,
                     padding: EdgeInsets.only(top:6, bottom: 6, left: 10, right: 10),
                     child: MaterialButton(
                         elevation: 0,
                         color: Colors.black,
                         textColor: Colors.white,
-                        onPressed: () => {},
+                        onPressed: () => {
+                          MyNavigator.goToNoteBookEdit(context)
+                        },
                         child: Text(' + 새노트 작성')),
                   ),
                   MaterialButton(

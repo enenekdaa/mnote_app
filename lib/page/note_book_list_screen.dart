@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/page/today_note_main_screen.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/dialog/note_book_modify_dialog.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/widget/monote_line.dart';
 
 class NoteBookListScreen extends StatefulWidget {
@@ -18,6 +20,14 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
       context: context,
       builder: (_) => NoteBookModifyDialog(noteName: noteName),
     );
+  }
+
+  void _openNoteBookClick(String text) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TodayNoteMainScreen(noteTitle: text,),
+            settings: RouteSettings(name: '/today_note_main')));
   }
 
   @override
@@ -51,7 +61,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: _myNoteList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _noteBox(index, _myNoteList);
+                    return _makeMyNoteBookList(index, _myNoteList);
                   }),
             ),
           ),
@@ -75,9 +85,9 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
                         SizedBox(
                           width: 68,
                           height: 25,
-                          child: FlatButton(
-                            shape: StadiumBorder(side: BorderSide(width: 0.5)),
-                            child: Text('more'),
+                          child: GestureDetector(
+                            onTap: () => {},
+                            child: Image.asset('images/icons/00_btn_more.png'),
                           ),
                         ),
                       ],
@@ -94,7 +104,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: _openNoteList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _noteBox(index, _openNoteList);
+                    return _makeOpenNoteBookList(index, _openNoteList);
                   }),
             ),
           ),
@@ -103,39 +113,13 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
     );
   }
 
-  // 노트북 BOX
-  Widget _noteBox(int index, List<String> noteList) {
+  // My Note Book List
+  Widget _makeMyNoteBookList(int index, List<String> noteList) {
     return noteList[index] != ''
         ? GestureDetector(
-            onLongPress: () => _showNoteBookModifyDialog(noteList[index]), // 노트북 수정/삭제 다이얼로그,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.only(right: 20, bottom: 10),
-                  padding: EdgeInsets.all(20),
-                  height: MediaQuery.of(context).size.height / 5.75,
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  decoration: BoxDecoration(color: Colors.black12),
-                  child: Text(
-                    noteList[index],
-                    style: Mnote.noteBoxTitleText,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  child: Text(
-                    noteList[index],
-                    style: Mnote.noteBoxBottomText,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                )
-              ],
-            ),
+            onLongPress: () => _showNoteBookModifyDialog(noteList[index]),
+            // 노트북 수정/삭제 다이얼로그,
+            child: _noteBox(noteList[index]),
           )
         : Column(
             // 나의 노트에서 맨 마지막일 경우 [+] 버튼 추가 (맨 마지막 구분자로 확인할수 있다.)
@@ -148,7 +132,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
                   height: MediaQuery.of(context).size.height / 5.75,
                   width: MediaQuery.of(context).size.width / 3.5,
                   child: FlatButton(
-                    onPressed: () => {print('추가추가')},
+                    onPressed: () => {MyNavigator.goToNoteBookEdit(context)},
                     child: Image.asset(
                       'images/icons/00_main_add.png',
                       scale: 1.8,
@@ -156,5 +140,45 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
                   )),
             ],
           );
+  }
+
+  // Open Note Book List
+  Widget _makeOpenNoteBookList(int index, List<String> noteList) {
+    return GestureDetector(
+      onTap: () => _openNoteBookClick(noteList[index]), // 노트북 수정/삭제 다이얼로그,
+      child: _noteBox(noteList[index]),
+    );
+  }
+
+  // Note BOX
+  Widget _noteBox(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.topCenter,
+          margin: EdgeInsets.only(right: 30, bottom: 10),
+          padding: EdgeInsets.all(20),
+          height: MediaQuery.of(context).size.height / 5.75,
+          width: MediaQuery.of(context).size.width / 3.5,
+          decoration: BoxDecoration(color: Colors.black12),
+          child: Text(
+            title,
+            style: Mnote.noteBoxTitleText,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 3.5,
+          child: Text(
+            title,
+            style: Mnote.noteBoxBottomText,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        )
+      ],
+    );
   }
 }

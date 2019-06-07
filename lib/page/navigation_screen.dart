@@ -51,14 +51,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   children: <Widget>[
                     FlatButton(
                         onPressed: () => MyNavigator.goToAppSetting(context),
-                        child: Text('앱 설정')),
+                        child: Text('앱 설정', style: TextStyle(fontSize: 18),)),
                     FlatButton(
                         onPressed: () => MyNavigator.goToPremium(context),
-                        child: Text('프리미엄 구매')),
+                        child: Text('프리미엄 구매', style: TextStyle(fontSize: 18))),
                     FlatButton(
                         onPressed: () => _showReportDialog(),
-                        child: Text('하루 글감 제보하기')),
-                    FlatButton(onPressed: () => {}, child: Text('책 만들기')),
+                        child: Text('하루 글감 제보하기', style: TextStyle(fontSize: 18))),
+                    FlatButton(onPressed: () => {}, child: Text('책 만들기', style: TextStyle(fontSize: 18))),
                   ],
                 ),
               ),
@@ -69,6 +69,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     child: Text(
                       '내 프로필 설정',
                       style: TextStyle(
+                        fontSize: 18,
                         decoration: TextDecoration.underline,
                       ),
                     )),
