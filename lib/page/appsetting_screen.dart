@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mnote_app/utils/mnote.dart';
 
 class AppSettingScreen extends StatefulWidget {
   @override
@@ -12,177 +13,145 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
   bool _todayalarm = false;
   bool _firstwrite = false;
 
-  String tv = 'http://////fdfsdf//';
-  void _appsettingChanged(bool value) => setState(() => _appsetting = value);
-  void _todayalarmChanged(bool value) => setState(() => _todayalarm = value);
-  void _secretChanged(bool value) => setState(() => _secret = value);
-  void _firstwriteChanged(bool value) => setState(() => _firstwrite = value);
+  String tv = 'http://www.abc.com';
 
+  void _appsettingChanged(bool value) => setState(() => _appsetting = value);
+
+  void _todayalarmChanged(bool value) => setState(() => _todayalarm = value);
+
+  void _secretChanged(bool value) => setState(() => _secret = value);
+
+  void _firstwriteChanged(bool value) => setState(() => _firstwrite = value);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:
-            FlatButton(onPressed: () => Navigator.pop(context), child: null),
-        title: Text('앱 설정'),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        leading: FlatButton(
+            onPressed: () => Navigator.pop(context),
+            padding: EdgeInsets.only(left: 20),
+            child: Image.asset(
+              'images/icons/00_top_back.png',
+            )),
+        title: Text(
+          '앱 설정',
+          style: Mnote.appBarCenterTitle,
+        ),
       ),
+      backgroundColor: Colors.white,
       body: Container(
-        alignment: Alignment(-1, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 1.5,
-              color: Colors.grey,
-            ),
-            Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment(-1, 0),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '앱 설정',
-                      ),
-                    ),
-                  ),
-                  Switch(
-                    value: _appsetting,
-                    onChanged: _appsettingChanged,
-                    activeColor: Colors.purple,
-                  ),
+                  Text('야간모드', style: TextStyle(fontSize: 18),),
+                  GestureDetector(
+                    child: Image.asset('images/icons/00_toggle_off.png', scale: 1.8,),
+                  )
                 ],
               ),
             ),
             Container(
-              height: 1.5,
-              color: Colors.grey,
+              height: 0.5,
+              color: Colors.black12,
             ),
             Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: GestureDetector(
                 onTap: () => {},
                 child: Container(
-                  alignment: Alignment(-1, 0),
-                  padding: EdgeInsets.all(10),
-                  child: Text('글꼴 선택'),
+                  child: Text('글꼴 선택', style: TextStyle(fontSize: 18),),
                 ),
               ),
             ),
             Container(
-              height: 1.5,
-              color: Colors.grey,
+              height: 0.5,
+              color: Colors.black12,
             ),
             Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text('PC 버전' , style: TextStyle(fontSize: 20),),
-                          Text('(프리미엄 구매자만 가능합니다)' , style: TextStyle(fontSize: 10),),
-                        ],
-                      ),
-                    ),
-
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-
-                        Text(tv),
-                        RaisedButton(child: Text('주소복사'),
-                          onPressed: () => Clipboard.setData(new ClipboardData(text: tv)
-                        ),),
-
-                      ],
-                    ),
+                  Text(
+                    'PC 버전', style: TextStyle(fontSize: 18)
+                  ),
+                  SizedBox(height: 10,),
+                  Text(
+                    '프리미엄 구매자만 이용 가능합니다',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(tv),
+                      GestureDetector(
+                        child: Image.asset('images/icons/05_btn_copy.png', scale: 1.8,),
+                      )
+                    ],
                   ),
                 ],
               ),
             ),
             Container(
-              height: 1.5,
-              color: Colors.grey,
+              height: 0.5,
+              color: Colors.black12,
             ),
             Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment(-1, 0),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '잠금 설정',
-                      ),
-                    ),
-                  ),
-                  Switch(
-                    value: _secret,
-                    onChanged: _secretChanged,
-                    activeColor: Colors.purple,
-                  ),
+                  Text('잠금 설정', style: TextStyle(fontSize: 18)),
+                  GestureDetector(
+                    child: Image.asset(
+                      'images/icons/00_toggle_on.png', scale: 1.8,),
+                  )
                 ],
               ),
             ),
             Container(
-              height: 1.5,
-              color: Colors.grey,
+              height: 0.5,
+              color: Colors.black12,
             ),
             Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment(-1, 0),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '하루 글감 알림',
-                      ),
-                    ),
-                  ),
-                  Switch(
-                    value: _todayalarm,
-                    onChanged: _todayalarmChanged,
-                    activeColor: Colors.purple,
-                  ),
+                  Text('하루 글감 알림', style: TextStyle(fontSize: 18)),
+                  GestureDetector(
+                    child: Image.asset(
+                      'images/icons/00_toggle_on.png', scale: 1.8,),
+                  )
                 ],
               ),
             ),
             Container(
-              height: 1.5,
-              color: Colors.grey,
+              height: 0.5,
+              color: Colors.black12,
             ),
             Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment(-1, 0),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '첫 화면 글쓰기',
-                      ),
-                    ),
-                  ),
-                  Switch(
-                    value: _firstwrite,
-                    onChanged: _firstwriteChanged,
-                    activeColor: Colors.purple,
-                  ),
+                  Text('첫화면 글쓰기', style: TextStyle(fontSize: 18)),
+                  GestureDetector(
+                    child: Image.asset(
+                      'images/icons/00_toggle_off.png', scale: 1.8,),
+                  )
                 ],
               ),
-            ),
-            Container(
-              height: 1.5,
-              color: Colors.grey,
             ),
           ],
         ),
