@@ -17,6 +17,8 @@ class Mnote {
   // 기본 본문 타이틀 필드 라벨 텍스트
   static TextStyle textFiledLabel =
   TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
+  static TextStyle textFiledLabelDisabled =
+  TextStyle(color: Colors.grey, fontSize: 18);
 
   // 기본 본문 텍스트 필드 힌트 텍스트
   static TextStyle textFiledHint = TextStyle(color: Colors.black12,);
@@ -41,6 +43,10 @@ class Mnote {
   // 13.5 font
   static TextStyle textBlack_13_5 = TextStyle(fontSize: 13.5, color: Colors.black);
   static TextStyle textHint_13_5 = TextStyle(fontSize: 13.5, color: gray153);
+
+  // 13.5 font
+  static TextStyle textBlack_16 = TextStyle(fontSize: 16, color: Colors.black);
+  static TextStyle textHint_16 = TextStyle(fontSize: 16, color: gray153);
 
   // 20 font
   static TextStyle textBlack_20 = TextStyle(fontSize: 20, color: Colors.black);

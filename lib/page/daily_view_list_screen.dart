@@ -10,6 +10,10 @@ import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 
 class DailyViewListScreen extends StatefulWidget {
+  final String dailyListNo;
+
+  DailyViewListScreen({this.dailyListNo});
+
   @override
   _DailyViewListScreenState createState() => new _DailyViewListScreenState();
 }

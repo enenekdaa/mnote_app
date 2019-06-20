@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/model/sign_model.dart';
+import 'package:mnote_app/service/sign_service.dart';
+import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/model/daily_model.dart';
 import 'package:mnote_app/model/writer_all.dart';
@@ -12,23 +16,53 @@ import 'package:mnote_app/service/books_my_service.dart';
 import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/service/daily_writings_service.dart';
 import 'package:mnote_app/service/daily_list_service.dart';
-import 'package:mnote_app/service/writer_all_service.dart';
+import 'package:mnote_app/service/writer_list_service.dart';
+
 //import 'package:mnote_app/utils/m_navigator.dart';
 import 'package:mnote_app/model/book_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
   _SignInScreen createState() => new _SignInScreen();
 }
 
-
-
 class _SignInScreen extends State<SignInScreen> {
   bool _value1 = true;
 
-  //we omitted the brackets '{}' and are using fat arrow '=>' instead, this is dart syntax
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  SharedPreferences _prefs;
+
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
+  void _login() async {
+    SignModel signModel =
+        await getSignIn(emailController.text, passwordController.text);
+
+    if (signModel.result == 'true') {
+      _prefs.setString('access_token', signModel.accessToken);
+      _prefs.setString('refresh_token', signModel.refreshToken);
+      Mnote.accessToken = signModel.accessToken;
+      Navigator.popAndPushNamed(context, '/home');
+    } else {
+      Fluttertoast.showToast(msg: '계정 또는 비밀번호를 확인하세요.');
+    }
+  }
+
+  void _initSharedPreferences(){
+    SharedPreferences.getInstance().then((prefs){
+      _prefs = prefs;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initSharedPreferences();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +92,7 @@ class _SignInScreen extends State<SignInScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         border: UnderlineInputBorder(
                             borderSide:
@@ -70,6 +105,7 @@ class _SignInScreen extends State<SignInScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         border: UnderlineInputBorder(
                             borderSide:
@@ -102,10 +138,7 @@ class _SignInScreen extends State<SignInScreen> {
                     margin:
                         EdgeInsets.only(top: 20, bottom: 10, left: 5, right: 5),
                     child: MaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        MyNavigator.goToHome(context);
-                      },
+                      onPressed: () => _login(),
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(15),
                       color: Colors.black,
@@ -128,11 +161,17 @@ class _SignInScreen extends State<SignInScreen> {
                               width: 10,
                             ),
                             Text('PW찾기'),
-                            Image.asset('images/icons/00_login_arrow.png', scale: 1.8,)
+                            Image.asset(
+                              'images/icons/00_login_arrow.png',
+                              scale: 1.8,
+                            )
                           ],
                         ),
                       ),
-                      Text('|', style: TextStyle(color: Colors.black12),),
+                      Text(
+                        '|',
+                        style: TextStyle(color: Colors.black12),
+                      ),
                       FlatButton(
                         onPressed: () => MyNavigator.goToSignUp(context),
                         child: Row(
@@ -141,7 +180,10 @@ class _SignInScreen extends State<SignInScreen> {
                               width: 10,
                             ),
                             Text('회원가입'),
-                            Image.asset('images/icons/00_login_arrow.png', scale: 1.8,)
+                            Image.asset(
+                              'images/icons/00_login_arrow.png',
+                              scale: 1.8,
+                            )
                           ],
                         ),
                       ),
@@ -156,8 +198,6 @@ class _SignInScreen extends State<SignInScreen> {
     );
   }
 }
-
-
 
 // 책 몰록 사용자 정보 ...
 //                onPressed: ()=> getBookInfoItem('http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php').then((bookInfo) {
@@ -187,7 +227,6 @@ class _SignInScreen extends State<SignInScreen> {
 //                onPressed: () => getChapterDetail('http://icomerict.cafe24.com/untitled_note/json/books_other_chapter_detail.php').then((chapterDetail) {
 //                  print('로 그  : : : : : ' + chapterDetail.chapter_title);
 //                }),
-
 
 //              onPressed: () => getBooksToday('http://icomerict.cafe24.com/untitled_note/json/daily_today.php').then((booksToday) {
 //                print('로 그  : : : : : ' + booksToday.daily_sentence);

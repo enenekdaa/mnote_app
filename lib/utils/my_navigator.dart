@@ -57,6 +57,10 @@ class MyNavigator {
     Navigator.pushNamed(context, "/daily_view");
   }
 
+  static void goToOpenListView(BuildContext context) {
+    Navigator.pushNamed(context, "/open_list");
+  }
+
   static void goToPremium(BuildContext context) {
     Navigator.pushNamed(context, "/premium");
   }

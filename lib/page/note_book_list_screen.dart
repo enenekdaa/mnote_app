@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/page/daily_main_screen.dart';
+import 'package:mnote_app/page/open_list_screen.dart';
 import 'package:mnote_app/service/books_my_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/dialog/note_book_modify_dialog.dart';
@@ -25,13 +26,27 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
     );
   }
 
-  // 공개 노트 클릭
-  void _openNoteBookClick(String text) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DailyMainScreen(noteTitle: text,),
-            settings: RouteSettings(name: '/daily_main')));
+  // 공개 노트 리스트 아이템 클릭
+  void _openNoteBookClick(BookModel book) {
+
+    // 공개 노트인 경우
+    if(book.bookNo == '0'){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OpenListScreen(),
+              settings: RouteSettings(name: '/open_list'))
+      );
+    }
+
+    // 하루 글감인 경우
+    if(book.bookNo == '1'){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DailyMainScreen(noteTitle: book.bookTitle,),
+              settings: RouteSettings(name: '/daily_main')));
+    }
   }
 
   // 내 노트 리스트 중 클릭
@@ -52,8 +67,8 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
 
   // 오픈 노트 초기화
   void _initOpenNoteBooks(){
-    _openNoteBookList.add(BookModel(bookTitle: '하루 글감'));
-    _openNoteBookList.add(BookModel(bookTitle: '공개 글 모아보기'));
+    _openNoteBookList.add(BookModel(bookTitle: '하루 글감', bookNo: '1'));
+    _openNoteBookList.add(BookModel(bookTitle: '공개 글 모아보기', bookNo: '0'));
   }
 
   @override
@@ -180,7 +195,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
   // Open Note Book List
   Widget _makeOpenNoteBookList(int index, List<BookModel> noteList) {
     return GestureDetector(
-      onTap: () => _openNoteBookClick(noteList[index].bookTitle), // 노트북 수정/삭제 다이얼로그,
+      onTap: () => _openNoteBookClick(noteList[index]), // 노트북 수정/삭제 다이얼로그,
       child: _noteBox(noteList[index].bookTitle),
     );
   }

@@ -5,10 +5,7 @@ class SignModel {
   final String accessToken;
   final String refreshToken;
 
-
-
   SignModel( {
-
     this.result, this.accessToken, this.refreshToken
   });
 
