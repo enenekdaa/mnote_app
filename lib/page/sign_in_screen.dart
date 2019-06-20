@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
-import 'package:mnote_app/model/Book_other.dart';
-import 'package:mnote_app/model/Book_other_intro.dart';
-import 'package:mnote_app/model/Book_writings.dart';
-import 'package:mnote_app/model/Daily_model.dart';
-import 'package:mnote_app/model/Login.dart';
-import 'package:mnote_app/model/Writer_all.dart';
+import 'package:mnote_app/model/daily_model.dart';
+import 'package:mnote_app/model/writer_all.dart';
 import 'package:mnote_app/service/book_other_detail_service.dart';
 import 'package:mnote_app/service/book_other_intro_service.dart';
 import 'package:mnote_app/service/book_other_service.dart';
@@ -13,14 +9,12 @@ import 'package:mnote_app/service/book_other_writings.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/service/books_my_service.dart';
-import 'package:mnote_app/service/books_today_service.dart';
-import 'package:mnote_app/service/books_writings_service.dart';
-import 'package:mnote_app/service/daily_list_service.dart';
+import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/service/daily_writings_service.dart';
+import 'package:mnote_app/service/daily_list_service.dart';
 import 'package:mnote_app/service/writer_all_service.dart';
-import 'package:mnote_app/utils/m_navigator.dart';
-import 'package:mnote_app/model/Book_info.dart';
-import 'package:mnote_app/model/Book_detail.dart';
+//import 'package:mnote_app/utils/m_navigator.dart';
+import 'package:mnote_app/model/book_model.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -34,16 +28,6 @@ class _SignInScreen extends State<SignInScreen> {
 
   //we omitted the brackets '{}' and are using fat arrow '=>' instead, this is dart syntax
   void _value1Changed(bool value) => setState(() => _value1 = value);
-  List<Login> list = [];
-  List<Book_detail> detailList = [];
-  List<Book_writings> writingList = [];
-  List<Daily_model> dailyList = [];
-  List<Daily_model> dailyWritingsList = [];
-  List<Writer_all> writerAllList = [];
-  List<Book_other> bookOtherList = [];
-
-
-
 
 
   @override
@@ -172,21 +156,23 @@ class _SignInScreen extends State<SignInScreen> {
     );
   }
 }
-                  
-                                  // 책 몰록 사용자 정보 ...
+
+
+
+// 책 몰록 사용자 정보 ...
 //                onPressed: ()=> getBookInfoItem('http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php').then((bookInfo) {
 //                  print('로 그  : : : : : ' + bookInfo.book_title);
 //                }),
-              // 책 목록 리스트 < chapter_no ... 등등
+// 책 목록 리스트 < chapter_no ... 등등
 //                onPressed: ()=> getBookDetailItems('http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php').then((detailList) {
 //                  print('로 그  : : : : : ' + detailList.elementAt(0).chapter_title);
 //                }),
-              // 로그인 result ..
+// 로그인 result ..
 //              onPressed: ()=> getloginResult('http://icomerict.cafe24.com/untitled_note/json/books_my.php').then((list) {
 //                print('로 그  : : : : : ' + list.elementAt(0).book_title);
 //              }),
 
-                /*
+/*
               *  챕터 .. 얘네둘도  url 이랑 파람 하나만 다름
               *   http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php = 얘는 chapter_no / book_no
               *      http://icomerict.cafe24.com/untitled_note/json/books_other_chapter_detail.php 얘는 chapter_no / book_no / + email
@@ -218,7 +204,7 @@ class _SignInScreen extends State<SignInScreen> {
 //                  print('로 그  : : : : : ' + dailyList.elementAt(0).daily_sentence);
 //                }),
 
-              /*
+/*
               *  글감 모아보기 ..
               *   http://icomerict.cafe24.com/untitled_note/json/daily_writings.php   랑   http://icomerict.cafe24.com/untitled_note/json/daily_writings.php 얘랑 둘다 모델값 같고
               *   결과값이 같아서 걍 꺼내쓰는것만 다름 ... url만 바꾸면됨 ㅇㅇ
@@ -231,7 +217,7 @@ class _SignInScreen extends State<SignInScreen> {
 //                  print('로 그  : : : : : ' + writerAllList.elementAt(0).writer_name);
 //                }),
 
-                /*
+/*
               *  구독목록 ..
               *   http://icomerict.cafe24.com/untitled_note/json/writer_list_all.php   랑   http://icomerict.cafe24.com/untitled_note/json/writer_list_sub.php 얘랑 둘다 모델값 같고
               *   결과값이 같아서 걍 꺼내쓰는것만 다른데
@@ -242,14 +228,14 @@ class _SignInScreen extends State<SignInScreen> {
 //                  print('로 그  : : : : : ' + writerAllList.elementAt(0).writer_name);
 //                }),
 
-                /*
+/*
               *  작가목록 클릭시 ..
               *  작가필명이 파라미터래 ex) writerAllList.elementAt(i).witer_name <<< 얘가 파라미터임 ㅇㅇ
               * */
 //                onPressed: () => getBookOtherList('http://icomerict.cafe24.com/untitled_note/json/books_other.php').then((bookOtherList) {
 //                  print('로 그  : : : : : ' + bookOtherList.elementAt(0).book_cover_img_no);
 //                }),
-                /*
+/*
               *  노트 클릭시 ..
               *  작가필명이 파라미터래 ex) writerAllList.elementAt(i).witer_name <<< 얘가 파라미터임 ㅇㅇ
               *  writerAllList.elementAt(i).book_no << 얘도
@@ -258,7 +244,7 @@ class _SignInScreen extends State<SignInScreen> {
 //                  print('로 그  : : : : : ' + BookOtherIntro.book_intro);
 //                }),
 
-                /*
+/*
               *  공개노트 자세히 ..
               *  얘네 둘도 한세트임 ...  info / detail
               *  param = { email , book_no }
@@ -270,7 +256,7 @@ class _SignInScreen extends State<SignInScreen> {
 //                  print('로 그  : : : : : ' + detailList.elementAt(0).chapter_title);
 //                }),
 
-                /*
+/*
               *  하루글감 공개노트 ..
               *  얘네 둘도 한세트임 ...  info / detail
               *  param = { email}
@@ -282,4 +268,4 @@ class _SignInScreen extends State<SignInScreen> {
 //                onPressed: () => getBookOtherWritingsDetail('http://icomerict.cafe24.com/untitled_note/json/daily_other_writings.php').then((detailList) {
 //                  print('로 그  : : : : : ' + detailList.elementAt(0).chapter_title);
 //                }),
-                    //  onPressed: () => MyNavigator.goToHome(context),
+//  onPressed: () => MyNavigator.goToHome(context),

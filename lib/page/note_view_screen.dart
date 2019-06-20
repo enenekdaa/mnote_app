@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/widget/monote_line.dart';
 
@@ -8,19 +10,20 @@ import 'note_last_screen.dart';
 typedef void ContentDoubleTabHandler(bool visibility);
 
 class NoteViewScreen extends StatefulWidget {
-  ContentDoubleTabHandler contentDoubleTabCallback;
-
-  NoteViewScreen({this.contentDoubleTabCallback});
+  final String bookNo;
+  final String chapterNo;
+  final List<ChapterModel> chapterList;
+  int idx;
+  NoteViewScreen({this.bookNo, this.chapterNo, this.chapterList, this.idx});
 
   @override
   _NoteViewScreenState createState() => _NoteViewScreenState();
 }
 
 class _NoteViewScreenState extends State<NoteViewScreen> {
-
+  ChapterModel chapterModel;
   bool _visibilityEditFinishBtn = true; // 노트 화면 > 작성완료 버튼
   bool _editorMode = false;    // 에디터 모드
-  
   int _currentPageIndex = 0;
 
   void _onContentDoubleTap(bool visibilityTime) {
@@ -28,7 +31,6 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
       _visibilityEditFinishBtn = visibilityTime;
     });
   }
-
 
   void _editorModeChange() {
     setState(() {
@@ -42,10 +44,29 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
     });
   }
 
+  void _nextBtnClick(){
+    if(widget.idx < widget.chapterList.length -1){
+      setState(() {
+        widget.idx = widget.idx + 1;
+        chapterModel = widget.chapterList[widget.idx];
+      });
+    }
+  }
+
+  void _prevBtnClick(){
+    if(widget.idx > 0){
+      setState(() {
+        widget.idx = widget.idx - 1;
+        chapterModel = widget.chapterList[widget.idx];
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();;
+    super.initState();
+    chapterModel = widget.chapterList[widget.idx];
   }
 
   @override
@@ -81,7 +102,9 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
       body: PageView(
         onPageChanged: (index) => _onPageChanged(index),
         children: <Widget>[
-          _editorMode ? NoteEditScreen(contentDoubleTabCallback: _onContentDoubleTap,) : Column(
+          _editorMode
+              ? NoteEditScreen(chapterModel: chapterModel, contentDoubleTabCallback: _onContentDoubleTap,)
+              : Column(
             children: <Widget>[
               // 본문
               Expanded(
@@ -112,7 +135,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                           height: 10,
                                         ),
                                         Text(
-                                          '우리의 청춘이',
+                                          chapterModel.chapterTitle,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: Mnote.noteTitleFiledHint,
@@ -124,17 +147,13 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                         Container(
                                           margin: EdgeInsets.only(bottom: 15),
                                           child: Text(
-                                            '2019년 06월 01일 14:22',
+                                            chapterModel.chapterStartDate,
                                             style: Mnote.noteSubTitleFiledHint,
                                           ),
                                         ),
                                         // 주황색 선
                                         OrangeLine(),
-                                        Text(' 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다. 사람은 크고 작고 \n\n' +
-                                            '그러므로 그들은 길지 아니한 목숨을 사는가 싶이 살았으며 그들의 그림자는 천고에 사라지지않는 것이다. \n' +
-                                            '이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니 인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니.  인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도...\n\n' +
-                                            '이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니 인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니.  인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도...\n\n' +
-                                            '이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니 인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 청공에 반짝이는 뭇 벌과 같이 산야에 피어나는 군명과 같이 이상은 실로 인간의 부패를 방지하는 소금이라 할지니.  인생에 가치를 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도...',
+                                        Text(chapterModel.contents,
                                           textAlign: TextAlign.justify,
                                           style: TextStyle(height: 1.5, fontSize: 16),
                                         )
@@ -142,7 +161,8 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                     ),
                                   ),
                                 ],
-                              ),),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -166,16 +186,22 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Image.asset('images/icons/00_chapter_pre.png', scale: 1.8,),
+                        GestureDetector(
+                          onTap: _prevBtnClick,
+                          child: Image.asset('images/icons/00_chapter_pre.png', scale: 1.8,),
+                        ),
                         SizedBox(width: 20,),
-                        Image.asset('images/icons/00_chapter_next.png', scale: 1.8),
+                        GestureDetector(
+                          onTap: _nextBtnClick,
+                          child: Image.asset('images/icons/00_chapter_next.png', scale: 1.8),
+                        ),
                       ],)
                   ],
                 ),
               )
             ],
           ),
-          NoteLastScreen()
+          NoteLastScreen(bookNo: widget.bookNo,)
         ],
       ),
         

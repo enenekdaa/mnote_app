@@ -1,25 +1,20 @@
 import 'dart:convert';
-import 'package:mnote_app/model/Book_detail.dart';
-import 'package:mnote_app/model/Book_info.dart';
-import 'package:mnote_app/model/Chapter_detail.dart';
-import 'package:mnote_app/model/Login.dart';
+import 'package:mnote_app/model/book_model.dart';
+import 'package:mnote_app/model/chapter_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:mnote_app/utils/mnote.dart';
 
-String resultURL;
-Future<Chapter_detail> getChapterDetail(String dataURL) async {
-  resultURL = dataURL;
+Future<ChapterModel> getChapterDetail(String bookNo, String chapterNo) async {
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php';
+
   final response = await http.post(dataURL ,
-    headers: {'access_token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTg5NDIyMjYsIm5iZiI6MTU1ODk0MjIyNiwianRpIjoiYVdOdmJXVnlYM1J2YTJWdVNVUT0iLCJleHAiOjE1OTAwNDYyMjYsImVtYWlsIjoia2RtNzE3M0BnbWFpbC5jb20ifQ.VfuUXV3Tc0e5rMSecrsFrPI64YmROLnIMW6pkns_4OE'},
-    body: {'book_no' : '2' , 'chapter_no' : '1' },
+    headers: {'access_token' : Mnote.accessToken},
+    body: {'book_no' : bookNo , 'chapter_no' : chapterNo },
   );
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
-
-    Chapter_detail chapterDetail = new Chapter_detail.fromJson(jsonResponse['chapter_detail']);
-
-    //print(post.first.dial_00);
-
+    ChapterModel chapterDetail = new ChapterModel.fromJson(jsonResponse['chapter_detail']);
     return chapterDetail;
 
   } else {

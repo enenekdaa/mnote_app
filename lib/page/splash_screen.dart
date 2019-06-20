@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mnote_app/utils/mnote.dart';
 
-import 'package:zefyr/zefyr.dart';
+// import 'package:zefyr/zefyr.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -20,6 +21,15 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), (){
       Navigator.popAndPushNamed(context, '/sign_in');
     });
+  }
+
+  @override
+  void didUpdateWidget(SplashScreen oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    // 디바이스 너비 저장
+    Mnote.deviceWidth = MediaQuery.of(context).size.width;
+    print(' Mnote.deviceWidth::${ Mnote.deviceWidth}');
   }
 
   @override

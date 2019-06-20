@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/widget/monote_line.dart';
 
 typedef void ContentDoubleTabHandler(bool visibility);
 
 class NoteEditScreen extends StatefulWidget{
+  final ChapterModel chapterModel;
+  final mode; // my = 일반 글쓰기 / daily = 하루 글감
   ContentDoubleTabHandler contentDoubleTabCallback;
 
-  NoteEditScreen({this.contentDoubleTabCallback});
+  NoteEditScreen({
+    this.chapterModel,
+    this.mode = 'my',
+    this.contentDoubleTabCallback
+  });
 
   @override
   _NoteEditScreenState createState() => _NoteEditScreenState();
@@ -15,8 +23,9 @@ class NoteEditScreen extends StatefulWidget{
 }
 
 class _NoteEditScreenState extends State<NoteEditScreen> {
-
+  ChapterModel chapterModel;
   TextEditingController titleController = TextEditingController();
+  TextEditingController contentsController = TextEditingController();
   final FocusNode _contentFieldFocusNode = FocusNode();
 
   bool visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
@@ -24,11 +33,30 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   bool visibilityOpenNote = false; // 공개노트설정버튼 보이기 on/off
 
 
+  void _initChapterDetail() async{
+    setState(() {
+      chapterModel = widget.chapterModel;
+      titleController.text = chapterModel.chapterTitle;
+      contentsController.text = chapterModel.contents;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _contentFieldFocusNode.addListener(_contentFieldFocusListener);
+
+    chapterModel = ChapterModel(
+        chapterTitle: ' ',
+        contents: ' ',
+        contentsAlignCenter: '0',
+        chapterStartDate: DateTime.now().toString()
+    );
+
+    if (widget.chapterModel != null){
+      _initChapterDetail();
+    }
   }
 
   @override
@@ -49,7 +77,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    visibilityOpenNote = ModalRoute.of(context).settings.name == '/today_note_edit';
+    visibilityOpenNote = ModalRoute.of(context).settings.name == '/daily_edit';
+
     // TODO: implement build
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -85,6 +114,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                                 hintText: '제목을 입력해주세요.',
                                 hintStyle: Mnote.noteTitleFiledHint,
                                 border: InputBorder.none),
+                            enabled: widget.mode != 'daily',
                           ),
                         ),
                         visibilityOpenNote
@@ -98,7 +128,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                     visibilityTime
                         ? Container(
                       margin: EdgeInsets.only(bottom: 15),
-                      child: Text('2019년 06월 01일 14:22', style: Mnote.noteSubTitleFiledHint,),
+                      child: Text(chapterModel.chapterStartDate, style: Mnote.noteSubTitleFiledHint,),
                     )
                         : Container(),
                     // 주황색 선
@@ -120,11 +150,14 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                     maxLines: 100,
                     onTap: () => {print('작업시작 ')},
                     focusNode: _contentFieldFocusNode,
+                    controller: contentsController,
                     decoration: InputDecoration(
                         hintText: '내용을 입력해주세요.',
                         filled: true,
                         fillColor: Colors.white,
-                        border: InputBorder.none),
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(height: 1.5, fontSize: 16),
+                    ),
                   ),
                 ),
               ),

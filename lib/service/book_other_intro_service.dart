@@ -1,15 +1,19 @@
 import 'dart:convert';
-import 'package:mnote_app/model/Book_other.dart';
-import 'package:mnote_app/model/Book_other_intro.dart';
-import 'package:mnote_app/model/Book_writings.dart';
-import 'package:mnote_app/model/Daily_model.dart';
-import 'package:mnote_app/model/Daily_writings.dart';
-import 'package:mnote_app/model/Login.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:mnote_app/model/book_model.dart';
+/*
+*  노트 클릭시 ..
+*  작가필명이 파라미터래 ex) writerAllList.elementAt(i).witer_name <<< 얘가 파라미터임 ㅇㅇ
+*  writerAllList.elementAt(i).book_no << 얘도
+* */
+//    onPressed: () => getBookOtherIntroList('http://icomerict.cafe24.com/untitled_note/json/books_other_intro.php').then((BookOtherIntro) {
+//      print('로 그  : : : : : ' + BookOtherIntro.book_intro);
+//    }),
 //String dataURL = "http://icomerict.cafe24.com/checkcheck/json/check_result.php?name_0=%EB%82%B4%EC%9D%B4%EB%A6%84&birth_date_0=1991-05-24&birth_hour_0=0&cal_style_0=0&name_1=%EC%83%81%EB%8C%80%EC%9D%B4%EB%A6%84&birth_date_1=1991-05-24&birth_hour_1=13&cal_style_1=0&check_style=1";
+
+
 String resultURL;
-Future<Book_other_intro> getBookOtherIntroList(String dataURL) async {
+Future<BookModel> getBookOtherIntroList(String dataURL) async {
   resultURL = dataURL;
 
   final response = await http.post(dataURL ,
@@ -20,8 +24,7 @@ Future<Book_other_intro> getBookOtherIntroList(String dataURL) async {
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
 
-    Book_other_intro book_other_intro = new Book_other_intro.fromJson(jsonResponse['books_other_intro']);
-    //print(post.first.dial_00);
+    BookModel book_other_intro = new BookModel.fromJson(jsonResponse['books_other_intro']);
     return book_other_intro;
 
   } else {

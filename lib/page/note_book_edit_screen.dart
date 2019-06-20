@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mnote_app/dialog/note_cover_dialog.dart';
+import 'package:mnote_app/model/book_model.dart';
+import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class NoteBookEditScreen extends StatefulWidget {
+  final String bookNo;
+
+  NoteBookEditScreen({this.bookNo});
   @override
   _NoteBookEditScreenState createState() => new _NoteBookEditScreenState();
 }
@@ -11,12 +16,31 @@ class NoteBookEditScreen extends StatefulWidget {
 class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
   bool _value1 = false;
   void _value1Changed(bool value) => setState(() => _value1 = value);
+  String book_title = null;
+  String book_subtitle = null;
 
   void _showNoteCoverDialog(){
     showDialog(
         context: context,
         builder: (_) => NoteCoverDialog()
     );
+  }
+
+  void _initBookInfo() async {
+    BookModel book_info = await getBookInfoItem(widget.bookNo);
+    setState(() {
+      book_title = book_info.bookTitle;
+      book_subtitle = book_info.bookSubtitle;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.bookNo != null){
+      _initBookInfo();
+    }
   }
 
   @override
@@ -56,7 +80,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
                       maxLines: 1,
                       style: Mnote.noteTitleFiledHint,
                       decoration: InputDecoration(
-                          hintText: '잘돼가? 무엇이든',
+                          hintText: book_title == null ? '노트 제목을 입력해주세요.' : book_title,
                           hintStyle: Mnote.noteTitleFiledHint,
                           border: InputBorder.none),
                     ),
@@ -64,7 +88,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
                       minLines: 1,
                       style: Mnote.noteSubTitleFiledHint,
                       decoration: InputDecoration(
-                          hintText: '이경미 첫 번째 에세이',
+                          hintText: book_subtitle == null ? '소제목을 입력해주세요.' : book_subtitle,
                           hintStyle: Mnote.noteSubTitleFiledHint,
                           border: InputBorder.none),
                     ),

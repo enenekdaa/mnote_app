@@ -1,32 +1,55 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/book_model.dart';
+import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/page/note_view_screen.dart';
+import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 
 class NoteBookViewScreen extends StatefulWidget {
+  final String bookNo;
+
+  NoteBookViewScreen({
+    this.bookNo,
+  });
+
   @override
   _NoteBookViewScreenState createState() => new _NoteBookViewScreenState();
 }
 
 class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
-  List<String> _noteList = [
-    '처음으로',
-    '이건 그냥 하는 농담이지만',
-    '실연당하는 게 끔찍할까, 시나리오 쓰는 게 더 끔찍할까끔찍할까끔찍할까?',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-    '노트 제목',
-  ];
+  List<ChapterModel> chapterList = [];
+  String bookTitle = '';
+  String bookSubtitle = '';
+  String bookShow = '';
+
+  // 책 정보 로드
+  void _initBookInfo() async {
+    BookModel book = await getBookInfoItem(widget.bookNo);
+    chapterList = await getBookDetailItems(widget.bookNo);
+    setState(() {
+      bookTitle = book.bookTitle;
+      bookSubtitle = book.bookSubtitle;
+      bookShow = book.bookShow;
+    });
+  }
+
+  // 챕터 클릭
+  void _chapterClick(String chapterNo, int index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NoteViewScreen(bookNo: widget.bookNo,chapterNo: chapterNo, chapterList: chapterList, idx: index,),
+            settings: RouteSettings(name: '/daily_main')));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initBookInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +69,9 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
             ),
             onPressed: () => Navigator.pop(context),
           ),
-          SizedBox(width: 10,)
+          SizedBox(
+            width: 10,
+          )
         ],
       ),
       body: Container(
@@ -59,10 +84,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
               child: Container(
                 constraints: BoxConstraints.expand(),
                 margin: EdgeInsets.only(
-                    left: 25,
-                    top: MediaQuery.of(context).size.height / 20,
-                    right: 25,
-                    bottom: MediaQuery.of(context).size.height / 60,
+                  left: 25,
+                  top: MediaQuery.of(context).size.height / 20,
+                  right: 25,
+                  bottom: MediaQuery.of(context).size.height / 60,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,14 +95,12 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () => {MyNavigator.goToNoteBookEdit(context)},
-                      child: Text(
-                        '잘돼가? 무엇이든',
+                      child: Text(bookTitle,
                         maxLines: 1,
                         style: Mnote.noteTitleFiledHint,
                       ),
                     ),
-                    Text(
-                      '이경미 첫번째 이야기',
+                    Text(bookSubtitle,
                       style: Mnote.noteSubTitleFiledHint,
                     ),
                     Row(
@@ -85,9 +108,14 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         GestureDetector(
-                          onTap: () => {},
+                          onTap: () {
+                            // TODO:: 공개 비공개 API 연동
+                            setState(() {
+                              bookShow = bookShow == '1' ? '2' : '1';
+                            });
+                          },
                           child: Image.asset(
-                            'images/icons/00_toggle_02_on.png',
+                            bookShow == '1' ? 'images/icons/00_toggle_02_on.png' : 'images/icons/00_toggle_02_off.png',
                             scale: 1.8,
                           ),
                         ),
@@ -113,9 +141,9 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                 flex: 3,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: _noteList.length,
+                    itemCount: chapterList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _note(index, _noteList);
+                      return _note(index, chapterList);
                     })),
           ],
         ),
@@ -123,22 +151,25 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
     );
   }
 
-  Widget _note(int index, List<String> noteList) {
+  Widget _note(int index, List<ChapterModel> noteList) {
     return GestureDetector(
-        onTap: () => MyNavigator.goToNoteView(context),
+        onTap: () => _chapterClick(noteList[index].chapterNo, index),
         child: Padding(
           padding: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(index.toString().padLeft(2, '0'), style: TextStyle(color: Mnote.gray153),),
+              Text(
+                index.toString().padLeft(2, '0'),
+                style: TextStyle(color: Mnote.gray153),
+              ),
               SizedBox(
                 width: 15,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 100,
                 child: Text(
-                  noteList[index],
+                  noteList[index].chapterTitle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Mnote.black, fontSize: 16),
