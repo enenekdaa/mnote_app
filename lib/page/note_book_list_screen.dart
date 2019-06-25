@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mnote_app/page/today_note_main_screen.dart';
+import 'package:mnote_app/model/book_model.dart';
+import 'package:mnote_app/page/note_book_view_screen.dart';
+import 'package:mnote_app/page/daily_main_screen.dart';
+import 'package:mnote_app/page/open_list_screen.dart';
+import 'package:mnote_app/service/books_my_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/dialog/note_book_modify_dialog.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
@@ -11,23 +15,68 @@ class NoteBookListScreen extends StatefulWidget {
 }
 
 class _NoteBookListScreenState extends State<NoteBookListScreen> {
-  List<String> _myNoteList = ['dongdong', '아이디최대자리가많이차지하는책은처리', '사계', ''];
-  List<String> _openNoteList = ['하루글', '스프의 위로'];
+  List<BookModel> _myNoteBookList = [];
+  List<BookModel> _openNoteBookList = [];
 
   // 노트북 수정/삭제 다이얼로그
-  void _showNoteBookModifyDialog(String noteName) {
+  void _showNoteBookModifyDialog(String bookNo) {
     showDialog(
       context: context,
-      builder: (_) => NoteBookModifyDialog(noteName: noteName),
+      builder: (_) => NoteBookModifyDialog(bookNo: bookNo,),
     );
   }
 
-  void _openNoteBookClick(String text) {
+  // 공개 노트 리스트 아이템 클릭
+  void _openNoteBookClick(BookModel book) {
+
+    // 공개 노트인 경우
+    if(book.bookNo == '0'){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OpenListScreen(),
+              settings: RouteSettings(name: '/open_list'))
+      );
+    }
+
+    // 하루 글감인 경우
+    if(book.bookNo == '1'){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DailyMainScreen(noteTitle: book.bookTitle,),
+              settings: RouteSettings(name: '/daily_main')));
+    }
+  }
+
+  // 내 노트 리스트 중 클릭
+  void _myNoteBookClick(String bookNo){
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TodayNoteMainScreen(noteTitle: text,),
-            settings: RouteSettings(name: '/today_note_main')));
+        context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: bookNo)));
+  }
+
+  // 나의 노트 초기화
+  void _initMyNoteBooks() async{
+    List<BookModel> bookList =  await getBooksMy();
+    _myNoteBookList.clear();
+    bookList.forEach((book){
+      _myNoteBookList.add(book);
+    });
+    _myNoteBookList.add(BookModel(bookTitle: ''));
+  }
+
+  // 오픈 노트 초기화
+  void _initOpenNoteBooks(){
+    _openNoteBookList.add(BookModel(bookTitle: '하루 글감', bookNo: '1'));
+    _openNoteBookList.add(BookModel(bookTitle: '공개 글 모아보기', bookNo: '0'));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initMyNoteBooks();
+    _initOpenNoteBooks();
   }
 
   @override
@@ -59,9 +108,9 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: _myNoteList.length,
+                  itemCount: _myNoteBookList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _makeMyNoteBookList(index, _myNoteList);
+                    return _makeMyNoteBookList(index, _myNoteBookList);
                   }),
             ),
           ),
@@ -102,9 +151,9 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: _openNoteList.length,
+                  itemCount: _openNoteBookList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _makeOpenNoteBookList(index, _openNoteList);
+                    return _makeOpenNoteBookList(index, _openNoteBookList);
                   }),
             ),
           ),
@@ -114,12 +163,13 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
   }
 
   // My Note Book List
-  Widget _makeMyNoteBookList(int index, List<String> noteList) {
-    return noteList[index] != ''
+  Widget _makeMyNoteBookList(int index, List<BookModel> noteList) {
+    return noteList[index].bookTitle != ''
         ? GestureDetector(
-            onLongPress: () => _showNoteBookModifyDialog(noteList[index]),
+            onLongPress: () => _showNoteBookModifyDialog(noteList[index].bookNo),
+            onTap: () => _myNoteBookClick(noteList[index].bookNo),
             // 노트북 수정/삭제 다이얼로그,
-            child: _noteBox(noteList[index]),
+            child: _noteBox(noteList[index].bookTitle),
           )
         : Column(
             // 나의 노트에서 맨 마지막일 경우 [+] 버튼 추가 (맨 마지막 구분자로 확인할수 있다.)
@@ -143,10 +193,10 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
   }
 
   // Open Note Book List
-  Widget _makeOpenNoteBookList(int index, List<String> noteList) {
+  Widget _makeOpenNoteBookList(int index, List<BookModel> noteList) {
     return GestureDetector(
       onTap: () => _openNoteBookClick(noteList[index]), // 노트북 수정/삭제 다이얼로그,
-      child: _noteBox(noteList[index]),
+      child: _noteBox(noteList[index].bookTitle),
     );
   }
 
@@ -161,13 +211,20 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
           padding: EdgeInsets.all(20),
           height: MediaQuery.of(context).size.height / 5.75,
           width: MediaQuery.of(context).size.width / 3.5,
-          decoration: BoxDecoration(color: Colors.black12),
-          child: Text(
-            title,
-            style: Mnote.noteBoxTitleText,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage('http://icomerict.cafe24.com/untitled_note/cover/1.jpg'),
+                  fit: BoxFit.cover
+              ),
+              //color: Colors.black12
           ),
+// 책 제목 영역
+//          child: Text(
+//            title,
+//            style: Mnote.noteBoxTitleText,
+//            maxLines: 2,
+//            overflow: TextOverflow.ellipsis,
+//          ),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width / 3.5,

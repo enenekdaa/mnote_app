@@ -26,13 +26,17 @@ dependencies:
 
   # Soft and gentle rich text editing for Flutter applications.
   # https://github.com/memspace/zefyr
-  zefyr: 0.5.0
-  notus: ^0.1.0
+  #  zefyr: 0.5.0
+  #  notus: ^0.1.0
 
   intl: ^0.15.8
 
   flutter_launcher_icons: "^0.7.0"
   http: ^0.12.0+2
+
+  fluttertoast: ^3.1.0
+  shared_preferences: ^0.4.2
+
 dev_dependenci  es:
   flutter_test:
     sdk: flutter

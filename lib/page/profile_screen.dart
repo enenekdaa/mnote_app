@@ -132,7 +132,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   minWidth: MediaQuery.of(context).size.width / 2,
                 ),
                 MaterialButton(
-                  onPressed: () => {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    MyNavigator.goToSignIn(context);
+                  },
                   height: 60,
                   child: Text('로그아웃', style: Mnote.screenBottomBtnWText),
                   color: Colors.black,

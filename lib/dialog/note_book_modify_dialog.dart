@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/page/note_book_edit_screen.dart';
+import 'package:mnote_app/page/note_book_view_screen.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 import 'note_book_remove_dialog.dart';
 
 class NoteBookModifyDialog extends StatefulWidget {
-  final String noteName;
-  NoteBookModifyDialog({this.noteName});
+  final String bookNo;
+
+  NoteBookModifyDialog({this.bookNo});
 
   @override
   _NoteBookModifyDialogState createState() => _NoteBookModifyDialogState();
@@ -14,7 +18,7 @@ class _NoteBookModifyDialogState extends State<NoteBookModifyDialog>
   AnimationController controller;
   Animation<double> scaleAnimation;
 
-  void _showRemoveNoteBookDialog(){
+  void _showRemoveNoteBookDialog() {
     Navigator.pop(context);
     showDialog(
       context: context,
@@ -25,22 +29,20 @@ class _NoteBookModifyDialogState extends State<NoteBookModifyDialog>
   @override
   void initState() {
     super.initState();
-
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
-    scaleAnimation =
-        CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
-
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
     controller.addListener(() {
       setState(() {});
     });
-
     controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    final maxSize = MediaQuery.of(context).size.width;
+    final maxSize = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -54,7 +56,8 @@ class _NoteBookModifyDialogState extends State<NoteBookModifyDialog>
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0.0))),
             child: Container(
-              padding: EdgeInsets.only(top: 30, bottom: 10, left: 20, right: 20),
+              padding: EdgeInsets.only(
+                  top: 30, bottom: 10, left: 20, right: 20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +68,10 @@ class _NoteBookModifyDialogState extends State<NoteBookModifyDialog>
                       minWidth: double.infinity,
                       color: Colors.black,
                       textColor: Colors.white,
-                      onPressed: () => {},
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => NoteBookEditScreen(bookNo: widget.bookNo)));
+                      },
                       child: Text('표지 및 제목 설정')),
                   SizedBox(height: 10,),
                   MaterialButton(

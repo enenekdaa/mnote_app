@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/model/daily_model.dart';
+import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
-import 'package:mnote_app/widget/monote_line.dart';
-
 import 'note_edit_screen.dart';
-import 'note_last_screen.dart';
 
 typedef void ContentDoubleTabHandler(bool visibility);
 
-class TodayNoteEditScreen extends StatefulWidget {
-  TodayNoteEditScreen();
+
+class DailyEditScreen extends StatefulWidget {
+  final DailyModel dailyModel;
+  DailyEditScreen({this.dailyModel});
   @override
-  _TodayNoteEditScreenState createState() => _TodayNoteEditScreenState();
+  _DailyEditScreenState createState() => _DailyEditScreenState();
 }
 
-class _TodayNoteEditScreenState extends State<TodayNoteEditScreen> {
+class _DailyEditScreenState extends State<DailyEditScreen> {
 
   bool visibilityEditFinishBtn = true; // 노트 화면 > 작성완료 버튼
   
@@ -24,10 +26,11 @@ class _TodayNoteEditScreenState extends State<TodayNoteEditScreen> {
     });
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();;
+    super.initState();
   }
 
   @override
@@ -46,7 +49,7 @@ class _TodayNoteEditScreenState extends State<TodayNoteEditScreen> {
             onPressed: () => Navigator.pop(context),
             child: Image.asset('images/icons/00_chapter_pre.png')),
         backgroundColor: Colors.black,
-        title: Text('그리움'),
+        title: Text(widget.dailyModel.dailyTitle),
         centerTitle: true,
         actions: <Widget>[
           visibilityEditFinishBtn
@@ -56,13 +59,20 @@ class _TodayNoteEditScreenState extends State<TodayNoteEditScreen> {
                   child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
                   onPressed: (){
                     Navigator.pop(context);
-                    MyNavigator.goToTodayNoteSubject(context);
+                    MyNavigator.goToDailySubject(context);
                   },
           )
         ],
       ),
       backgroundColor: Colors.white,
       body: NoteEditScreen(
+        chapterModel: ChapterModel(
+          chapterTitle: widget.dailyModel.dailyTitle,
+          contents: '',
+          contentsAlignCenter: '0',
+          chapterStartDate: DateTime.now().toString()
+        ),
+        mode: 'daily',
         contentDoubleTabCallback: _onContentDoubleTap,
       )
     );

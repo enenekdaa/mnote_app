@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Mnote {
+
+  static double deviceWidth = 0.0;
+  static String accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTg5NDIyMjYsIm5iZiI6MTU1ODk0MjIyNiwianRpIjoiYVdOdmJXVnlYM1J2YTJWdVNVUT0iLCJleHAiOjE1OTAwNDYyMjYsImVtYWlsIjoia2RtNzE3M0BnbWFpbC5jb20ifQ.VfuUXV3Tc0e5rMSecrsFrPI64YmROLnIMW6pkns_4OE';
+
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
   TextStyle(color: Color.fromRGBO(255, 113, 43, 1), fontSize: 15);
@@ -12,6 +17,8 @@ class Mnote {
   // 기본 본문 타이틀 필드 라벨 텍스트
   static TextStyle textFiledLabel =
   TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
+  static TextStyle textFiledLabelDisabled =
+  TextStyle(color: Colors.grey, fontSize: 18);
 
   // 기본 본문 텍스트 필드 힌트 텍스트
   static TextStyle textFiledHint = TextStyle(color: Colors.black12,);
@@ -37,6 +44,10 @@ class Mnote {
   static TextStyle textBlack_13_5 = TextStyle(fontSize: 13.5, color: Colors.black);
   static TextStyle textHint_13_5 = TextStyle(fontSize: 13.5, color: gray153);
 
+  // 13.5 font
+  static TextStyle textBlack_16 = TextStyle(fontSize: 16, color: Colors.black);
+  static TextStyle textHint_16 = TextStyle(fontSize: 16, color: gray153);
+
   // 20 font
   static TextStyle textBlack_20 = TextStyle(fontSize: 20, color: Colors.black);
   static TextStyle textHint_20 = TextStyle(fontSize: 20, color: gray153);
@@ -54,4 +65,8 @@ class Mnote {
   // 블랙 컬러
   static Color black = Color.fromRGBO(46, 46, 46, 1);
 
+  static String getDateFormat_1(String date){
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('yyyy.MM.dd').format(dateTime);
+  }
 }

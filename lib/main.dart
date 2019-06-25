@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:mnote_app/page/appsetting_screen.dart';
+import 'package:mnote_app/page/daily_list_screen.dart';
 import 'package:mnote_app/page/home_screen.dart';
 import 'package:mnote_app/page/note_book_edit_screen.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/page/note_edit_screen.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
+import 'package:mnote_app/page/open_list_screen.dart';
 import 'package:mnote_app/page/profile_screen.dart';
 import 'package:mnote_app/page/sign_in_screen.dart';
 import 'package:mnote_app/page/sign_up_screen.dart';
 import 'package:mnote_app/page/splash_screen.dart';
 import 'package:mnote_app/page/premium_screen.dart';
 import 'package:mnote_app/page/navigation_screen.dart';
-import 'package:mnote_app/page/today_note_edit_screen.dart';
-import 'package:mnote_app/page/today_note_list_screen.dart';
-import 'package:mnote_app/page/today_note_subjects_screen.dart';
-import 'package:mnote_app/page/today_note_main_screen.dart';
-import 'package:mnote_app/page/today_note_view_screen.dart';
+import 'package:mnote_app/page/daily_edit_screen.dart';
+import 'package:mnote_app/page/daily_view_list_screen.dart';
+import 'package:mnote_app/page/daily_my_screen.dart';
+import 'package:mnote_app/page/daily_main_screen.dart';
+import 'package:mnote_app/page/daily_view_screen.dart';
 
 var routes = <String, WidgetBuilder>{
   "/home": (BuildContext context) => HomeScreen(),
@@ -28,11 +30,13 @@ var routes = <String, WidgetBuilder>{
   "/note_book_eidt": (BuildContext context) => NoteBookEditScreen(),
   "/note_view": (BuildContext context) => NoteViewScreen(),
   "/note_eidt": (BuildContext context) => NoteEditScreen(),
-  "/today_note_main": (BuildContext context) => TodayNoteMainScreen(),
-  "/today_note_edit": (BuildContext context) => TodayNoteEditScreen(),
-  "/today_note_subjects": (BuildContext context) => TodayNoteSubjectsScreen(),
-  "/today_note_list": (BuildContext context) => TodayNoteListScreen(),
-  "/today_note_view": (BuildContext context) => TodayNoteViewScreen(),
+  "/daily_main": (BuildContext context) => DailyMainScreen(),
+  "/daily_edit": (BuildContext context) => DailyEditScreen(),
+  "/daily_subjects": (BuildContext context) => DailyMyScreen(),
+  "/daily_list": (BuildContext context) => DailyListScreen(),
+  "/daily_view_list": (BuildContext context) => DailyViewListScreen(),
+  "/daily_view": (BuildContext context) => DailyViewScreen(),
+  "/open_list": (BuildContext context) => OpenListScreen(),
   "/premium": (BuildContext context) => PremiumScreen(),
   "/app_setting": (BuildContext context) => AppSettingScreen(),
   "/profile": (BuildContext context) => ProfileScreen(),

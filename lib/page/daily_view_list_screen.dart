@@ -1,32 +1,57 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mnote_app/model/daily_model.dart';
+import 'package:mnote_app/model/daily_writings.dart';
+import 'package:mnote_app/page/daily_edit_screen.dart';
+import 'package:mnote_app/page/daily_view_screen.dart';
+import 'package:mnote_app/service/daily_today_service.dart';
+import 'package:mnote_app/service/daily_writings_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 
-class TodayNoteListScreen extends StatefulWidget {
+class DailyViewListScreen extends StatefulWidget {
+  final String dailyListNo;
+
+  DailyViewListScreen({this.dailyListNo});
+
   @override
-  _TodayNoteListScreenState createState() => new _TodayNoteListScreenState();
+  _DailyViewListScreenState createState() => new _DailyViewListScreenState();
 }
 
-class _TodayNoteListScreenState extends State<TodayNoteListScreen> {
-  List<String> _noteList = [
-    '그리움',
-    '사과',
-    '딸기',
-    '선풍기',
-    '비',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-    '하루 글감',
-  ];
+class _DailyViewListScreenState extends State<DailyViewListScreen> {
+  int pageNo = 0;
+  List<DailyWritings> dailyList = [];
+
+  // 리스트 조회 (초기화)
+  void _initDailyList() async{
+    List<DailyWritings> newDailyList = await getBooksWritings('4', pageNo.toString());
+    setState(() {
+      dailyList = newDailyList;
+    });
+  }
+
+  // 글쓰기 버튼 클릭
+  void _editBtnClick() async{
+    DailyModel dailyModel = await getDailyToday();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DailyEditScreen(dailyModel: dailyModel,)));
+  }
+
+  // 리스트 아이템 클릭
+  void _dailyItemClick(int index){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DailyViewScreen(dailyWritings: dailyList[index],)));
+  }
+
+  // 글감모음 버튼 클릭
+  void _dailyWritingsBtnClick(){
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initDailyList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +67,7 @@ class _TodayNoteListScreenState extends State<TodayNoteListScreen> {
           FlatButton(
             padding: EdgeInsets.only(right: 30),
             child: Text('글작성', style: Mnote.appBarRightOkBtnText),
-            onPressed: ()=>{MyNavigator.goToTodayNoteEdit(context)},
+            onPressed: ()=>_editBtnClick(),
           )
         ],
       ),
@@ -55,17 +80,20 @@ class _TodayNoteListScreenState extends State<TodayNoteListScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text('2019.05.23', style: TextStyle(color: Mnote.gray153),),
-                  Image.asset('images/icons/11_btn_wording.png', scale: 1.6,)
+                  Text(dailyList.length > 0 ? dailyList[0].dailyDate : '', style: TextStyle(color: Mnote.gray153),),
+                  GestureDetector(
+                    onTap: () => {},
+                    child: Image.asset('images/icons/11_btn_wording.png', scale: 1.6,),
+                  ),
                 ],
               ),
               SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: _noteList.length,
+                    itemCount: dailyList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _note(index, _noteList);
+                      return _note(index, dailyList);
                     }),
               )
             ],
@@ -75,9 +103,9 @@ class _TodayNoteListScreenState extends State<TodayNoteListScreen> {
     );
   }
 
-  Widget _note(int index, List<String> noteList) {
+  Widget _note(int index, List<DailyWritings> noteList) {
     return GestureDetector(
-        onTap: () => MyNavigator.goToTodayNoteView(context),
+        onTap: () => _dailyItemClick(index),
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
           padding: EdgeInsets.all(10),
@@ -95,16 +123,16 @@ class _TodayNoteListScreenState extends State<TodayNoteListScreen> {
                 ],
               ),
               Expanded(
-                child: Text('우연', style: Mnote.textBlack_20,),),
+                child: Text(noteList[index].chapterTitle, style: Mnote.textBlack_20,),),
               Expanded(
                 flex: 5,
                 child: Text(
-                  '우연이라 하기엔 너무나 심각했지 \n 우린 서로가 서로를 모른척을 해야만 했어 \n 변해버린 모습과 서로 다른 연인과 \n 같은 영화를 보러 갔다 우린 마주쳤었지 \n너와 눈이 마주치던 그순간 \n 나는 태연한척 하려 애를 썼지만 ...',
+                  noteList[index].contents,
                   style: TextStyle(color: Mnote.gray153, fontSize: 16, height: 1.5,),
                   textAlign: TextAlign.center,),
               ),
               Expanded(
-                child: Text('오후네시', style: TextStyle(decoration: TextDecoration.underline, ),),
+                child: Text(noteList[index].writerName, style: TextStyle(decoration: TextDecoration.underline, ),),
               )
             ],
           ),
