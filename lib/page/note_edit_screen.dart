@@ -128,7 +128,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                     visibilityTime
                         ? Container(
                       margin: EdgeInsets.only(bottom: 15),
-                      child: Text(chapterModel.chapterStartDate, style: Mnote.noteSubTitleFiledHint,),
+                      child: Text(Mnote.getDateFormat_2(chapterModel.chapterStartDate), style: Mnote.noteSubTitleFiledHint,),
                     )
                         : Container(),
                     // 주황색 선

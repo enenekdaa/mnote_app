@@ -10,6 +10,7 @@ Future<List<BookModel>> getBooksMy() async {
   );
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
     final items = (jsonResponse['books_my'] as List).map((i) => new BookModel.fromJson(i));
     return items.toList();
   } else {

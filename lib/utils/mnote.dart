@@ -65,8 +65,24 @@ class Mnote {
   // 블랙 컬러
   static Color black = Color.fromRGBO(46, 46, 46, 1);
 
+  // 날짜 포멧 1
   static String getDateFormat_1(String date){
     DateTime dateTime = DateTime.parse(date);
     return DateFormat('yyyy.MM.dd').format(dateTime);
+  }
+  static String getDateFormat_2(String date){
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('yyyy.MM.dd hh:mm').format(dateTime);
+  }
+
+  // email
+  static String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
   }
 }

@@ -28,22 +28,30 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreen extends State<SignInScreen> {
-  bool _value1 = true;
+  bool _isAutoLoginCheck = true;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   SharedPreferences _prefs;
 
-  void _value1Changed(bool value) => setState(() => _value1 = value);
+  void _value1Changed(bool value) => setState(() => _isAutoLoginCheck = value);
 
-  void _login() async {
+  void _login(String email, String pw) async {
     SignModel signModel =
-        await getSignIn(emailController.text, passwordController.text);
+        await getSignIn(email, pw);
 
     if (signModel.result == 'true') {
       _prefs.setString('access_token', signModel.accessToken);
       _prefs.setString('refresh_token', signModel.refreshToken);
+      
+      // 자동 로그인 설정 
+      if(_isAutoLoginCheck){
+        _prefs.setString('auto_login', 'true');
+        _prefs.setString('auto_email', email);
+        _prefs.setString('auto_pw', pw);
+      }
+      
       Mnote.accessToken = signModel.accessToken;
       Navigator.popAndPushNamed(context, '/home');
     } else {
@@ -54,6 +62,12 @@ class _SignInScreen extends State<SignInScreen> {
   void _initSharedPreferences(){
     SharedPreferences.getInstance().then((prefs){
       _prefs = prefs;
+      if(_prefs.getKeys().contains('auto_login')){
+        _prefs.get('auto_login') == 'true'
+            ? _login(_prefs.get('auto_email'), _prefs.get('auto_pw'))
+            : _prefs.setString('auto_login', 'false');
+        _isAutoLoginCheck = true;
+      }
     });
   }
 
@@ -124,7 +138,7 @@ class _SignInScreen extends State<SignInScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Checkbox(
-                            value: _value1,
+                            value: _isAutoLoginCheck,
                             onChanged: _value1Changed,
                             checkColor: Colors.white,
                             activeColor: Colors.black,
@@ -138,7 +152,7 @@ class _SignInScreen extends State<SignInScreen> {
                     margin:
                         EdgeInsets.only(top: 20, bottom: 10, left: 5, right: 5),
                     child: MaterialButton(
-                      onPressed: () => _login(),
+                      onPressed: () => _login(emailController.text, passwordController.text),
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(15),
                       color: Colors.black,
