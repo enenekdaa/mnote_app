@@ -13,7 +13,6 @@ Future<SignModel> getSignIn(String email, String password) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
-
     SignModel signModel = new SignModel.fromJson(jsonResponse);
     return signModel;
   } else {

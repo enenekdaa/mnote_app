@@ -22,7 +22,7 @@ class _NoteBookModifyDialogState extends State<NoteBookModifyDialog>
     Navigator.pop(context);
     showDialog(
       context: context,
-      builder: (_) => NoteBookRemoveDialog(),
+      builder: (_) => NoteBookRemoveDialog(bookNo: widget.bookNo,),
     );
   }
 

@@ -10,6 +10,7 @@ class BookModel {
   String bookStartDate;
   String bookCompleteDate;
   String bookCoverImgNo;
+  String bookIntro;
   List<ChapterModel> bookDetail;
 
   BookModel({
@@ -23,6 +24,7 @@ class BookModel {
     this.bookStartDate,
     this.bookCompleteDate,
     this.bookCoverImgNo,
+    this.bookIntro,
     this.bookDetail,
   });
 
@@ -39,13 +41,16 @@ class BookModel {
             complete: json['complete'] == null ? '' : json['complete'],
             bookStartDate:
                 json['book_start_date'] == null ? '' : json['book_start_date'],
-            bookCoverImgNo: 'http://icomerict.cafe24.com/untitled_note/cover/0.jpg',
+//            bookCoverImgNo: 'http://icomerict.cafe24.com/untitled_note/cover/0.jpg',
+            bookCoverImgNo:  json['book_cover_img_no'] == null ? '' : json['book_cover_img_no'],
 //            bookCompleteDate: json['book_complete_date'] == null
 //                ? ''
 //                : 'http://icomerict.cafe24.com/untitled_note/cover/0.jpg',
             bookDetail: json['book_detail'] == null ? [] : json['book_detail'],
             bookSubtitle:
                 json['book_subtitle'] == null ? '' : json['book_subtitle'],
+            bookIntro:
+                json['book_intro'] == null ? '' : json['book_intro'],
           )
         : null;
   }

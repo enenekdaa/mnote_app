@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/model/book_model.dart';
+import 'package:mnote_app/page/note_book_view_screen.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
+import 'package:mnote_app/service/books_my_service.dart';
 
 import 'package:mnote_app/utils/my_navigator.dart';
 
 class NoteSaveDialog extends StatefulWidget {
+  final String title;
+  final String contents;
+
+  NoteSaveDialog(this.title, this.contents);
+
   @override
   _NoteSaveDialogState createState() => _NoteSaveDialogState();
 }
@@ -12,22 +22,49 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
   AnimationController controller;
   Animation<double> scaleAnimation;
 
-  List<String> noteItems = ['무제_1', '무제_2'];
+  List<BookModel> _myNoteBookList = [];
+
+  // 나의 노트 리스트 설정
+  void _initMyNoteBooks() async{
+    List<BookModel> bookList =  await getBooksMy();
+    bookList.forEach((book){
+      if(book.bookTitle.trim() != '' && book.bookNo != '1') {
+        _myNoteBookList.add(book);
+      }
+    });
+  }
+
+  // 챕터 저장
+  void _saveChapter(String bookNo) async {
+    String result = writeNewChapter(bookNo) as String;
+    if (result != 'fail'){
+      _updateChapter(bookNo, result);
+    }else{
+      Fluttertoast.showToast(msg: '챕터 신규 생성에 실패하였습니다.');
+    }
+  }
+
+  // 챕터 업데이트
+  void _updateChapter(String bookNo, String chapterNo) async {
+    String result = updateChapter(bookNo, chapterNo, widget.title, widget.contents, '0') as String;
+    if (result != 'fail'){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: bookNo)));
+    }else{
+      Fluttertoast.showToast(msg: '챕터 수정에 실패하였습니다.');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
-    scaleAnimation =
-        CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
-
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
     controller.addListener(() {
       setState(() {});
     });
-
     controller.forward();
+
+    _initMyNoteBooks();
   }
 
   @override
@@ -56,7 +93,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: noteItems.length,
+                        itemCount: _myNoteBookList.length,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
@@ -64,8 +101,8 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
                             height: 50,
                             padding: EdgeInsets.only(bottom: 6, left: 10, right: 10),
                             child: MaterialButton(
-                              child: Text(noteItems[index]),
-                              onPressed: () => MyNavigator.goToNoteBookView(context),
+                              child: Text(_myNoteBookList[index].bookTitle),
+                              onPressed: () => _saveChapter(_myNoteBookList[index].bookNo),
                               elevation: 0,
                               color: Colors.black,
                               textColor: Colors.white,

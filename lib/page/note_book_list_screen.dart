@@ -16,7 +16,7 @@ class NoteBookListScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _NoteBookListScreenState();
 }
 
-class _NoteBookListScreenState extends State<NoteBookListScreen> {
+class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBindingObserver{
   List<BookModel> _myNoteBookList = [];
   List<BookModel> _openNoteBookList = [];
 
@@ -74,7 +74,9 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
     List<BookModel> bookList =  await getBooksMy();
     _myNoteBookList.clear();
     bookList.forEach((book){
-      _myNoteBookList.add(book);
+      if(book.bookTitle.trim() != '') {
+        _myNoteBookList.add(book);
+      }
     });
     _myNoteBookList.add(BookModel(bookTitle: ''));
   }
@@ -92,6 +94,16 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
     _initMyNoteBooks();
     _initOpenNoteBooks();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO:: 노트 삭제 되었을때 화면 업데이트 되도록 수정해야함
+//    setState(() {
+//      print(state);
+//      _initMyNoteBooks();
+//    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +228,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
 
   // Note BOX
   Widget _noteBox(BookModel book) {
+    String _bookCoverImgNo = book.bookCoverImgNo == '' || book.bookCoverImgNo == null ? '1': book.bookCoverImgNo;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -227,7 +240,8 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('http://icomerict.cafe24.com/untitled_note/cover/${book.bookCoverImgNo}.jpg'),
+                  image: NetworkImage('http://icomerict.cafe24.com/untitled_note/cover/$_bookCoverImgNo.jpg'),
+                  // image: NetworkImage('http://icomerict.cafe24.com/untitled_note/cover/1.jpg'),
                   fit: BoxFit.cover
               ),
               //color: Colors.black12

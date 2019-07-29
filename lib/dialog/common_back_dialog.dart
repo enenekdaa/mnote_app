@@ -2,43 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/service/books_my_service.dart';
 
-class NoteBookRemoveDialog extends StatefulWidget {
-  final String bookNo;
-
-  NoteBookRemoveDialog({this.bookNo});
-
+class CommonBackDialog extends StatefulWidget {
   @override
-  _NoteBookRemoveDialogState createState() => _NoteBookRemoveDialogState();
+  _CommonBackDialogState createState() => _CommonBackDialogState();
 }
 
-class _NoteBookRemoveDialogState extends State<NoteBookRemoveDialog>
+class _CommonBackDialogState extends State<CommonBackDialog>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
 
-  void _deleteBook()async{
-    if ( await deleteBook(widget.bookNo) == ''){
-      Fluttertoast.showToast(msg: '성공적으로 삭제되었습니다.');
-      Navigator.pop(context);
-    }else{
-      Fluttertoast.showToast(msg: '삭제에 실패하였습니다.');
-      Navigator.pop(context);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     scaleAnimation =
         CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
-
     controller.addListener(() {
       setState(() {});
     });
-
     controller.forward();
   }
 
@@ -63,15 +46,16 @@ class _NoteBookRemoveDialogState extends State<NoteBookRemoveDialog>
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text('노트를 삭제하시겠습니까?'),
-                  Text('삭제된 노트는 복구할 수 없습니다.'),
+                  Text('뒤로 가시겠습니까?'),
+                  Text('작성된 내용은 저장되지 않습니다.'),
                   SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       MaterialButton(
                         onPressed: () {
-                          _deleteBook();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         elevation: 0,
                         color: Colors.white,

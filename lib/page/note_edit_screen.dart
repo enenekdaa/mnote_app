@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:mnote_app/model/chapter_model.dart';
-import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/widget/monote_line.dart';
 
 typedef void ContentDoubleTabHandler(bool visibility);
 
+/*
+ * 노트 에디터 위젯
+ * 기본 글쓰기, 하루글감 글쓰기, 공개노트 글쓰기 등 에디터 화면이다.
+ * 스택으로 구성되어있으며 타이틀 아래 위치한 화면이다.
+ *
+ */
+
 class NoteEditScreen extends StatefulWidget{
   final ChapterModel chapterModel;
   final mode; // my = 일반 글쓰기 / daily = 하루 글감
-  ContentDoubleTabHandler contentDoubleTabCallback;
+  final ContentDoubleTabHandler contentDoubleTabCallback;
+  final TextEditingController titleController;
+  final TextEditingController contentsController;
 
   NoteEditScreen({
     this.chapterModel,
     this.mode = 'my',
-    this.contentDoubleTabCallback
+    this.contentDoubleTabCallback,
+    this.titleController,
+    this.contentsController
   });
 
   @override
@@ -24,8 +34,8 @@ class NoteEditScreen extends StatefulWidget{
 
 class _NoteEditScreenState extends State<NoteEditScreen> {
   ChapterModel chapterModel;
-  TextEditingController titleController = TextEditingController();
-  TextEditingController contentsController = TextEditingController();
+//  TextEditingController titleController = TextEditingController();
+//  TextEditingController contentsController = TextEditingController();
   final FocusNode _contentFieldFocusNode = FocusNode();
 
   bool visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
@@ -36,8 +46,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   void _initChapterDetail() async{
     setState(() {
       chapterModel = widget.chapterModel;
-      titleController.text = chapterModel.chapterTitle;
-      contentsController.text = chapterModel.contents;
+      widget.titleController.text = chapterModel.chapterTitle;
+      widget.contentsController.text = chapterModel.contents;
     });
   }
 
@@ -105,10 +115,10 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                               List<String> textList = text.split('\n');
                               if (textList.length > 2) {
                                 textList.removeAt(2);
-                                  titleController.text = textList.join('\n');
+                                widget.titleController.text = textList.join('\n');
                               }
                             },
-                            controller: titleController,
+                            controller: widget.titleController,
                             style: Mnote.noteTitleFiledHint,
                             decoration: InputDecoration(
                                 hintText: '제목을 입력해주세요.',
@@ -150,7 +160,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                     maxLines: 100,
                     onTap: () => {print('작업시작 ')},
                     focusNode: _contentFieldFocusNode,
-                    controller: contentsController,
+                    controller: widget.contentsController,
                     decoration: InputDecoration(
                         hintText: '내용을 입력해주세요.',
                         filled: true,

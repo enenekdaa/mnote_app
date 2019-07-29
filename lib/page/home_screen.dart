@@ -18,6 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool visibilityEditFinishBtn = true; // 노트 화면 > 작성완료 버튼
   int currentPageIndex = 0; // 현재 화면 페이지
 
+  TextEditingController titleController = TextEditingController(); // 제목 컨트롤러
+  TextEditingController contentsController = TextEditingController(); // 본문 컨트롤러
+
   void _onContentDoubleTap(bool visibilityTime) {
     setState(() {
       visibilityEditFinishBtn = visibilityTime;
@@ -57,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => NoteSaveDialog(),
+                      builder: (_) => NoteSaveDialog(titleController.text, contentsController.text),
                     );
                   },
                 )
@@ -69,6 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
           // 노트 입력 화면
           NoteEditScreen(
             contentDoubleTabCallback: _onContentDoubleTap,
+            titleController: titleController,
+            contentsController: contentsController,
           ),
           // 나의 노트 화면
           NoteBookListScreen(),

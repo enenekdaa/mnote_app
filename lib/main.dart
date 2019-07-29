@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Colors.blue,
-          accentColor: Colors.yellowAccent,
+          accentColor: Colors.black12,
           fontFamily: 'MNote'),
       home: SplashScreen(),
       routes: routes,

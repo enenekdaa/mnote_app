@@ -5,6 +5,7 @@ class Mnote {
 
   static double deviceWidth = 0.0;
   static String accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTg5NDIyMjYsIm5iZiI6MTU1ODk0MjIyNiwianRpIjoiYVdOdmJXVnlYM1J2YTJWdVNVUT0iLCJleHAiOjE1OTAwNDYyMjYsImVtYWlsIjoia2RtNzE3M0BnbWFpbC5jb20ifQ.VfuUXV3Tc0e5rMSecrsFrPI64YmROLnIMW6pkns_4OE';
+  static String refreshToken = '';
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =

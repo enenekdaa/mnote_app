@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -8,6 +9,29 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  SharedPreferences _prefs;
+
+  void _initSharedPreferences() {
+    SharedPreferences.getInstance().then((prefs) {
+      _prefs = prefs;
+    });
+  }
+
+  void _logout() {
+    _prefs.clear();
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    MyNavigator.goToSignIn(context);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initSharedPreferences();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,10 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    MyNavigator.goToSignIn(context);
+                    _logout();
                   },
                   height: 60,
                   child: Text('로그아웃', style: Mnote.screenBottomBtnWText),
