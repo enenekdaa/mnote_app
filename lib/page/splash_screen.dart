@@ -38,6 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
         _prefs.get('auto_login') == 'true'
             ? _login(_prefs.get('auto_email'), _prefs.get('auto_pw'))
             : Navigator.pushReplacementNamed(context, '/sign_in');
+      }else{
+        Navigator.pushReplacementNamed(context, '/sign_in');
       }
     });
   }
