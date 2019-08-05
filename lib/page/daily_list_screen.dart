@@ -25,12 +25,16 @@ class _DailyListScreenState extends State<DailyListScreen> {
 
   // 리스트 조회 (초기화)
   void _initDailyList() async {
-    List<DailyModel> newDailyList = await getDailyList('0');
-    setState(() {
-      dailyList.addAll(newDailyList);
-      ;
-      duplicateItems.addAll(newDailyList);
-    });
+    List<DailyModel> newDailyList = await getDailyList(pageNo.toString());
+    if (newDailyList.length != 0){
+      print('newDailyList.length : ${newDailyList.length}');
+      print('dailyList.length : ${dailyList.length}');
+      setState(() {
+        dailyList.addAll(newDailyList);
+        duplicateItems.addAll(newDailyList);
+      });
+      pageNo++;
+    }
   }
 
   // 하루글감 아이템 클릭시 이동
@@ -74,6 +78,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('글감 목록 - daily_list_screen');
     _initDailyList();
   }
 
@@ -133,8 +138,12 @@ class _DailyListScreenState extends State<DailyListScreen> {
         padding: EdgeInsets.all(30),
         child: ListView.builder(
           //shrinkWrap: true,
-          itemCount: dailyList.length,
+          itemCount: dailyList.length + 1,
           itemBuilder: (context, index) {
+            if (index > dailyList.length){
+              print('추가추가 $pageNo');
+              _initDailyList();
+            }
             return _note(index, dailyList);
           },
         ),
@@ -176,6 +185,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
               ),
               Text(
                 noteList[index].dailySentence,
+                maxLines: 3,
                 style: TextStyle(
                   color: Mnote.gray153,
                   fontSize: 16,

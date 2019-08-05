@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/page/note_view_screen.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
@@ -16,6 +17,15 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
   String bookTitle = '';
   String bookSubtitle = '';
   String bookShow = '';
+
+  // 챕터 클릭
+  void _chapterClick(String chapterNo, int index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NoteViewScreen(bookNo: '1',chapterNo: chapterNo, chapterList: chapterList, idx: index, editorMode: false,),
+            settings: RouteSettings(name: '/note_view')));
+  }
 
   // 하루글감 정보 로드
   void _initBookInfo() async {
@@ -32,6 +42,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('하루 글감 화면 (내 글 리스트) - daily_my_screen');
     _initBookInfo();
   }
 
@@ -117,7 +128,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
 
   Widget _note(int index, List<ChapterModel> noteList) {
     return GestureDetector(
-        onTap: () => {},
+        onTap: () => _chapterClick(noteList[index].chapterNo, index),
         child: Padding(
           padding: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 20),
           child: Row(

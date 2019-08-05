@@ -41,7 +41,7 @@ class MyNavigator {
     Navigator.pushNamed(context, "/daily_edit");
   }
 
-  static void goToDailySubject(BuildContext context) {
+  static void goToDailyMy(BuildContext context) {
     Navigator.pushNamed(context, "/daily_my");
   }
 

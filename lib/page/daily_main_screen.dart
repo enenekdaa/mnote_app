@@ -4,10 +4,6 @@ import 'package:mnote_app/page/daily_edit_screen.dart';
 import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
-import 'package:mnote_app/widget/monote_line.dart';
-
-import 'note_edit_screen.dart';
-import 'note_last_screen.dart';
 
 typedef void ContentDoubleTabHandler(bool visibility);
 
@@ -76,7 +72,7 @@ class _DailyMainScreenState extends State<DailyMainScreen> {
               '내글보기',
               style: Mnote.appBarRightOkBtnText,
             ),
-            onPressed: () => MyNavigator.goToDailySubject(context),
+            onPressed: () => MyNavigator.goToDailyMy(context),
           ),
           SizedBox(
             width: 10,

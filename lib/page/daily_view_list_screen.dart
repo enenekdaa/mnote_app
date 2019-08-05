@@ -38,6 +38,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 리스트 아이템 클릭
   void _dailyItemClick(int index){
+    print('????');
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyViewScreen(dailyWritings: dailyList[index],)));
   }
 
@@ -50,6 +51,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('??? - daily_view_list_screen');
     _initDailyList();
   }
 

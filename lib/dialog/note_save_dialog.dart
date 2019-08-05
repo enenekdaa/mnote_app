@@ -36,7 +36,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
 
   // 챕터 저장
   void _saveChapter(String bookNo) async {
-    String result = await writeNewChapter(bookNo) as String;
+    String result = await writeNewChapter(bookNo);
     if (result != 'fail'){
       _updateChapter(bookNo, result);
     }else{

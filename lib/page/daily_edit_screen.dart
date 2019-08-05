@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/common_back_dialog.dart';
 import 'package:mnote_app/model/chapter_model.dart';
 import 'package:mnote_app/model/daily_model.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'note_edit_screen.dart';
@@ -33,13 +35,39 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
   FocusNode titleFocusNode = FocusNode(); // 제목 포커스 노드
   FocusNode contentsFocusNode = FocusNode(); // 내용 포커스 노드
 
+  // 챕터 저장
+  void _saveChapter() async {
+    String result = await writeNewChapter('1');
+    if (result != 'fail'){
+      _updateChapter('1', result);
+    }else{
+      Fluttertoast.showToast(msg: '챕터 신규 생성에 실패하였습니다.');
+    }
+  }
+
+  // 챕터 업데이트
+  void _updateChapter(String bookNo, String chapterNo) async {
+    await updateChapter(bookNo, chapterNo, widget.dailyModel.dailyTitle, contentsController.text, '0').then((result){
+      if (result != 'fail'){
+        Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
+        Navigator.pop(context);
+        MyNavigator.goToDailyMy(context);
+      }else{
+        Navigator.pop(context, '실패');
+        Fluttertoast.showToast(msg: '챕터 수정에 실패하였습니다.');
+      }
+    });
+  }
+
   // 정말로 뒤로 가시겠습니까? 다이얼로그
   void _showCommonBackDialog() {
-    if (visibilityEditFinishBtn){
+    if (visibilityEditFinishBtn) {
       showDialog(
         context: context,
         builder: (_) => CommonBackDialog(),
       );
+    }else{
+      Navigator.pop(context);
     }
   }
 
@@ -51,14 +79,13 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
     });
   }
 
-  void _titleFieldFocusListener(){
+  void _titleFieldFocusListener() {
     print('_titleFieldFocusListener');
     print("Has focus: ${titleFocusNode.hasFocus}");
     setState(() {
       visibilityEditFinishBtn = !titleFocusNode.hasFocus;
     });
   }
-
 
   @override
   void initState() {
@@ -80,7 +107,8 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return WillPopScope(
-      onWillPop: (){
+      // ignore: missing_return
+      onWillPop: () {
         _showCommonBackDialog();
       },
       child: Scaffold(
@@ -96,13 +124,12 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
               visibilityEditFinishBtn
                   ? Row()
                   : FlatButton(
-                padding: EdgeInsets.only(right: 30),
-                child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
-                onPressed: () {
-                  Navigator.pop(context);
-                  MyNavigator.goToDailySubject(context);
-                },
-              )
+                      padding: EdgeInsets.only(right: 30),
+                      child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
+                      onPressed: () {
+                        _saveChapter();
+                      },
+                    )
             ],
           ),
           backgroundColor: Colors.white,
@@ -117,6 +144,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
             contentsController: contentsController,
             titleFocusNode: titleFocusNode,
             contentsFocusNode: contentsFocusNode,
-          )),);
+          )),
+    );
   }
 }
