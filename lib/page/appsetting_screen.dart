@@ -81,7 +81,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'PC 버전', style: TextStyle(fontSize: 18)
+                      'PC 버전', style: TextStyle(fontSize: 18)
                   ),
                   SizedBox(height: 10,),
                   Text(

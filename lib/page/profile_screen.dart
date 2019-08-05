@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         border: Border(
                             bottom:
-                                BorderSide(color: Colors.black, width: 0.5))),
+                            BorderSide(color: Colors.black, width: 0.5))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,

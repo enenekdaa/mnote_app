@@ -32,10 +32,10 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
     // TODO: implement initState
     super.initState();
     book = BookModel(
-      bookTitle: '',
-      bookSubtitle: '',
-      bookStartDate: '',
-      writerName: ''
+        bookTitle: '',
+        bookSubtitle: '',
+        bookStartDate: '',
+        writerName: ''
     );
     _initBookInfo();
   }

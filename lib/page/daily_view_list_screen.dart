@@ -24,7 +24,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 리스트 조회 (초기화)
   void _initDailyList() async{
-    List<DailyWritings> newDailyList = await getBooksWritings('4', pageNo.toString());
+    List<DailyWritings> newDailyList = widget.dailyListNo == null ? await getDailyTodayWritings(pageNo.toString()) : await getDailyWritings('4', pageNo.toString());
     setState(() {
       dailyList = newDailyList;
     });
@@ -72,7 +72,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
         ],
       ),
       body: Container(
-        color:  Mnote.gray245,
+          color:  Mnote.gray245,
           padding: EdgeInsets.all(MediaQuery.of(context).size.width / 14),
           child: Column(
             children: <Widget>[

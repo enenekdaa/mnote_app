@@ -42,7 +42,7 @@ class MyNavigator {
   }
 
   static void goToDailySubject(BuildContext context) {
-    Navigator.pushNamed(context, "/daily_subjects");
+    Navigator.pushNamed(context, "/daily_my");
   }
 
   static void goToDailyList(BuildContext context) {

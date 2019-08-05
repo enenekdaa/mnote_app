@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/page/note_edit_screen.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
+import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
+import 'note_book_edit_screen.dart';
 
 class NoteBookViewScreen extends StatefulWidget {
   final String bookNo;
@@ -40,8 +44,29 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NoteViewScreen(bookNo: widget.bookNo,chapterNo: chapterNo, chapterList: chapterList, idx: index,),
+            builder: (context) => NoteViewScreen(bookNo: widget.bookNo,chapterNo: chapterNo, chapterList: chapterList, idx: index, editorMode: false,),
             settings: RouteSettings(name: '/daily_main')));
+  }
+
+  // 글쓰기 (챕터 생성)
+  void _writeNewChapterClick() async {
+    // TODO:: 글쓰기 new_chapter: null ERROR
+    // flutter: http://icomerict.cafe24.com/untitled_note/json/write_new_chapter.php
+    // flutter: {result: true, new_chapter: null}
+
+    String chapterNo = await writeNewChapter(widget.bookNo);
+    chapterList = await getBookDetailItems(widget.bookNo);
+
+    if(chapterNo != 'fail'){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NoteViewScreen(bookNo: widget.bookNo, chapterNo: chapterNo, chapterList: chapterList, idx: chapterList.length-1, editorMode: true,),
+              settings: RouteSettings(name: '/note_view')));
+    }else{
+      Fluttertoast.showToast(msg: '글쓰기 생성에 실패하였습니다.');
+    }
+
   }
 
   @override
@@ -80,7 +105,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 3,
               child: Container(
                 constraints: BoxConstraints.expand(),
                 margin: EdgeInsets.only(
@@ -94,7 +119,11 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => {MyNavigator.goToNoteBookEdit(context)},
+                      onTap: () {
+                        // 노트북 수정 화면으로 이동
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => NoteBookEditScreen(bookNo: widget.bookNo)));
+                      },
                       child: Text(bookTitle,
                         maxLines: 1,
                         style: Mnote.noteTitleFiledHint,
@@ -131,14 +160,14 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
               color: Colors.grey,
             ),
             FlatButton(
-              onPressed: () => {},
+              onPressed: () => _writeNewChapterClick(),
               child: Text(
                 '+ 글쓰기',
                 style: TextStyle(fontSize: 15, color: Mnote.orange),
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 7,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: chapterList.length,

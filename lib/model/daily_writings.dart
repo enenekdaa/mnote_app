@@ -13,8 +13,8 @@ class DailyWritings {
 
 
   DailyWritings({this.email, this.bookNo, this.chapterNo, this.chapterTitle,
-      this.writerName, this.contents, this.contentsAlignCenter,
-      this.chapterStartDate, this.dailyDate});
+    this.writerName, this.contents, this.contentsAlignCenter,
+    this.chapterStartDate, this.dailyDate});
 
   factory DailyWritings.fromJson(Map<String, dynamic> json) {
     return json != null

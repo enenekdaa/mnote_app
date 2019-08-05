@@ -62,7 +62,7 @@ class _ReportDialogState extends State<ReportDialog>
                     decoration: InputDecoration(
                       border: UnderlineInputBorder(
                           borderSide:
-                              BorderSide(width: 0.2, color: Colors.black38)),
+                          BorderSide(width: 0.2, color: Colors.black38)),
                     ),
                   ),
                 ),

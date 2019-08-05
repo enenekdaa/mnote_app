@@ -5,6 +5,7 @@ class Mnote {
 
   static double deviceWidth = 0.0;
   static String accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTg5NDIyMjYsIm5iZiI6MTU1ODk0MjIyNiwianRpIjoiYVdOdmJXVnlYM1J2YTJWdVNVUT0iLCJleHAiOjE1OTAwNDYyMjYsImVtYWlsIjoia2RtNzE3M0BnbWFpbC5jb20ifQ.VfuUXV3Tc0e5rMSecrsFrPI64YmROLnIMW6pkns_4OE';
+  static String refreshToken = '';
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
@@ -65,8 +66,32 @@ class Mnote {
   // 블랙 컬러
   static Color black = Color.fromRGBO(46, 46, 46, 1);
 
+  // 날짜 포멧 1
   static String getDateFormat_1(String date){
     DateTime dateTime = DateTime.parse(date);
     return DateFormat('yyyy.MM.dd').format(dateTime);
+  }
+  static String getDateFormat_2(String date){
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('yyyy.MM.dd hh:mm').format(dateTime);
+  }
+
+  // email
+  static String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+  // subString & add Text
+  static String subStringAndAddText(String originText, String addText, int position){
+    String startText = originText.substring(0, position);
+    String endText = originText.substring(position, originText.length);
+    String resultText = startText + addText + endText;
+    return resultText;
   }
 }

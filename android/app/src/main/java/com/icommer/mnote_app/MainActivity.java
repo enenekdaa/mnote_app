@@ -1,4 +1,4 @@
-package com.example.mnote_app;
+package com.icommer.mnote_app;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

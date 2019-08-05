@@ -32,7 +32,7 @@ var routes = <String, WidgetBuilder>{
   "/note_eidt": (BuildContext context) => NoteEditScreen(),
   "/daily_main": (BuildContext context) => DailyMainScreen(),
   "/daily_edit": (BuildContext context) => DailyEditScreen(),
-  "/daily_subjects": (BuildContext context) => DailyMyScreen(),
+  "/daily_my": (BuildContext context) => DailyMyScreen(),
   "/daily_list": (BuildContext context) => DailyListScreen(),
   "/daily_view_list": (BuildContext context) => DailyViewListScreen(),
   "/daily_view": (BuildContext context) => DailyViewScreen(),
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Colors.blue,
-          accentColor: Colors.yellowAccent,
+          accentColor: Colors.black12,
           fontFamily: 'MNote'),
       home: SplashScreen(),
       routes: routes,

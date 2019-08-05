@@ -39,8 +39,8 @@ class _DailyListScreenState extends State<DailyListScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => DailyViewListScreen(
-                  dailyListNo: dailyListNo,
-                )
+              dailyListNo: dailyListNo,
+            )
         )
     );
   }
@@ -82,53 +82,53 @@ class _DailyListScreenState extends State<DailyListScreen> {
     return Scaffold(
       appBar: isSearchMode
           ? AppBar(
-              leading: Row(),
-              backgroundColor: Colors.black,
-              title: TextField(
-                onChanged: (value) {
-                  print(value);
-                  _filterSearchResults(value);
-                },
-                controller: searchEditTextController,
-                decoration: InputDecoration(
-                  hintText: "검색어를 입력해주세요.",
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(color: Colors.white),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Image.asset('images/icons/11_search_eraser.png'),
-                  onPressed: () {
-                    setState(() {
-                      isSearchMode = false;
-                    });
-                  },
-                )
-              ],
-            )
+        leading: Row(),
+        backgroundColor: Colors.black,
+        title: TextField(
+          onChanged: (value) {
+            print(value);
+            _filterSearchResults(value);
+          },
+          controller: searchEditTextController,
+          decoration: InputDecoration(
+            hintText: "검색어를 입력해주세요.",
+            hintStyle: TextStyle(color: Colors.white),
+            border: InputBorder.none,
+          ),
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Image.asset('images/icons/11_search_eraser.png'),
+            onPressed: () {
+              setState(() {
+                isSearchMode = false;
+              });
+            },
+          )
+        ],
+      )
           : AppBar(
-              leading: FlatButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Image.asset('images/icons/00_chapter_pre.png')),
-              backgroundColor: Colors.black,
-              title: Text('글감 목록'),
-              centerTitle: true,
-              actions: <Widget>[
-                FlatButton(
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isSearchMode = true;
-                    });
-                  },
-                )
-              ],
+        leading: FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Image.asset('images/icons/00_chapter_pre.png')),
+        backgroundColor: Colors.black,
+        title: Text('글감 목록'),
+        centerTitle: true,
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
             ),
+            onPressed: () {
+              setState(() {
+                isSearchMode = true;
+              });
+            },
+          )
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.all(30),
         child: ListView.builder(

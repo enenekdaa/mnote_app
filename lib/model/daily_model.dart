@@ -22,15 +22,15 @@ class DailyModel {
   factory DailyModel.fromJson(Map<String, dynamic> json) {
     return json != null
         ? DailyModel(
-            dailyListNo: json['daily_list_no'] == null ? '' : json['daily_list_no'],
-            dailyTitle: json['daily_title'] == null ? '' : json['daily_title'],
-            dailySentence: json['daily_sentence'] == null ? '' : json['daily_sentence'],
-            dailyWriter: json['daily_writer'] == null ? '' : json['daily_writer'],
-            dailyFrom: json['daily_from'] == null ? '' : json['daily_from'],
-            dailyDate: json['daily_date'] == null ? '' : json['daily_date'],
-            showCount: json['show_count'] == null ? '' : json['show_count'],
-            allCount: json['all_count'] == null ? '' : json['all_count'],
-          )
+      dailyListNo: json['daily_list_no'] == null ? '' : json['daily_list_no'],
+      dailyTitle: json['daily_title'] == null ? '' : json['daily_title'],
+      dailySentence: json['daily_sentence'] == null ? '' : json['daily_sentence'],
+      dailyWriter: json['daily_writer'] == null ? '' : json['daily_writer'],
+      dailyFrom: json['daily_from'] == null ? '' : json['daily_from'],
+      dailyDate: json['daily_date'] == null ? '' : json['daily_date'],
+      showCount: json['show_count'] == null ? '' : json['show_count'],
+      allCount: json['all_count'] == null ? '' : json['all_count'],
+    )
         : null;
   }
 }

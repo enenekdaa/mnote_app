@@ -79,56 +79,56 @@ class _OpenListScreenState extends State<OpenListScreen> {
     return Scaffold(
       appBar: isSearchMode
           ? AppBar(
-              leading: Row(),
-              backgroundColor: Colors.black,
-              title: TextField(
-                onChanged: (value) {
-                  print(value);
-                  _filterSearchResults(value);
-                },
-                controller: searchEditTextController,
-                decoration: InputDecoration(
-                  hintText: "검색어를 입력해주세요.",
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(color: Colors.white),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Image.asset('images/icons/11_search_eraser.png'),
-                  onPressed: () {
-                    setState(() {
-                      isSearchMode = false;
-                      isAllList = true;
-                      tapList.clear();
-                      tapList.addAll(duplicateItems);
-                    });
-                  },
-                )
-              ],
-            )
+        leading: Row(),
+        backgroundColor: Colors.black,
+        title: TextField(
+          onChanged: (value) {
+            print(value);
+            _filterSearchResults(value);
+          },
+          controller: searchEditTextController,
+          decoration: InputDecoration(
+            hintText: "검색어를 입력해주세요.",
+            hintStyle: TextStyle(color: Colors.white),
+            border: InputBorder.none,
+          ),
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Image.asset('images/icons/11_search_eraser.png'),
+            onPressed: () {
+              setState(() {
+                isSearchMode = false;
+                isAllList = true;
+                tapList.clear();
+                tapList.addAll(duplicateItems);
+              });
+            },
+          )
+        ],
+      )
           : AppBar(
-              leading: FlatButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Image.asset('images/icons/00_chapter_pre.png')),
-              backgroundColor: Colors.black,
-              title: Text('공개노트'),
-              centerTitle: true,
-              actions: <Widget>[
-                FlatButton(
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isSearchMode = true;
-                    });
-                  },
-                )
-              ],
+        leading: FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Image.asset('images/icons/00_chapter_pre.png')),
+        backgroundColor: Colors.black,
+        title: Text('공개노트'),
+        centerTitle: true,
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
             ),
+            onPressed: () {
+              setState(() {
+                isSearchMode = true;
+              });
+            },
+          )
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -136,55 +136,55 @@ class _OpenListScreenState extends State<OpenListScreen> {
             isSearchMode
                 ? Row()
                 : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isAllList = true;
-                            tapList.clear();
-                            tapList.addAll(writerAllList);
-                          });
-                        },
-                        child: Text(
-                          '작가 목록',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: isAllList ? Colors.black : Colors.grey,
-                              fontWeight: isAllList
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              decoration:
-                                  isAllList ? TextDecoration.underline : null,
-                              decorationColor: Mnote.orange),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isAllList = false;
-                            tapList.clear();
-                            tapList.addAll(writerSubList);
-                          });
-                        },
-                        child: Text(
-                          '구독중',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: !isAllList ? Colors.black : Colors.grey,
-                              fontWeight: !isAllList
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              decoration:
-                                  !isAllList ? TextDecoration.underline : null,
-                              decorationColor: Mnote.orange),
-                        ),
-                      ),
-                    ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isAllList = true;
+                      tapList.clear();
+                      tapList.addAll(writerAllList);
+                    });
+                  },
+                  child: Text(
+                    '작가 목록',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: isAllList ? Colors.black : Colors.grey,
+                        fontWeight: isAllList
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        decoration:
+                        isAllList ? TextDecoration.underline : null,
+                        decorationColor: Mnote.orange),
                   ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isAllList = false;
+                      tapList.clear();
+                      tapList.addAll(writerSubList);
+                    });
+                  },
+                  child: Text(
+                    '구독중',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: !isAllList ? Colors.black : Colors.grey,
+                        fontWeight: !isAllList
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        decoration:
+                        !isAllList ? TextDecoration.underline : null,
+                        decorationColor: Mnote.orange),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
               height: 30,
             ),
@@ -228,17 +228,17 @@ class _OpenListScreenState extends State<OpenListScreen> {
                   Text(
                     list[index].writerName,
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.bold
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                   GestureDetector(
                     onTap: (){},
                     child: Image.asset(
-                        list[index].subscribeYN == '0'
-                            ? 'images/icons/09_btn_sub.png'
-                            : 'images/icons/09_btn_sub02.png',
-                        scale: 1.8,
+                      list[index].subscribeYN == '0'
+                          ? 'images/icons/09_btn_sub.png'
+                          : 'images/icons/09_btn_sub02.png',
+                      scale: 1.8,
                     ),
                   )
                 ],
