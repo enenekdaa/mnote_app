@@ -7,7 +7,6 @@ import 'package:mnote_app/page/daily_view_screen.dart';
 import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/service/daily_writings_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
-import 'package:mnote_app/utils/my_navigator.dart';
 
 class DailyViewListScreen extends StatefulWidget {
   final String dailyListNo;
@@ -19,15 +18,18 @@ class DailyViewListScreen extends StatefulWidget {
 }
 
 class _DailyViewListScreenState extends State<DailyViewListScreen> {
-  int pageNo = 0;
+  int pageNo = 1;
   List<DailyWritings> dailyList = [];
 
   // 리스트 조회 (초기화)
   void _initDailyList() async{
-    List<DailyWritings> newDailyList = widget.dailyListNo == null ? await getDailyTodayWritings(pageNo.toString()) : await getDailyWritings('4', pageNo.toString());
-    setState(() {
-      dailyList = newDailyList;
-    });
+    List<DailyWritings> newDailyList = await getDailyTodayWritings(pageNo.toString());
+    if (newDailyList.length != 0){
+      setState(() {
+        dailyList.addAll(newDailyList);
+      });
+      pageNo++;
+    }
   }
 
   // 글쓰기 버튼 클릭
@@ -84,7 +86,9 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                 children: <Widget>[
                   Text(dailyList.length > 0 ? dailyList[0].dailyDate : '', style: TextStyle(color: Mnote.gray153),),
                   GestureDetector(
-                    onTap: () => {},
+                    onTap: () => {
+                      Navigator.pop(context)
+                    },
                     child: Image.asset('images/icons/11_btn_wording.png', scale: 1.6,),
                   ),
                 ],
@@ -95,6 +99,9 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                     scrollDirection: Axis.vertical,
                     itemCount: dailyList.length,
                     itemBuilder: (BuildContext context, int index) {
+                      if (index >= dailyList.length -1) {
+                        _initDailyList();
+                      }
                       return _note(index, dailyList);
                     }),
               )

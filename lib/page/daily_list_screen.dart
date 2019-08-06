@@ -17,11 +17,13 @@ class DailyListScreen extends StatefulWidget {
 }
 
 class _DailyListScreenState extends State<DailyListScreen> {
-  int pageNo = 0;
+  int pageNo = 1;
   List<DailyModel> dailyList = [];
   List<DailyModel> duplicateItems = []; // 검색어 필터 / 원본 보관용
-  TextEditingController searchEditTextController = TextEditingController();
   bool isSearchMode = false; // 검색 활성화 / 비활성화
+
+  TextEditingController _searchEditTextController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   // 리스트 조회 (초기화)
   void _initDailyList() async {
@@ -39,6 +41,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
 
   // 하루글감 아이템 클릭시 이동
   void _dailyItemClick(String dailyListNo) {
+    print('dailyListNo: $dailyListNo');
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -65,7 +68,6 @@ class _DailyListScreenState extends State<DailyListScreen> {
         dailyList.clear();
         dailyList.addAll(dummyListData);
       });
-      return;
     } else {
       setState(() {
         dailyList.clear();
@@ -94,7 +96,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
             print(value);
             _filterSearchResults(value);
           },
-          controller: searchEditTextController,
+          controller: _searchEditTextController,
           decoration: InputDecoration(
             hintText: "검색어를 입력해주세요.",
             hintStyle: TextStyle(color: Colors.white),
@@ -108,6 +110,9 @@ class _DailyListScreenState extends State<DailyListScreen> {
             onPressed: () {
               setState(() {
                 isSearchMode = false;
+                _searchEditTextController.clear();
+                dailyList.clear();
+                dailyList.addAll(duplicateItems);
               });
             },
           )
@@ -136,12 +141,18 @@ class _DailyListScreenState extends State<DailyListScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(30),
+        decoration: dailyList.length > 0 ? null : BoxDecoration(
+          image: DecorationImage(
+              image: ExactAssetImage('images/icons/11_empty.png'),
+              fit: BoxFit.none
+          )
+        ),
         child: ListView.builder(
           //shrinkWrap: true,
-          itemCount: dailyList.length + 1,
+          controller: _scrollController,
+          itemCount: dailyList.length,
           itemBuilder: (context, index) {
-            if (index > dailyList.length){
-              print('추가추가 $pageNo');
+            if (index >= dailyList.length -1) {
               _initDailyList();
             }
             return _note(index, dailyList);
@@ -149,7 +160,9 @@ class _DailyListScreenState extends State<DailyListScreen> {
         ),
       ),
       floatingActionButton: FlatButton(
-          onPressed: () => {},
+          onPressed: (){
+            _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+          },
           child: Image.asset(
             'images/icons/00_btn_top.png',
             scale: 1.6,
