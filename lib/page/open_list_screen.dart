@@ -10,27 +10,61 @@ class OpenListScreen extends StatefulWidget {
 }
 
 class _OpenListScreenState extends State<OpenListScreen> {
-  int pageNo = 0;
+  int newPageNo = 1;
+  int subPageNo = 1;
   List<WriterAll> tapList = []; // 현재 선택된 탭
   List<WriterAll> writerAllList = []; // 전체 작가
   List<WriterAll> writerSubList = []; // 구독 작가
   List<WriterAll> duplicateItems = []; // 검색어 필터 / 원본 보관용
   TextEditingController searchEditTextController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   bool isSearchMode = false; // 검색 활성화 / 비활성화
   bool isAllList = true; // 작가 목록 탭 = true, 구독중 탭 = false
 
   // 리스트 조회 (초기화) 기본 전체 작가
   void _initDailyList() async {
-    List<WriterAll> newList = await getWriterListAll(pageNo.toString());
-    List<WriterAll> subList = await getWriterListSub(pageNo.toString());
+    List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
+    List<WriterAll> subList = await getWriterListSub(newPageNo.toString());
     setState(() {
       tapList.addAll(newList);
       writerAllList.addAll(newList);
       writerSubList.addAll(subList);
       duplicateItems.addAll(newList);
     });
+    newPageNo++;
+    subPageNo++;
   }
+  
+  // 작가 목록 데이터 가져오기 (무한로딩)
+  void _initNewList() async {
+    List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
+    print('_initNewList $newPageNo');
+    if (newList.length > 0){
+      setState(() {
+        writerAllList.addAll(newList);
+        duplicateItems.addAll(newList);
+        tapList.addAll(newList);
+      });
+      newPageNo++;
+    }
+  }
+  
+  
+  // 작가 목록 데이터 가져오기 (무한로딩)
+  void _initSubList() async {
+    List<WriterAll> subList = await getWriterListSub(newPageNo.toString());
+    print('_initNewList $subPageNo');
+    if (subList.length > 0){
+      setState(() {
+        writerSubList.addAll(subList);
+        tapList.addAll(subList);
+      });
+      subPageNo++;
+    }
+  }
+  
+  
 
   // 하루글감 아이템 클릭시 이동
   void _writerListItemClick(String email) {
@@ -72,6 +106,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
     // TODO: implement initState
     super.initState();
     _initDailyList();
+    print('open list screen initState');
   }
 
   @override
@@ -191,8 +226,16 @@ class _OpenListScreenState extends State<OpenListScreen> {
             Expanded(
               child: ListView.builder(
                 //shrinkWrap: true,
+                controller: _scrollController,
                 itemCount: tapList.length,
                 itemBuilder: (context, index) {
+                  if (index >= tapList.length -1){
+                     if (isAllList){
+                       _initNewList();
+                     }else{
+                       _initSubList();
+                     }
+                  }
                   return _writer(index, tapList);
                 },
               ),
@@ -201,7 +244,9 @@ class _OpenListScreenState extends State<OpenListScreen> {
         ),
       ),
       floatingActionButton: FlatButton(
-          onPressed: () => {},
+          onPressed: () => {
+            _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.easeOut)
+          },
           child: Image.asset(
             'images/icons/00_btn_top.png',
             scale: 1.6,
@@ -233,7 +278,9 @@ class _OpenListScreenState extends State<OpenListScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: (){
+
+                    },
                     child: Image.asset(
                       list[index].subscribeYN == '0'
                           ? 'images/icons/09_btn_sub.png'

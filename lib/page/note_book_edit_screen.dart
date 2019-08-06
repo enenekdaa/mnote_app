@@ -34,7 +34,8 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
   }
 
   void _initBookInfo() async {
-    BookModel bookInfo = await getBookInfoItem(widget.bookNo);
+    //BookModel bookInfo = await getBookInfoItem(widget.bookNo);
+    BookModel bookInfo = await getBooksMyIntro(widget.bookNo);
     setState(() {
       bookTitle = bookInfo.bookTitle;
       bookSubTitle = bookInfo.bookSubtitle;

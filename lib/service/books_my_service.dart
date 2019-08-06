@@ -32,7 +32,7 @@ Future<List<BookModel>> getBooksMy() async {
 * 이 화면에서 수정 후 저장하기 클릭 시 다음 슬라이드의 표지 업데이트 api로 연결되면 됩니다.
 */
 
-Future<List<BookModel>> getBooksMyIntro(String bookNo) async {
+Future<BookModel> getBooksMyIntro(String bookNo) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/books_my_intro.php';
   final response = await http.post(
@@ -43,12 +43,12 @@ Future<List<BookModel>> getBooksMyIntro(String bookNo) async {
     final jsonResponse = json.decode(response.body);
     print(dataURL);
     print(jsonResponse);
-    final items = (jsonResponse['books_my'] as List)
-        .map((i) => new BookModel.fromJson(i));
-    return items.toList();
+    BookModel bookInfo = BookModel.fromJson(jsonResponse['books_my_intro']);
+    print(jsonResponse['books_my_intro']);
+    return bookInfo;
   } else {
     print('getMyNoteBookList() fail');
-    return [];
+    return null;
   }
 }
 

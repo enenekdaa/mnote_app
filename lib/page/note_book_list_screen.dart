@@ -50,7 +50,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
           context,
           MaterialPageRoute(
               builder: (context) => DailyViewListScreen(),
-              settings: RouteSettings(name: '/daily_view_list')));
+              settings: RouteSettings(name: '/main/daily_view_list')));
     }
   }
 
@@ -96,8 +96,19 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
   }
 
   @override
+  void didUpdateWidget(NoteBookListScreen oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    print('note_book_list_screen didUpdateWidget');
+    setState(() {
+      _initMyNoteBooks();
+    });
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO:: 노트 삭제 되었을때 화면 업데이트 되도록 수정해야함
+    print('note_book_list_screen didChangeAppLifecycleState');
 //    setState(() {
 //      print(state);
 //      _initMyNoteBooks();

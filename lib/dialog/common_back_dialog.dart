@@ -52,8 +52,7 @@ class _CommonBackDialogState extends State<CommonBackDialog>
                     children: <Widget>[
                       MaterialButton(
                         onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          Navigator.pop(context, 'update');
                         },
                         elevation: 0,
                         color: Colors.white,

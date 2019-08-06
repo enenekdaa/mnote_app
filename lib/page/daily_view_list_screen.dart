@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mnote_app/model/daily_model.dart';
 import 'package:mnote_app/model/daily_writings.dart';
 import 'package:mnote_app/page/daily_edit_screen.dart';
+import 'package:mnote_app/page/daily_list_screen.dart';
 import 'package:mnote_app/page/daily_view_screen.dart';
 import 'package:mnote_app/service/daily_today_service.dart';
 import 'package:mnote_app/service/daily_writings_service.dart';
@@ -86,8 +87,13 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                 children: <Widget>[
                   Text(dailyList.length > 0 ? dailyList[0].dailyDate : '', style: TextStyle(color: Mnote.gray153),),
                   GestureDetector(
-                    onTap: () => {
-                      Navigator.pop(context)
+                    onTap: () {
+                      print(ModalRoute.of(context).settings.name);
+                      if(ModalRoute.of(context).settings.name == '/main/daily_view_list'){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DailyListScreen()));
+                      }else{
+                        Navigator.pop(context);
+                      }
                     },
                     child: Image.asset('images/icons/11_btn_wording.png', scale: 1.6,),
                   ),

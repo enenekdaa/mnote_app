@@ -83,7 +83,12 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
       showDialog(
         context: context,
         builder: (_) => CommonBackDialog(),
-      );
+      ).then((result){
+        if (result != null && result == 'update'){
+          _editorMode = false;
+          _updateState(widget.bookNo, widget.chapterNo);
+        }
+      });
     }else{
       Navigator.pop(context);
     }
@@ -145,7 +150,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
               onPressed: () {
                 _showCommonBackDialog();
               },
-              child: Image.asset('images/icons/00_top_menu.png')),
+              child: Image.asset('images/icons/00_chapter_pre.png')),
           backgroundColor: Colors.black,
           title: Text('무제노트'),
           centerTitle: true,

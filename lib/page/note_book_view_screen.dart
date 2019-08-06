@@ -140,7 +140,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                           onTap: () {
                             // TODO:: 공개 비공개 API 연동
                             setState(() {
-                              bookShow = bookShow == '1' ? '2' : '1';
+                              // bookShow = bookShow == '1' ? '2' : '1';
                             });
                           },
                           child: Image.asset(
