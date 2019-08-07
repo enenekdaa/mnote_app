@@ -10,6 +10,7 @@ Future<BookModel> getBookInfoItem(String book_no) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
     BookModel bookInfo = BookModel.fromJson(jsonResponse['book_info']);
     print(jsonResponse['book_info']);
     return bookInfo;
@@ -25,6 +26,7 @@ Future<List<ChapterModel>> getBookDetailItems(String bookNo) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
     final items = (jsonResponse['book_detail'] as List).map((i) => new ChapterModel.fromJson(i));
     return items.toList();
 

@@ -10,9 +10,9 @@ import 'package:mnote_app/service/daily_writings_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class DailyViewListScreen extends StatefulWidget {
-  final String dailyListNo;
+  final String dailyListNo; // 빈값일 경우 오늘꺼 하루글감 모드
 
-  DailyViewListScreen({this.dailyListNo});
+  DailyViewListScreen({this.dailyListNo=''});
 
   @override
   _DailyViewListScreenState createState() => new _DailyViewListScreenState();
@@ -24,7 +24,10 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 리스트 조회 (초기화)
   void _initDailyList() async{
-    List<DailyWritings> newDailyList = await getDailyTodayWritings(pageNo.toString());
+    //List<DailyWritings> newDailyList = await getDailyTodayWritings(pageNo.toString());
+    List<DailyWritings> newDailyList = widget.dailyListNo == ''
+        ? await getDailyTodayWritings(pageNo.toString())
+        : await getDailyWritings(widget.dailyListNo, pageNo.toString());
     if (newDailyList.length != 0){
       setState(() {
         dailyList.addAll(newDailyList);
@@ -76,8 +79,13 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
           )
         ],
       ),
+      backgroundColor: Mnote.gray245,
       body: Container(
-          color:  Mnote.gray245,
+          decoration: dailyList.length > 0 ? null : BoxDecoration(
+              image: DecorationImage(
+                  image: ExactAssetImage('images/icons/11_empty.png'),
+                  fit: BoxFit.none
+              )),
           padding: EdgeInsets.all(MediaQuery.of(context).size.width / 14),
           child: Column(
             children: <Widget>[

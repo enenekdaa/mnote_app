@@ -41,10 +41,13 @@ Future<BookModel> getBookOtherIntroList(String email, String bookNo) async {
     headers: {'access_token' : Mnote.accessToken},
     body: {'email' : email , 'book_no' : bookNo},
   );
+  print(email);
+  print(response.statusCode);
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
     BookModel bookOtherIntro = new BookModel.fromJson(jsonResponse['books_other_intro']);
+    print(jsonResponse);
     return bookOtherIntro;
   } else {
     throw Exception('Failed to load post');
@@ -54,24 +57,72 @@ Future<BookModel> getBookOtherIntroList(String email, String bookNo) async {
 
 
 /*
- *  공개노트의 글 (view) 화면
+ *  공개노트의 글 (view) 화면 - 노트 정보
  */
 
-Future<List<ChapterModel>> getBookOtherWritingsDetail(String email) async {
-  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_other_chapter_detail.php';
+Future<BookModel> getBookOtherWritingsDetail(String email, String bookNo) async {
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_other_book_detail.php';
   final response = await http.post(dataURL ,
     headers: {'access_token' : Mnote.accessToken},
-    body: {'email' : email},
+    body: {'book_no': bookNo, 'email' : email},
   );
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
+    BookModel bookInfo = BookModel.fromJson(jsonResponse['book_info']);
+    return bookInfo;
+  } else {
+    throw Exception('Failed to load post');
+  }
+}
+
+
+/*
+ *  공개노트의 글 (view) 화면 - 노트 챕터 목록
+ *
+ */
+Future<List<ChapterModel>> getBookOtherWritingsDetailList(String email, String bookNo) async {
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_other_book_detail.php';
+  final response = await http.post(dataURL ,
+    headers: {'access_token' : Mnote.accessToken},
+    body: {'book_no': bookNo, 'email' : email},
+  );
+
+  if (response.statusCode == 200) {
+    final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
     final items = (jsonResponse['book_detail'] as List).map((i) => new ChapterModel.fromJson(i));
     return items.toList();
   } else {
     throw Exception('Failed to load post');
   }
+}
 
+
+/*
+ *  공개노트의 글 - 챕터 상세 (view) 화면
+ *
+ */
+Future<ChapterModel> getBookOtherChapterDetail(String email, String bookNo, String chapterNo) async {
+  String dataURL =
+      'http://icomerict.cafe24.com/untitled_note/json/books_other_chapter_detail.php';
+
+  final response = await http.post(
+    dataURL,
+    headers: {'access_token': Mnote.accessToken},
+    body: {'book_no': bookNo, 'chapter_no': chapterNo, 'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
+    ChapterModel chapterDetail =
+    new ChapterModel.fromJson(jsonResponse['chapter_detail']);
+    return chapterDetail;
+  } else {
+    throw Exception('Failed to load post');
+  }
 }
 
 

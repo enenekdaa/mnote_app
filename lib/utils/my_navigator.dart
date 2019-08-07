@@ -61,8 +61,12 @@ class MyNavigator {
     Navigator.pushNamed(context, "/open_list");
   }
 
-  static void goToOpenNoteBook(BuildContext context) {
-    Navigator.pushNamed(context, "/open_note_book");
+  static void goToOpenNoteBookList(BuildContext context) {
+    Navigator.pushNamed(context, "/open_note_book_list");
+  }
+
+  static void goToOpenNoteBookIntro(BuildContext context) {
+    Navigator.pushNamed(context, "/open_note_book_intro");
   }
 
   static void goToPremium(BuildContext context) {

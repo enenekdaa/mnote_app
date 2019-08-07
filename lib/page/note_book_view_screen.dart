@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/model/chapter_model.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
+import 'package:mnote_app/service/book_other_service.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
@@ -11,9 +12,11 @@ import 'note_book_edit_screen.dart';
 
 class NoteBookViewScreen extends StatefulWidget {
   final String bookNo;
+  final String otherEmail; // 빈값 ('')일 경우 내글 보기 상태
 
   NoteBookViewScreen({
     this.bookNo,
+    this.otherEmail=''
   });
 
   @override
@@ -26,17 +29,31 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   String bookSubtitle = '';
   String bookShow = '';
   String bookEmail = '';
+  String bookWriterName = '';
 
   // 책 정보 로드
   void _initBookInfo() async {
-    BookModel book = await getBookInfoItem(widget.bookNo);
-    chapterList = await getBookDetailItems(widget.bookNo);
-    setState(() {
-      bookTitle = book.bookTitle;
-      bookSubtitle = book.bookSubtitle;
-      bookShow = book.bookShow;
-      bookEmail = book.email;
-    });
+    if (widget.otherEmail == ''){
+      BookModel book = await getBookInfoItem(widget.bookNo);
+      chapterList = await getBookDetailItems(widget.bookNo);
+      setState(() {
+        bookTitle = book.bookTitle;
+        bookSubtitle = book.bookSubtitle;
+        bookShow = book.bookShow;
+        bookEmail = book.email;
+        bookWriterName = book.writerName;
+      });
+    }else{
+      BookModel book = await getBookOtherWritingsDetail(widget.otherEmail, widget.bookNo);
+      chapterList = await getBookOtherWritingsDetailList(widget.otherEmail, widget.bookNo);
+      setState(() {
+        bookTitle = book.bookTitle;
+        bookSubtitle = book.bookSubtitle;
+        bookShow = book.bookShow;
+        bookEmail = book.email;
+        bookWriterName = book.writerName;
+      });
+    }
   }
 
   // 챕터 클릭
@@ -44,7 +61,14 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NoteViewScreen(bookNo: widget.bookNo,chapterNo: chapterNo, chapterList: chapterList, idx: index, editorMode: false,),
+            builder: (context) => NoteViewScreen(
+              bookNo: widget.bookNo,
+              chapterNo: chapterNo,
+              chapterList: chapterList,
+              idx: index,
+              editorMode: false,
+              bookEmail: widget.otherEmail,
+            ),
             settings: RouteSettings(name: '/daily_main')));
   }
 
@@ -127,10 +151,13 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                         style: Mnote.noteTitleFiledHint,
                       ),
                     ),
-                    Text(bookSubtitle,
-                      style: Mnote.noteSubTitleFiledHint,
-                    ),
-                    Row(
+                    // 하루글감일 경우 서브 텍스트는 안보임
+                    widget.bookNo == '1'
+                      ? SizedBox()
+                      : Text(bookSubtitle, style: Mnote.noteSubTitleFiledHint,),
+                    // 내 노트목록일 경우 공개 버튼 / 오픈 공개 노트일 경우 작가이름
+                    widget.otherEmail == ''
+                        ? Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -147,7 +174,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                           ),
                         ),
                       ],
-                    ),
+                    )
+                        : Row(crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[Text(bookWriterName, style: Mnote.textBlackUnder_16,),],)
                   ],
                 ),
               ),
@@ -157,13 +187,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
               margin: EdgeInsets.only(bottom: 20),
               color: Colors.grey,
             ),
-            FlatButton(
-              onPressed: () => _writeNewChapterClick(),
-              child: Text(
-                '+ 글쓰기',
-                style: TextStyle(fontSize: 15, color: Mnote.orange),
-              ),
-            ),
+          widget.otherEmail == ''
+              ? FlatButton(onPressed: () => _writeNewChapterClick(),
+                            child: Text('+ 글쓰기',style: TextStyle(fontSize: 15, color: Mnote.orange),))
+              : SizedBox(),
             Expanded(
                 flex: 7,
                 child: ListView.builder(
@@ -187,7 +214,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                index.toString().padLeft(2, '0'),
+              (index+1).toString().padLeft(2, '0'),
                 style: TextStyle(color: Mnote.gray153),
               ),
               SizedBox(

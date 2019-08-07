@@ -7,7 +7,8 @@ import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/page/note_edit_screen.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
 import 'package:mnote_app/page/open_list_screen.dart';
-import 'package:mnote_app/page/open_note_book_screen.dart';
+import 'package:mnote_app/page/open_note_book_intro.dart';
+import 'package:mnote_app/page/open_note_book_list_screen.dart';
 import 'package:mnote_app/page/profile_screen.dart';
 import 'package:mnote_app/page/sign_in_screen.dart';
 import 'package:mnote_app/page/sign_up_screen.dart';
@@ -36,7 +37,8 @@ var routes = <String, WidgetBuilder>{
   "/daily_view_list": (BuildContext context) => DailyViewListScreen(),
   "/daily_view": (BuildContext context) => DailyViewScreen(),
   "/open_list": (BuildContext context) => OpenListScreen(),
-  "/open_note_book": (BuildContext context) => OpenNoteBookScreen(),
+  "/open_note_book_list": (BuildContext context) => OpenNoteBookListScreen(),
+  "/open_note_book_intro": (BuildContext context) => OpenNoteBookIntroScreen(),
   "/premium": (BuildContext context) => PremiumScreen(),
   "/app_setting": (BuildContext context) => AppSettingScreen(),
   "/profile": (BuildContext context) => ProfileScreen(),

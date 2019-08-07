@@ -46,9 +46,10 @@ class Mnote {
   static TextStyle textBlack_13_5 = TextStyle(fontSize: 13.5, color: Colors.black);
   static TextStyle textHint_13_5 = TextStyle(fontSize: 13.5, color: gray153);
 
-  // 13.5 font
+  // 16 font
   static TextStyle textBlack_16 = TextStyle(fontSize: 16, color: Colors.black);
   static TextStyle textHint_16 = TextStyle(fontSize: 16, color: gray153);
+  static TextStyle textBlackUnder_16 = TextStyle(fontSize: 16, color: Colors.black, decoration: TextDecoration.underline);
 
   // 20 font
   static TextStyle textBlack_20 = TextStyle(fontSize: 20, color: Colors.black);

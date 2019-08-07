@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/common_back_dialog.dart';
 import 'package:mnote_app/model/chapter_model.dart';
+import 'package:mnote_app/service/book_other_service.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/widget/monote_line.dart';
@@ -16,7 +17,7 @@ class NoteViewScreen extends StatefulWidget {
   final String chapterNo;
   final List<ChapterModel> chapterList;
   final bool editorMode;
-  final String bookEmail;
+  final String bookEmail; // 빈값('') 일 경우 내글 보기
   int idx;
   NoteViewScreen({this.bookNo, this.chapterNo, this.chapterList, this.idx, this.editorMode, this.bookEmail = ''});
 
@@ -112,7 +113,9 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
   }
 
   void _updateState(bookNo, chapterNo) async {
-    ChapterModel updateChapter = await getChapterDetail(bookNo, chapterNo);
+    ChapterModel updateChapter = widget.bookEmail == ''
+        ? await getChapterDetail(bookNo, chapterNo)
+        : await getBookOtherChapterDetail(widget.bookEmail, bookNo, chapterNo);
     chapterModel = updateChapter;
     setState(() {
       chapterModel = updateChapter;

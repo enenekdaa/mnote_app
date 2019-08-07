@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
+import 'package:mnote_app/page/open_note_book_intro.dart';
 import 'package:mnote_app/service/book_other_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/widget/monote_line.dart';
 
-class OpenNoteBookScreen extends StatefulWidget {
+class OpenNoteBookListScreen extends StatefulWidget {
   final String email;
   
-  OpenNoteBookScreen({this.email});
+  OpenNoteBookListScreen({this.email});
   
   @override
-  _OpenNoteBookScreenState createState() => new _OpenNoteBookScreenState();
+  _OpenNoteBookListScreenState createState() => new _OpenNoteBookListScreenState();
 }
 
-class _OpenNoteBookScreenState extends State<OpenNoteBookScreen> {
+class _OpenNoteBookListScreenState extends State<OpenNoteBookListScreen> {
 
   List<BookModel> _otherNoteBookList = [];
 
   // 공개 노트 리스트 아이템 클릭
   void _openNoteBookClick(BookModel book) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: book.bookNo)));
+        context, MaterialPageRoute(builder: (context) => OpenNoteBookIntroScreen(bookNo: book.bookNo, email: widget.email,)));
   }
 
   // 공개 노트 초기화
@@ -54,7 +55,7 @@ class _OpenNoteBookScreenState extends State<OpenNoteBookScreen> {
   }
 
   @override
-  void didUpdateWidget(OpenNoteBookScreen oldWidget) {
+  void didUpdateWidget(OpenNoteBookListScreen oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }

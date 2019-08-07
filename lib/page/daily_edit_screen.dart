@@ -65,7 +65,11 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
       showDialog(
         context: context,
         builder: (_) => CommonBackDialog(),
-      );
+      ).then((result){
+        if (result != null && result == 'update'){
+          Navigator.pop(context);
+        }
+      });
     }else{
       Navigator.pop(context);
     }

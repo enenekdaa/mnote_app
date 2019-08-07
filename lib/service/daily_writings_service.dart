@@ -7,7 +7,7 @@ Future<List<DailyWritings>> getDailyWritings(String dailyListNo, String pageNo) 
   String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/daily_writings.php';
   final response = await http.post(dataURL ,
       headers: {'access_token' : Mnote.accessToken},
-      body: {'daily_list_no': '4'/*dailyListNo*/, 'page_no': pageNo}
+      body: {'daily_list_no': dailyListNo, 'page_no': pageNo}
   );
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
@@ -27,6 +27,7 @@ Future<List<DailyWritings>> getDailyTodayWritings(String pageNo) async {
   );
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print('getDailyTodayWritings');
     print(jsonResponse);
     final items = (jsonResponse['daily_today_writings'] as List).map((i) => new DailyWritings.fromJson(i));
     return items.toList();

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mnote_app/model/writer_all.dart';
-import 'package:mnote_app/page/open_note_book_screen.dart';
+import 'package:mnote_app/page/open_note_book_list_screen.dart';
 import 'package:mnote_app/service/writer_list_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
@@ -75,7 +75,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
 
   // 하루글감 아이템 클릭시 이동
   void _writerListItemClick(String email) {
-    Navigator.push(context,MaterialPageRoute(builder: (context) => OpenNoteBookScreen(email: email,)));
+    Navigator.push(context,MaterialPageRoute(builder: (context) => OpenNoteBookListScreen(email: email,)));
   }
 
   // 검색어 필터
