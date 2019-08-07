@@ -8,6 +8,10 @@ class Mnote {
   static String refreshToken = '';
   static String myEmail = '';
 
+  // setting
+  static String homeEditMode = 'ON'; // ON / OFF
+  static String todayAlarmMode = 'OFF'; // ON / OFF
+
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
   TextStyle(color: Color.fromRGBO(255, 113, 43, 1), fontSize: 15);

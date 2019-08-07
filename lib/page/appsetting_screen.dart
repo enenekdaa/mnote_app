@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mnote_app/utils/mnote.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSettingScreen extends StatefulWidget {
   @override
@@ -8,20 +9,44 @@ class AppSettingScreen extends StatefulWidget {
 }
 
 class _AppSettingScreenState extends State<AppSettingScreen> {
+  SharedPreferences _prefs;
+  
   bool _appsetting = false;
   bool _secret = false;
-  bool _todayalarm = false;
-  bool _firstwrite = false;
+  bool _todayAlarm = false;
+  bool _firstWrite = false;
 
   String tv = 'http://www.abc.com';
 
   void _appsettingChanged(bool value) => setState(() => _appsetting = value);
 
-  void _todayalarmChanged(bool value) => setState(() => _todayalarm = value);
-
   void _secretChanged(bool value) => setState(() => _secret = value);
 
-  void _firstwriteChanged(bool value) => setState(() => _firstwrite = value);
+  // 하루 글감 알림
+  void _todayAlarmChanged(bool value) {
+    //TODO:: 서버에 토큰값 보내야하나?
+    setState(() => _todayAlarm = !value);
+    _prefs.setString('today_alarm_mode', _todayAlarm == true ? 'ON' : 'OFF');
+    Mnote.todayAlarmMode = _todayAlarm == true ? 'ON' : 'OFF';
+  }
+
+  // 첫화면 글쓰기
+  void _firstWriteChanged(bool value) {
+    setState(() => _firstWrite = !value);
+    _prefs.setString('home_edit_mode', _firstWrite == true ? 'ON' : 'OFF');
+    Mnote.homeEditMode = _firstWrite == true ? 'ON' : 'OFF';
+  }
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      _prefs = prefs;
+    });
+    _firstWrite = Mnote.homeEditMode == 'ON';
+    _todayAlarm = Mnote.todayAlarmMode == 'ON';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +155,9 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 children: <Widget>[
                   Text('하루 글감 알림', style: TextStyle(fontSize: 18)),
                   GestureDetector(
+                    onTap: () => _todayAlarmChanged(_todayAlarm),
                     child: Image.asset(
-                      'images/icons/00_toggle_on.png', scale: 1.8,),
+                      _todayAlarm ? 'images/icons/00_toggle_on.png' : 'images/icons/00_toggle_off.png', scale: 1.8,),
                   )
                 ],
               ),
@@ -147,8 +173,9 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 children: <Widget>[
                   Text('첫화면 글쓰기', style: TextStyle(fontSize: 18)),
                   GestureDetector(
+                    onTap: () => _firstWriteChanged(_firstWrite),
                     child: Image.asset(
-                      'images/icons/00_toggle_off.png', scale: 1.8,),
+                      _firstWrite ? 'images/icons/00_toggle_on.png' :'images/icons/00_toggle_off.png', scale: 1.8,),
                   )
                 ],
               ),

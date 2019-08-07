@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
@@ -77,7 +79,12 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
         _myNoteBookList.add(book);
       }
     });
-    _myNoteBookList.add(BookModel(bookTitle: ''));
+    // 서버에서 값 가져오는 시간
+    Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        _myNoteBookList.add(BookModel(bookTitle: ''));
+      });
+    });
   }
 
   // 오픈 노트 초기화

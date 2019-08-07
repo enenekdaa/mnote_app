@@ -16,8 +16,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  bool visibilityEditFinishBtn = true; // true=보임/false=안보임 노트 화면 > 작성완료 버튼
+  bool visibilityEditFinishBtn = false; // true=보임/false=안보임 노트 화면 > 작성완료 버튼
   int currentPageIndex = 0; // 현재 화면 페이지
+  int noteListPageIndex = 1; // 노트리트 페이지 번호
 
   TextEditingController titleController = TextEditingController(); // 제목 컨트롤러
   TextEditingController contentsController = TextEditingController(); // 본문 컨트롤러
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     titleFocusNode.addListener(_titleFieldFocusListener);
     contentsFocusNode.addListener(_contentFieldFocusListener);
+    noteListPageIndex = Mnote.homeEditMode == 'ON' ? 1 : 0; // 첫화면 글쓰기일 경우 1페이지가 노트리스트페이지 Index
     super.initState();
   }
 
@@ -70,6 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     print('home screen didUpdateWidget');
+//    setState(() {
+//      Mnote.homeEditMode;
+//    });
   }
 
   @override
@@ -114,15 +119,23 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         onPageChanged: (index) => _onPageChanged(index),
         children: <Widget>[
-          // 노트 입력 화면
-          NoteEditScreen(
-            titleController: titleController,
-            contentsController: contentsController,
-            titleFocusNode: titleFocusNode,
-            contentsFocusNode: contentsFocusNode,
-          ),
-          // 나의 노트 화면
-          NoteBookListScreen(),
+          // 첫화면 글쓰기가 ON일 경우 첫번째 페이지를 글쓰기 화면으로 설정
+          Mnote.homeEditMode == 'ON'
+              ? NoteEditScreen(
+                  titleController: titleController,
+                  contentsController: contentsController,
+                  titleFocusNode: titleFocusNode,
+                  contentsFocusNode: contentsFocusNode,
+                )
+              : NoteBookListScreen(),
+          Mnote.homeEditMode == 'ON'
+              ?  NoteBookListScreen()
+              : NoteEditScreen(
+                  titleController: titleController,
+                  contentsController: contentsController,
+                  titleFocusNode: titleFocusNode,
+                  contentsFocusNode: contentsFocusNode,
+                  ),
         ],
       ),
     );

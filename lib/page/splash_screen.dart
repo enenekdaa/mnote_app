@@ -35,6 +35,21 @@ class _SplashScreenState extends State<SplashScreen> {
   void _initSharedPreferences() {
     SharedPreferences.getInstance().then((prefs) {
       _prefs = prefs;
+
+      // 첫화면 글쓰기 모드 설정
+      if (_prefs.getKeys().contains('home_edit_mode')){
+        Mnote.homeEditMode = _prefs.get('home_edit_mode');
+      }else{
+        _prefs.setString('home_edit_mode', 'ON');
+      }
+
+      // 하루 글감 알림 모드 설정
+      if(_prefs.getKeys().contains('today_alarm_mode')){
+        Mnote.todayAlarmMode = _prefs.get('today_alarm_mode');
+      }else{
+        _prefs.setString('today_alarm_mode', 'OFF');
+      }
+
       if (_prefs.getKeys().contains('auto_login')) {
         _prefs.get('auto_login') == 'true'
             ? _login(_prefs.get('auto_email'), _prefs.get('auto_pw'))
