@@ -20,7 +20,11 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
 
   void _appsettingChanged(bool value) => setState(() => _appsetting = value);
 
-  void _secretChanged(bool value) => setState(() => _secret = value);
+  void _secretChanged(bool value) {
+    setState(() => _secret = !value);
+    _prefs.setString('secret_mode', _secret == true ? 'ON' : 'OFF');
+    Mnote.secretMode = _secret == true ? 'ON' : 'OFF';
+  }
 
   // 하루 글감 알림
   void _todayAlarmChanged(bool value) {
@@ -46,6 +50,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     });
     _firstWrite = Mnote.homeEditMode == 'ON';
     _todayAlarm = Mnote.todayAlarmMode == 'ON';
+    _secret = Mnote.secretMode == 'ON';
   }
 
   @override
@@ -138,8 +143,9 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 children: <Widget>[
                   Text('잠금 설정', style: TextStyle(fontSize: 18)),
                   GestureDetector(
+                    onTap: () => _secretChanged(_secret),
                     child: Image.asset(
-                      'images/icons/00_toggle_on.png', scale: 1.8,),
+                      _secret ? 'images/icons/00_toggle_on.png' : 'images/icons/00_toggle_off.png', scale: 1.8,),
                   )
                 ],
               ),

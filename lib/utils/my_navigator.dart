@@ -5,6 +5,10 @@ class MyNavigator {
     Navigator.pushNamed(context, "/splash");
   }
 
+  static void goToLock(BuildContext context) {
+    Navigator.pushNamed(context, "/lock");
+  }
+
   static void goToSignIn(BuildContext context) {
     Navigator.pushNamed(context, "/sign_in");
   }

@@ -11,6 +11,7 @@ class Mnote {
   // setting
   static String homeEditMode = 'ON'; // ON / OFF
   static String todayAlarmMode = 'OFF'; // ON / OFF
+  static String secretMode = 'OFF'; // ON / OFF
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
@@ -48,6 +49,7 @@ class Mnote {
 
   // 13.5 font
   static TextStyle textBlack_13_5 = TextStyle(fontSize: 13.5, color: Colors.black);
+  static TextStyle textBlackUnder_13_5 = TextStyle(fontSize: 13.5, color: Colors.black, decoration: TextDecoration.underline);
   static TextStyle textHint_13_5 = TextStyle(fontSize: 13.5, color: gray153);
 
   // 16 font

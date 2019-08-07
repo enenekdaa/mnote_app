@@ -24,7 +24,14 @@ class _SplashScreenState extends State<SplashScreen> {
       Mnote.accessToken = signModel.accessToken;
       Mnote.refreshToken = signModel.refreshToken;
       Mnote.myEmail = email;
-      Navigator.pushReplacementNamed(context, '/home');
+
+      if (Mnote.secretMode == 'ON'){
+        Navigator.pushReplacementNamed(context, '/lock');
+      }else{
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+
+
     } else {
       _prefs.setString('auto_login', 'false');
       Navigator.pushReplacementNamed(context, '/sign_in');
@@ -48,6 +55,12 @@ class _SplashScreenState extends State<SplashScreen> {
         Mnote.todayAlarmMode = _prefs.get('today_alarm_mode');
       }else{
         _prefs.setString('today_alarm_mode', 'OFF');
+      }
+      // 잠금 모드 설정
+      if(_prefs.getKeys().contains('secret_mode')){
+        Mnote.secretMode = _prefs.get('secret_mode');
+      }else{
+        _prefs.setString('_secret_mode', 'OFF');
       }
 
       if (_prefs.getKeys().contains('auto_login')) {
