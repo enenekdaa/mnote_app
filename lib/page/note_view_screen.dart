@@ -16,8 +16,9 @@ class NoteViewScreen extends StatefulWidget {
   final String chapterNo;
   final List<ChapterModel> chapterList;
   final bool editorMode;
+  final String bookEmail;
   int idx;
-  NoteViewScreen({this.bookNo, this.chapterNo, this.chapterList, this.idx, this.editorMode});
+  NoteViewScreen({this.bookNo, this.chapterNo, this.chapterList, this.idx, this.editorMode, this.bookEmail = ''});
 
   @override
   _NoteViewScreenState createState() => _NoteViewScreenState();
@@ -155,7 +156,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
           title: Text('무제노트'),
           centerTitle: true,
           actions: <Widget>[
-            _currentPageIndex == 0 ?
+            Mnote.myEmail == widget.bookEmail && _currentPageIndex == 0 ?
             FlatButton(
               child: Text(
                 _editorMode ? '완료하기' : '수정하기',
@@ -186,7 +187,9 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                 Expanded(
                   child: GestureDetector(
                     onDoubleTap: (){
-                      _editorModeChange(false);
+                      if (Mnote.myEmail == widget.bookEmail){
+                        _editorModeChange(false);
+                      }
                     },
                     child: SingleChildScrollView(
                       child: ConstrainedBox(

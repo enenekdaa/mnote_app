@@ -8,7 +8,6 @@ import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/dialog/note_book_modify_dialog.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/widget/monote_line.dart';
-
 import 'daily_view_list_screen.dart';
 
 class NoteBookListScreen extends StatefulWidget {

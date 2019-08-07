@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/model/chapter_model.dart';
-import 'package:mnote_app/page/note_edit_screen.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
-import 'package:mnote_app/utils/my_navigator.dart';
 import 'note_book_edit_screen.dart';
 
 class NoteBookViewScreen extends StatefulWidget {
@@ -27,6 +25,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   String bookTitle = '';
   String bookSubtitle = '';
   String bookShow = '';
+  String bookEmail = '';
 
   // 책 정보 로드
   void _initBookInfo() async {
@@ -36,6 +35,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
       bookTitle = book.bookTitle;
       bookSubtitle = book.bookSubtitle;
       bookShow = book.bookShow;
+      bookEmail = book.email;
     });
   }
 
@@ -87,13 +87,9 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
         title: Text('무제노트'),
         centerTitle: true,
         actions: <Widget>[
-          FlatButton(
-            child: Text(
-              '완결하기',
-              style: Mnote.appBarRightOkBtnText,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
+          Mnote.myEmail == bookEmail
+              ? FlatButton(child: Text('완결하기',style: Mnote.appBarRightOkBtnText,),onPressed: () => Navigator.pop(context),)
+              : FlatButton(),
           SizedBox(
             width: 10,
           )
@@ -121,8 +117,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                     GestureDetector(
                       onTap: () {
                         // 노트북 수정 화면으로 이동
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => NoteBookEditScreen(bookNo: widget.bookNo)));
+                        if (Mnote.myEmail == bookEmail){
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => NoteBookEditScreen(bookNo: widget.bookNo)));
+                        }
                       },
                       child: Text(bookTitle,
                         maxLines: 1,

@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _prefs.setString('refresh_token', signModel.refreshToken);
       Mnote.accessToken = signModel.accessToken;
       Mnote.refreshToken = signModel.refreshToken;
+      Mnote.myEmail = email;
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       _prefs.setString('auto_login', 'false');

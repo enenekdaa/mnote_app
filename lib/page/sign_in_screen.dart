@@ -37,6 +37,7 @@ class _SignInScreen extends State<SignInScreen> {
 
       Mnote.accessToken = signModel.accessToken;
       Mnote.refreshToken = signModel.refreshToken;
+      Mnote.myEmail = email;
       Navigator.popAndPushNamed(context, '/home');
     } else {
       Fluttertoast.showToast(msg: '계정 또는 비밀번호를 확인하세요.');
