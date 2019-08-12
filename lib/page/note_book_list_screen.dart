@@ -66,7 +66,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
               settings: RouteSettings(name: '/daily_main')));
     }else{
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: book.bookNo)));
+          context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: book.bookNo,)));
     }
   }
 

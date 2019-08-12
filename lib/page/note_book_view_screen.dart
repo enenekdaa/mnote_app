@@ -111,7 +111,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
         title: Text('무제노트'),
         centerTitle: true,
         actions: <Widget>[
-          Mnote.myEmail == bookEmail
+          Mnote.myEmail == bookEmail || widget.otherEmail == ''
               ? FlatButton(child: Text('완결하기',style: Mnote.appBarRightOkBtnText,),onPressed: () => Navigator.pop(context),)
               : FlatButton(),
           SizedBox(

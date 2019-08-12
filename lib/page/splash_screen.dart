@@ -59,8 +59,10 @@ class _SplashScreenState extends State<SplashScreen> {
       // 잠금 모드 설정
       if(_prefs.getKeys().contains('secret_mode')){
         Mnote.secretMode = _prefs.get('secret_mode');
+        Mnote.secretNumber = _prefs.get('secret_number');
       }else{
-        _prefs.setString('_secret_mode', 'OFF');
+        _prefs.setString('secret_mode', 'OFF');
+        _prefs.setString('secret_number', '');
       }
 
       if (_prefs.getKeys().contains('auto_login')) {

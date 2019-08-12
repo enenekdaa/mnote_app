@@ -100,12 +100,12 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       children: <Widget>[
         // 제목 + 내용
         Container(
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.all(24),
           child: Column(
             children: <Widget>[
               // 제목 입력 폼
               Container(
-                padding: EdgeInsets.only(left: 8, top: 4),
+                padding: EdgeInsets.only(left: 14, top: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -129,7 +129,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                             decoration: InputDecoration(
                                 hintText: '제목을 입력해주세요.',
                                 hintStyle: Mnote.noteTitleFiledHint,
-                                border: InputBorder.none),
+                                border: InputBorder.none,
+                            ),
                             enabled: widget.mode != 'daily',
                           ),
                         ),
@@ -152,6 +153,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               ),
               // 내용 입력 폼
               Expanded(
+                flex: 1,
                 child: GestureDetector(
                   onTap: ()=>{},
                   child: TextField(
@@ -164,12 +166,13 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                         : TextAlign.right,
                     focusNode: widget.contentsFocusNode,
                     controller: widget.contentsController,
+                    style: TextStyle(height: 1.5, fontSize: 16),
                     decoration: InputDecoration(
                       hintText: '내용을 입력해주세요.',
                       filled: true,
                       fillColor: Colors.white,
                       border: InputBorder.none,
-                      hintStyle: TextStyle(height: 1.5, fontSize: 16),
+                      hintStyle: TextStyle(fontSize: 16),
                     ),
                   ),
                 ),

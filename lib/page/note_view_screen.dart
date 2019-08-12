@@ -159,7 +159,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
           title: Text('무제노트'),
           centerTitle: true,
           actions: <Widget>[
-            Mnote.myEmail == widget.bookEmail && _currentPageIndex == 0 ?
+            ((Mnote.myEmail == widget.bookEmail) || (widget.bookEmail == '')) && _currentPageIndex == 0 ?
             FlatButton(
               child: Text(
                 _editorMode ? '완료하기' : '수정하기',
@@ -232,13 +232,13 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                             // 날짜 영역
                                             Container(
                                               margin: EdgeInsets.only(bottom: 15),
-                                              child: Text(
-                                                chapterModel.chapterStartDate,
-                                                style: Mnote.noteSubTitleFiledHint,
-                                              ),
+                                              child:
+                                              Text(Mnote.getDateFormat_2(chapterModel.chapterStartDate), textAlign: TextAlign.justify,
+                                                  style: Mnote.noteSubTitleFiledHint,)
                                             ),
                                             // 주황색 선
                                             OrangeLine(),
+                                            SizedBox(height: 2,),
                                             Text(chapterModel.contents,
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(height: 1.5, fontSize: 16),
@@ -347,18 +347,17 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                           style: Mnote.noteTitleFiledHint,
                                         ),
                                         SizedBox(
-                                          height: 10,
+                                          height: 12,
                                         ),
                                         // 날짜 영역
                                         Container(
                                           margin: EdgeInsets.only(bottom: 15),
-                                          child: Text(
-                                            chapterModel.chapterStartDate,
-                                            style: Mnote.noteSubTitleFiledHint,
-                                          ),
+                                          child: Text(Mnote.getDateFormat_2(chapterModel.chapterStartDate), textAlign: TextAlign.justify,
+                                            style: Mnote.noteSubTitleFiledHint,)
                                         ),
                                         // 주황색 선
                                         OrangeLine(),
+                                        SizedBox(height: 12,),
                                         Text(chapterModel.contents,
                                           textAlign: TextAlign.justify,
                                           style: TextStyle(height: 1.5, fontSize: 16),

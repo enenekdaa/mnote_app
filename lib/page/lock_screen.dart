@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/sign_model.dart';
 import 'package:mnote_app/service/sign_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
+import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LockScreen extends StatefulWidget {
@@ -15,19 +16,33 @@ class LockScreen extends StatefulWidget {
 class _LockScreenState extends State<LockScreen> {
   SharedPreferences _prefs;
 
-  String pass1 = ' 1';  //' ● '
-  String pass2 = ' ';
-  String pass3 = ' ';
-  String pass4 = '';
-
-  List<String> pass = ['●',' ',' ','',];
-
+  List<String> showPass = ['','','','',]; // ●
+  List<String> privatePass = ['','','','',]; // ●
   List<Padding> btnList = [];
 
   void _initSharedPreferences() {
     SharedPreferences.getInstance().then((prefs) {
       _prefs = prefs;
     });
+  }
+
+  void _changeNumber(String number){
+    if (showPass.indexOf('') >= 0) {
+      setState(() {
+        showPass[showPass.indexOf('')] = '●';
+        privatePass[privatePass.indexOf('')] = number;
+      });
+    }
+
+    if (showPass.indexOf('') == -1){
+      print(privatePass.join(''));
+      // if(privatePass.join('') == Mnote.secretNumber){
+      if(privatePass.join('') == '1234'){
+        MyNavigator.goToHome(context);
+      }else{
+        Fluttertoast.showToast(msg: '비밀번호가 맞지 않습니다.');
+      }
+    }
   }
 
   @override
@@ -92,7 +107,7 @@ class _LockScreenState extends State<LockScreen> {
                     decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(width: 1.0))
                     ),
-                    child: Text(pass[0], style: Mnote.textBlack_13_5,),
+                    child: Text(showPass[0], style: Mnote.textBlack_13_5,),
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
@@ -101,7 +116,7 @@ class _LockScreenState extends State<LockScreen> {
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(width: 1.0))
                     ),
-                    child: Text(pass[1], style: Mnote.textBlack_13_5,),
+                    child: Text(showPass[1], style: Mnote.textBlack_13_5,),
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
@@ -110,7 +125,7 @@ class _LockScreenState extends State<LockScreen> {
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(width: 1.0))
                     ),
-                    child: Text(pass[2], style: Mnote.textBlack_13_5,),
+                    child: Text(showPass[2], style: Mnote.textBlack_13_5,),
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
@@ -119,7 +134,7 @@ class _LockScreenState extends State<LockScreen> {
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(width: 1.0))
                     ),
-                    child: Text(pass[3], style: Mnote.textBlack_13_5,),
+                    child: Text(showPass[3], style: Mnote.textBlack_13_5,),
                   ),
                 ],
               ),
@@ -129,16 +144,20 @@ class _LockScreenState extends State<LockScreen> {
                 children: <Widget>[
                   MaterialButton(
                     onPressed: (){
-                      print(pass.indexOf(''));
+                      _changeNumber('9');
                     },
                     child: btnList[0],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('8');
+                    },
                     child: btnList[1],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('7');
+                    },
                     child: btnList[2],
                   ),
                 ],
@@ -147,15 +166,21 @@ class _LockScreenState extends State<LockScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('6');
+                    },
                     child: btnList[3],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('5');
+                    },
                     child: btnList[4],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('4');
+                    },
                     child: btnList[5],
                   ),
                 ],
@@ -164,15 +189,21 @@ class _LockScreenState extends State<LockScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('3');
+                    },
                     child: btnList[6],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('2');
+                    },
                     child: btnList[7],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('1');
+                    },
                     child: btnList[8],
                   ),
                 ],
@@ -188,26 +219,53 @@ class _LockScreenState extends State<LockScreen> {
                     ),
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      _changeNumber('0');
+                    },
                     child: btnList[9],
                   ),
                   MaterialButton(
-                    onPressed: ()=>{},
+                    onPressed: (){
+                      if (showPass.indexOf('') == 0) {
+                        return;
+                      }
+
+                      if (showPass.indexOf('') > 0) {
+                        setState(() {
+                          showPass[showPass.indexOf('') - 1] = '';
+                          privatePass[privatePass.indexOf('') - 1] = '';
+                        });
+                        return;
+                      }
+
+                      if (showPass.indexOf('') == -1) {
+                        setState(() {
+                          showPass[3] = '';
+                          privatePass[3] = '';
+                        });
+                        return;
+                      }
+
+                    },
                     child: btnList[10],
                   ),
                 ],
               ),
             ],
           ),
-          MaterialButton(
-            onPressed: () => {
-              Navigator.popAndPushNamed(context, '/home')
-            },
-            color: Mnote.orange,
-            minWidth: MediaQuery.of(context).size.width,
-            height: 60,
-            child: Text('설정하기', style: Mnote.screenBottomBtnWText,),
-          )
+          Opacity(
+            opacity: 0.0,
+            child:
+            MaterialButton(
+              onPressed: () => {
+                Navigator.popAndPushNamed(context, '/home')
+              },
+              color: Mnote.orange,
+              minWidth: MediaQuery.of(context).size.width,
+              height: 60,
+              child: Text('설정하기', style: Mnote.screenBottomBtnWText,),
+            )
+          ),
         ],
       )
     );

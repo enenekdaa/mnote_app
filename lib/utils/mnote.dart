@@ -12,6 +12,7 @@ class Mnote {
   static String homeEditMode = 'ON'; // ON / OFF
   static String todayAlarmMode = 'OFF'; // ON / OFF
   static String secretMode = 'OFF'; // ON / OFF
+  static String secretNumber = '1234';
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
@@ -82,6 +83,10 @@ class Mnote {
   static String getDateFormat_2(String date){
     DateTime dateTime = DateTime.parse(date);
     return DateFormat('yyyy.MM.dd hh:mm').format(dateTime);
+  }
+  static String getDateFormat_3(String date){
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('yyyy-MM-dd hh:mm').format(dateTime);
   }
 
   // email
