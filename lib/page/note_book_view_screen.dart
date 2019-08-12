@@ -101,6 +101,14 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    print('note_book_view_screen didChangeDependencies');
+    _initBookInfo();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

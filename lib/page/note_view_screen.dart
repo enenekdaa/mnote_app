@@ -32,13 +32,13 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController contentsController = TextEditingController();
   FocusNode titleFocusNode = FocusNode(); // 제목 포커스 노드
-  FocusNode contentsFocusNode = FocusNode(); // 내용 포커스 노드
+  FocusNode contentsFocusNode = FocusNode(); // 내용// 포커스 노드
+  NoteEditScreen noteEditScreen;
 
   void _editorModeChange(bool editorMode) async {
-    print('_editorModeChange');
     // 에디터 모드가 수정상태 => 완료하기이면 수정된 내용을 저장한다.
     if (_editorMode){
-      await updateChapter(widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, '0',).then((result){
+      await updateChapter(widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
         if (result != 'fail'){
           Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
           _updateState(widget.bookNo, widget.chapterNo);
@@ -143,6 +143,13 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    noteEditScreen = NoteEditScreen(
+      chapterModel: chapterModel,
+      titleController: titleController,
+      contentsController: contentsController,
+      titleFocusNode: titleFocusNode,
+      contentsFocusNode: contentsFocusNode,
+    );
     // TODO: implement build
     return WillPopScope(
       onWillPop: () {
@@ -177,13 +184,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
           onPageChanged: (index) => _onPageChanged(index),
           children: <Widget>[
             _editorMode
-                ? NoteEditScreen(
-              chapterModel: chapterModel,
-              titleController: titleController,
-              contentsController: contentsController,
-              titleFocusNode: titleFocusNode,
-              contentsFocusNode: contentsFocusNode,
-            )
+                ? noteEditScreen
                 : Column(
               children: <Widget>[
                 // 본문
@@ -299,13 +300,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
           ],
         )
             : _editorMode
-            ? NoteEditScreen(
-          chapterModel: chapterModel,
-          titleController: titleController,
-          contentsController: contentsController,
-          titleFocusNode: titleFocusNode,
-          contentsFocusNode: contentsFocusNode,
-        )
+            ? noteEditScreen
             : Column(
           children: <Widget>[
             // 본문

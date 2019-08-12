@@ -75,14 +75,14 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
     List<BookModel> bookList =  await getBooksMy();
     _myNoteBookList.clear();
     bookList.forEach((book){
-      if(book.bookTitle.trim() != '') {
+      if(book.bookTitle.trim().replaceAll(' ', '') != '') {
         _myNoteBookList.add(book);
       }
     });
     // 서버에서 값 가져오는 시간
     Timer(Duration(milliseconds: 500), () {
       setState(() {
-        _myNoteBookList.add(BookModel(bookTitle: ''));
+        _myNoteBookList.add(BookModel(bookTitle: '**&&**new book add**&&**'));
       });
     });
   }
@@ -207,7 +207,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
 
   // My Note Book List
   Widget _makeMyNoteBookList(int index, List<BookModel> noteList) {
-    return noteList[index].bookTitle != ''
+    return noteList[index].bookTitle != '**&&**new book add**&&**'
         ? GestureDetector(
       onLongPress: () => _showNoteBookModifyDialog(noteList[index].bookNo),
       onTap: () => _myNoteBookClick(noteList[index]),
