@@ -37,6 +37,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
 
   void _editorModeChange(bool editorMode) async {
     // 에디터 모드가 수정상태 => 완료하기이면 수정된 내용을 저장한다.
+    print(noteEditScreen.textAlignmentValue);
     if (_editorMode){
       await updateChapter(widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
         if (result != 'fail'){
