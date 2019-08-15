@@ -81,6 +81,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
           scale: scaleAnimation,
           child: Container(
             width: maxWidthSize / 1.3,
+            // 노트 리스트 높이 설정, 노트의 리스트에 따라 높이가 변한다.
             height: _myNoteBookList.length == 0
                 ? maxWidthSize / 2.05
                 : _myNoteBookList.length == 1

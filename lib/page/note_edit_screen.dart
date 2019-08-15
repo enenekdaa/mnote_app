@@ -54,9 +54,37 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   void _addText(String addText){
     var cursorPos = widget.contentsController.selection;
     String resultText = Mnote.subStringAndAddText(widget.contentsController.text, addText, cursorPos.baseOffset);
+    int offset = cursorPos.baseOffset + addText.length;
     widget.contentsController.text = resultText;
-    cursorPos = TextSelection.fromPosition(TextPosition(offset: cursorPos.baseOffset + addText.length));
+    if (addText == '‘’' || addText == '“”'){
+      offset = offset - 1;
+    }
+    cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
     widget.contentsController.selection = cursorPos;
+  }
+
+  void _cursorPosTopOrBot(String move){
+    var cursorPos = widget.contentsController.selection;
+    int offset = move == 'top' ? 0 : widget.contentsController.text.length;
+    cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
+    widget.contentsController.selection = cursorPos;
+  }
+
+  void _changeTextAlignmentValue(String align){
+
+    widget.textAlignmentValue = align;
+    String origin =  widget.contentsController.text;
+    String temp = origin + ' ';
+    widget.contentsController.clear();
+    widget.contentsController.text = temp;
+
+    var cursorPos = widget.contentsController.selection;
+    int offset = widget.contentsController.text.length;
+    cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
+    widget.contentsController.selection = cursorPos;
+
+    widget.contentsController.text = origin;
+
   }
 
   @override
@@ -184,7 +212,10 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
         visibilityEditor
             ? Container(
           padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
-          decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.3))),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(top: BorderSide(color: Colors.grey, width: 0.3))
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -194,11 +225,11 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 child: Image.asset('images/icons/00_text_component_01.png', scale: 1.8,),
               ),
               GestureDetector(
-                onTap: ()=>_addText('‘ ’'),
+                onTap: ()=>_addText('‘’'),
                 child: Image.asset('images/icons/00_text_component_02.png', scale: 1.8),
               ),
               GestureDetector(
-                onTap: ()=>_addText('“ ”'),
+                onTap: ()=>_addText('“”'),
                 child: Image.asset('images/icons/00_text_component_03.png', scale: 1.8),
               ),
               GestureDetector(
@@ -209,7 +240,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               GestureDetector(
                 onTap: (){
                   setState(() {
-                    widget.textAlignmentValue = '0';
+                    _changeTextAlignmentValue('0');
                   });
                 },
                 child: Image.asset('images/icons/00_text_component_07.png', scale: 1.8),
@@ -217,7 +248,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               GestureDetector(
                 onTap: (){
                   setState(() {
-                    widget.textAlignmentValue = '1';
+                    _changeTextAlignmentValue('1');
                   });
                 },
                 child: Image.asset('images/icons/00_text_component_09.png', scale: 1.8),
@@ -225,14 +256,20 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               GestureDetector(
                 onTap: (){
                   setState(() {
-                    widget.textAlignmentValue = '2';
+                    _changeTextAlignmentValue('2');
                   });
                 },
                 child: Image.asset('images/icons/00_text_component_08.png', scale: 1.8),
               ),
               Container(height: 20,width: 0.3,color: Colors.grey,),
-              GestureDetector(child: Image.asset('images/icons/00_text_component_05.png', scale: 1.8),),
-              GestureDetector(child: Image.asset('images/icons/00_text_component_06.png', scale: 1.8),),
+              GestureDetector(
+                onTap: () => _cursorPosTopOrBot('top'),
+                child: Image.asset('images/icons/00_text_component_05.png', scale: 1.8),
+              ),
+              GestureDetector(
+                onTap: () => _cursorPosTopOrBot('bot'),
+                child: Image.asset('images/icons/00_text_component_06.png', scale: 1.8),
+              ),
             ],
           ),
         )
