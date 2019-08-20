@@ -10,9 +10,10 @@ import 'package:mnote_app/service/daily_writings_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class DailyViewListScreen extends StatefulWidget {
-  final String dailyListNo; // 빈값일 경우 오늘꺼 하루글감 모드
+  final DailyModel dailyModel; // 빈값일 경우 오늘꺼 하루글감 모드
 
-  DailyViewListScreen({this.dailyListNo=''});
+  // ignore: avoid_init_to_null
+  DailyViewListScreen({this.dailyModel=null});
 
   @override
   _DailyViewListScreenState createState() => new _DailyViewListScreenState();
@@ -25,9 +26,9 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
   // 리스트 조회 (초기화)
   void _initDailyList() async{
     //List<DailyWritings> newDailyList = await getDailyTodayWritings(pageNo.toString());
-    List<DailyWritings> newDailyList = widget.dailyListNo == ''
+    List<DailyWritings> newDailyList = widget.dailyModel == null
         ? await getDailyTodayWritings(pageNo.toString())
-        : await getDailyWritings(widget.dailyListNo, pageNo.toString());
+        : await getDailyWritings(widget.dailyModel.dailyListNo, pageNo.toString());
     if (newDailyList.length != 0){
       setState(() {
         dailyList.addAll(newDailyList);
@@ -38,13 +39,12 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 글쓰기 버튼 클릭
   void _editBtnClick() async{
-    DailyModel dailyModel = await getDailyToday();
+    DailyModel dailyModel = widget.dailyModel == null ? await getDailyToday() : widget.dailyModel;
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyEditScreen(dailyModel: dailyModel,)));
   }
 
   // 리스트 아이템 클릭
   void _dailyItemClick(int index){
-    print('????');
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyViewScreen(dailyWritings: dailyList[index],)));
   }
 

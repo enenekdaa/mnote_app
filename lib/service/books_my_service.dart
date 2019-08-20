@@ -167,3 +167,37 @@ Future<String> deleteBook(String bookNo) async {
     return 'fail';
   }
 }
+
+
+
+/*
+* 19.08.20
+* 노트 공개 비공개
+* 출력 값
+  true 업데이트 성공, false 업데이트 실패. 실패할 경우는 아마 헤더가 만료될 때 혹은
+  값이 잘못됐을 때 뿐입니다.
+  업데이트 후 새로고침이 되긴 해야되는데 여기는 새로고침으로 값을 다시 읽어갈 필요
+  없이 앱에서 버튼이 on / off 만 되도 되지않을까 싶습니다.
+*
+*/
+
+Future<String> updateBookShowState(String bookNo, String show) async {
+  String dataURL ='http://icomerict.cafe24.com/untitled_note/json/update_book_show_state.php';
+  final response = await http.post(
+    dataURL,
+    headers: {'access_token': Mnote.accessToken},
+    body: {
+      'book_no': bookNo,
+      'show': show
+    },
+  );
+  if (response.statusCode == 200) {
+    final jsonResponse = json.decode(response.body);
+    print(dataURL);
+    print(jsonResponse);
+    return jsonResponse['result'];
+  } else {
+    print('updateBookShowState() fail');
+    return 'fail';
+  }
+}

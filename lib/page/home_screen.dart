@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/note_save_dialog.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
@@ -47,6 +48,24 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Has focus: ${titleFocusNode.hasFocus}");
     setState(() {
       visibilityEditFinishBtn = contentsFocusNode.hasFocus == true || titleFocusNode.hasFocus == true; // 둘중 하나라도 포커싱 생기면 '작성완료'버튼 보임
+    });
+  }
+
+  void _editFinishBtnClick(){
+    if (titleController.text.trim().replaceAll(' ', '') == ''){
+      Fluttertoast.showToast(msg: '제목을 입력해주세요. ');
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (_) => NoteSaveDialog(titleController.text, contentsController.text),
+    ).then((result){
+      print('home_screen');
+      if(result != null && result != '실패'){
+        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: result)));
+      }
     });
   }
 
@@ -101,18 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : FlatButton(
             child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
             padding: EdgeInsets.only(right: 30),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => NoteSaveDialog(titleController.text, contentsController.text),
-              ).then((result){
-                print('home_screen');
-                if(result != null && result != '실패'){
-                  Navigator.pushReplacementNamed(context, '/home');
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: result)));
-                }
-              });
-            },
+            onPressed: () => _editFinishBtnClick(),
           )
         ],
       ),

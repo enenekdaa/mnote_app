@@ -79,12 +79,12 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     widget.contentsController.text = temp;
 
     var cursorPos = widget.contentsController.selection;
-    int offset = widget.contentsController.text.length;
+    int offset = origin.length;
     cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
-    widget.contentsController.selection = cursorPos;
 
-    widget.contentsController.text = origin;
-
+    setState(() {
+      widget.contentsController.selection = cursorPos;
+    });
   }
 
   @override
@@ -239,25 +239,19 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               Container(height: 20,width: 0.3,color: Colors.grey,),
               GestureDetector(
                 onTap: (){
-                  setState(() {
-                    _changeTextAlignmentValue('0');
-                  });
+                  _changeTextAlignmentValue('0');
                 },
                 child: Image.asset('images/icons/00_text_component_07.png', scale: 1.8),
               ),
               GestureDetector(
                 onTap: (){
-                  setState(() {
-                    _changeTextAlignmentValue('1');
-                  });
+                  _changeTextAlignmentValue('1');
                 },
                 child: Image.asset('images/icons/00_text_component_09.png', scale: 1.8),
               ),
               GestureDetector(
                 onTap: (){
-                  setState(() {
-                    _changeTextAlignmentValue('2');
-                  });
+                  _changeTextAlignmentValue('2');
                 },
                 child: Image.asset('images/icons/00_text_component_08.png', scale: 1.8),
               ),

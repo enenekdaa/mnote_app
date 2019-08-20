@@ -52,7 +52,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
     String saveBookSubTitle = bookSubTitleTextEditController.text.trim();
     String saveBookIntro = bookIntroTextEditController.text.trim();
 
-    if (saveBookTitle == '' || saveBookSubTitle == '' || saveBookIntro == '') {
+    if (saveBookTitle == '') {
       Fluttertoast.showToast(msg: '빈칸 없이 입력해주세요.');
       return;
     }
@@ -68,7 +68,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
     String saveBookSubTitle = bookSubTitleTextEditController.text.trim();
     String saveBookIntro = bookIntroTextEditController.text.trim();
 
-    if (saveBookTitle == '' || saveBookSubTitle == '' || saveBookIntro == '') {
+    if (saveBookTitle == '') {
       Fluttertoast.showToast(msg: '빈칸 없이 입력해주세요.');
       return;
     }
@@ -85,7 +85,10 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
     else{
       Fluttertoast.showToast(msg: '수정에 실패하였습니다.');
     }
+  }
 
+  void _updateBookShowState(String show) async {
+    await updateBookShowState(widget.bookNo, show);
   }
 
   @override
@@ -179,6 +182,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
+                                _updateBookShowState(bookShow == '1' ? '0' : '1');
                                 setState(() {
                                   bookShow = bookShow == '1' ? '2' : '1';
                                 });

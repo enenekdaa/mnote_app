@@ -40,13 +40,13 @@ class _DailyListScreenState extends State<DailyListScreen> {
   }
 
   // 하루글감 아이템 클릭시 이동
-  void _dailyItemClick(String dailyListNo) {
-    print('dailyListNo: $dailyListNo');
+  void _dailyItemClick(DailyModel dailyModel) {
+    print('dailyListNo: $dailyModel');
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => DailyViewListScreen(
-              dailyListNo: dailyListNo,
+              dailyModel: dailyModel,
             )
         )
     );
@@ -172,7 +172,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
 
   Widget _note(int index, List<DailyModel> noteList) {
     return GestureDetector(
-        onTap: () => _dailyItemClick(noteList[index].dailyListNo),
+        onTap: () => _dailyItemClick(noteList[index]),
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
           padding: EdgeInsets.all(15),

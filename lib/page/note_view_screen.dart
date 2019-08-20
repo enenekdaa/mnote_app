@@ -39,6 +39,11 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
     // 에디터 모드가 수정상태 => 완료하기이면 수정된 내용을 저장한다.
     print(noteEditScreen.textAlignmentValue);
     if (_editorMode){
+      if (titleController.text.trim().replaceAll(' ', '') == ''){
+        Fluttertoast.showToast(msg: '제목을 입력해주세요. ');
+        return;
+      }
+      
       await updateChapter(widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
         if (result != 'fail'){
           Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
@@ -192,7 +197,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                 Expanded(
                   child: GestureDetector(
                     onDoubleTap: (){
-                      if (Mnote.myEmail == widget.bookEmail){
+                      if ((Mnote.myEmail == widget.bookEmail) || (widget.bookEmail == '')){
                         _editorModeChange(false);
                       }
                     },
@@ -308,7 +313,9 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
             Expanded(
               child: GestureDetector(
                 onDoubleTap: (){
-                  _editorModeChange(false);
+                  if ((Mnote.myEmail == widget.bookEmail) || (widget.bookEmail == '')) {
+                    _editorModeChange(false);
+                  }
                 },
                 child: SingleChildScrollView(
                   child: ConstrainedBox(

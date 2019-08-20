@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mnote_app/model/writer_all.dart';
 import 'package:mnote_app/page/open_note_book_list_screen.dart';
-import 'package:mnote_app/service/writer_list_service.dart';
+import 'package:mnote_app/service/writer_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 /*

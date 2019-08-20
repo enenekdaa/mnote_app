@@ -15,6 +15,7 @@ Future<List<DailyModel>> getDailyList(String pageNo, {String search}) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse);
     final items = (jsonResponse['daily_list'] as List)
         .map((i) => new DailyModel.fromJson(i));
     return items.toList();

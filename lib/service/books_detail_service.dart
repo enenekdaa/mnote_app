@@ -4,6 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:mnote_app/model/chapter_model.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
+/*
+ 챕터 관련
+
+ */
+
 Future<BookModel> getBookInfoItem(String book_no) async {
   String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_my_book_detail.php';
   final response = await http.post(dataURL, headers: {'access_token' : Mnote.accessToken}, body: {'book_no' : book_no},);

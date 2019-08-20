@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mnote_app/model/daily_model.dart';
 import 'package:mnote_app/model/daily_writings.dart';
 import 'package:mnote_app/page/daily_edit_screen.dart';
+import 'package:mnote_app/page/open_note_book_list_screen.dart';
 import 'package:mnote_app/service/daily_today_service.dart';
+import 'package:mnote_app/service/writer_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class DailyViewScreen extends StatefulWidget {
@@ -19,6 +21,22 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
   void _editBtnClick() async{
     DailyModel dailyModel = await getDailyToday();
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyEditScreen(dailyModel: dailyModel,)));
+  }
+
+  void _boxTopRightMenuBtnClick(String mode) async{
+    if (mode == '구독하기'){
+      await updateSubState(widget.dailyWritings.email, '1');
+      return;
+    }
+
+    if (mode == '노트보기'){
+      Navigator.push(context,MaterialPageRoute(builder: (context) => OpenNoteBookListScreen(email: widget.dailyWritings.email,)));
+      return;
+    }
+
+    if (mode == '신고하기'){
+      return;
+    }
   }
 
   @override
@@ -60,7 +78,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
         child: ConstrainedBox(
           constraints: BoxConstraints(),
           child: Container(
-            height: MediaQuery.of(context).size.height / 1.2,
+            // height: MediaQuery.of(context).size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,7 +92,10 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                       items: <String>['구독하기', '노트보기', '신고하기'].map((String value) {
                         return new DropdownMenuItem<String>(
                           value: value,
-                          child: new Text(value),
+                          child: GestureDetector(
+                            onTap: ()=>_boxTopRightMenuBtnClick(value),
+                            child: Text(value),
+                          ),
                         );
                       }).toList(),
                       icon: Image.asset('images/icons/00_text_component_01.png',scale: 1.2,),

@@ -7,6 +7,7 @@ import 'package:mnote_app/page/note_view_screen.dart';
 import 'package:mnote_app/service/book_other_service.dart';
 import 'package:mnote_app/service/books_detail_service.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
+import 'package:mnote_app/service/books_my_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'note_book_edit_screen.dart';
 
@@ -90,7 +91,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
     }else{
       Fluttertoast.showToast(msg: '글쓰기 생성에 실패하였습니다.');
     }
+  }
 
+  void _updateBookShowState(String show) async {
+    await updateBookShowState(widget.bookNo, show);
   }
 
   @override
@@ -171,9 +175,9 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            // TODO:: 공개 비공개 API 연동
+                            _updateBookShowState(bookShow == '1' ? '0' : '1');
                             setState(() {
-                              // bookShow = bookShow == '1' ? '2' : '1';
+                              bookShow = bookShow == '1' ? '2' : '1';
                             });
                           },
                           child: Image.asset(
