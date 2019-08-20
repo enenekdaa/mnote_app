@@ -142,11 +142,12 @@ class _LockScreenState extends State<LockScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('9');
+                      _changeNumber('7');
                     },
-                    child: btnList[0],
+                    child: btnList[2],
                   ),
                   MaterialButton(
                     onPressed: (){
@@ -156,9 +157,9 @@ class _LockScreenState extends State<LockScreen> {
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('7');
+                      _changeNumber('9');
                     },
-                    child: btnList[2],
+                    child: btnList[0],
                   ),
                 ],
               ),
@@ -167,9 +168,9 @@ class _LockScreenState extends State<LockScreen> {
                 children: <Widget>[
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('6');
+                      _changeNumber('4');
                     },
-                    child: btnList[3],
+                    child: btnList[5],
                   ),
                   MaterialButton(
                     onPressed: (){
@@ -179,9 +180,9 @@ class _LockScreenState extends State<LockScreen> {
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('4');
+                      _changeNumber('6');
                     },
-                    child: btnList[5],
+                    child: btnList[3],
                   ),
                 ],
               ),
@@ -190,9 +191,9 @@ class _LockScreenState extends State<LockScreen> {
                 children: <Widget>[
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('3');
+                      _changeNumber('1');
                     },
-                    child: btnList[6],
+                    child: btnList[8],
                   ),
                   MaterialButton(
                     onPressed: (){
@@ -202,9 +203,9 @@ class _LockScreenState extends State<LockScreen> {
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('1');
+                      _changeNumber('3');
                     },
-                    child: btnList[8],
+                    child: btnList[6],
                   ),
                 ],
               ),
