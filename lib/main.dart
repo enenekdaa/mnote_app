@@ -3,6 +3,7 @@ import 'package:mnote_app/page/appsetting_screen.dart';
 import 'package:mnote_app/page/daily_list_screen.dart';
 import 'package:mnote_app/page/home_screen.dart';
 import 'package:mnote_app/page/lock_screen.dart';
+import 'package:mnote_app/page/lock_setting_screen.dart';
 import 'package:mnote_app/page/note_book_edit_screen.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/page/note_edit_screen.dart';
@@ -26,6 +27,7 @@ var routes = <String, WidgetBuilder>{
   "/home": (BuildContext context) => HomeScreen(),
   "/splash": (BuildContext context) => SplashScreen(),
   "/lock": (BuildContext context) => LockScreen(),
+  "/lockSetting": (BuildContext context) => LockSettingScreen(),
   "/sign_in": (BuildContext context) => SignInScreen(),
   "/sign_up": (BuildContext context) => SignUnScreen(),
   "/note_book_view": (BuildContext context) => NoteBookViewScreen(),

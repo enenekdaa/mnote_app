@@ -9,6 +9,10 @@ class MyNavigator {
     Navigator.pushNamed(context, "/lock");
   }
 
+  static void goToLockSetting(BuildContext context) {
+    Navigator.pushNamed(context, "/lock_setting");
+  }
+
   static void goToSignIn(BuildContext context) {
     Navigator.pushNamed(context, "/sign_in");
   }

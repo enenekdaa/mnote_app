@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:mnote_app/page/lock_setting_screen.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,19 +11,39 @@ class AppSettingScreen extends StatefulWidget {
 class _AppSettingScreenState extends State<AppSettingScreen> {
   SharedPreferences _prefs;
   
-  bool _appsetting = false;
+  bool _nightMode = false;
   bool _secret = false;
   bool _todayAlarm = false;
   bool _firstWrite = false;
 
   String tv = 'http://www.abc.com';
 
-  void _appsettingChanged(bool value) => setState(() => _appsetting = value);
+  void _nightModeChanged(){
+    if (_nightMode){
 
-  void _secretChanged(bool value) {
-    setState(() => _secret = !value);
-    _prefs.setString('secret_mode', _secret == true ? 'ON' : 'OFF');
-    Mnote.secretMode = _secret == true ? 'ON' : 'OFF';
+    }
+    else{
+
+    }
+  }
+
+  void _secretChanged() {
+    if (_secret){
+      setState(() => _secret = false);
+      _prefs.setString('secret_mode', 'OFF');
+      _prefs.setString('secret_number', '');
+    }
+    else{
+      var lockSettingCallBack = Navigator.push(context, MaterialPageRoute(builder: (context) => LockSettingScreen()));
+
+      lockSettingCallBack.then((result){
+        if (result == 'OK'){
+          setState(() => _secret = true);
+          _prefs.setString('secret_mode', 'ON');
+          Mnote.secretMode = 'ON';
+        }
+      });
+    }
   }
 
   // 하루 글감 알림
@@ -82,7 +102,9 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 children: <Widget>[
                   Text('야간모드', style: TextStyle(fontSize: 18),),
                   GestureDetector(
-                    child: Image.asset('images/icons/00_toggle_off.png', scale: 1.8,),
+                    onTap: () => { _nightModeChanged() },
+                    child: Image.asset(
+                      _nightMode ? 'images/icons/00_toggle_on.png' : 'images/icons/00_toggle_off.png', scale: 1.8,),
                   )
                 ],
               ),
@@ -143,7 +165,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 children: <Widget>[
                   Text('잠금 설정', style: TextStyle(fontSize: 18)),
                   GestureDetector(
-                    onTap: () => _secretChanged(_secret),
+                    onTap: () => _secretChanged(),
                     child: Image.asset(
                       _secret ? 'images/icons/00_toggle_on.png' : 'images/icons/00_toggle_off.png', scale: 1.8,),
                   )

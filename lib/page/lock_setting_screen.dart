@@ -8,44 +8,124 @@ import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LockScreen extends StatefulWidget {
+class LockSettingScreen extends StatefulWidget {
   @override
-  _LockScreenState createState() => _LockScreenState();
+  _LockSettingScreenState createState() => _LockSettingScreenState();
 }
 
-class _LockScreenState extends State<LockScreen> {
+class _LockSettingScreenState extends State<LockSettingScreen> {
+  SharedPreferences _prefs;
 
-  List<String> _showPass = ['','','','',]; // ●
-  List<String> _privatePass = ['','','','',]; // ●
+  int _passCheckCnt = 0;
+  List<String> _passCheckString = ['비밀번호를 입력해 주세요.', '비밀번호를 한 번더 입력해 주세요.'];
+  List<String> _showPass = ['','','','',];      // ●
+  List<String> _privatePass = ['','','','',];   // 1234
+  List<String> _privatePass_2 = ['','','','',]; // 1234
   List<Padding> _btnList = [];
 
-  void _changeNumber(String number){
-    if (_showPass.indexOf('') >= 0) {
-      setState(() {
-        _showPass[_showPass.indexOf('')] = '●';
-        _privatePass[_privatePass.indexOf('')] = number;
-      });
-    }
+  void _initSharedPreferences() {
+    SharedPreferences.getInstance().then((prefs) {
+      _prefs = prefs;
+    });
+  }
 
-    if (_showPass.indexOf('') == -1){
-      print(_privatePass.join(''));
-      if(_privatePass.join('') == Mnote.secretNumber){
-        Navigator.pop(context);
-        MyNavigator.goToHome(context);
-      }else{
+  void _changeNumber(String number){
+
+    if (_passCheckCnt == 0){
+      if (_showPass.indexOf('') >= 0) {
         setState(() {
-          _showPass = ['','','','',];
-          _privatePass = ['','','','',];
+          _showPass[_showPass.indexOf('')] = '●';
+          _privatePass[_privatePass.indexOf('')] = number;
         });
-        Fluttertoast.showToast(msg: '비밀번호가 맞지 않습니다.');
+      }
+
+      if (_showPass.indexOf('') == -1){
+        setState(() {
+          _passCheckCnt = 1;
+          _showPass = ['','','','',];
+        });
       }
     }
+    else{
+      if (_showPass.indexOf('') >= 0) {
+        setState(() {
+          _showPass[_showPass.indexOf('')] = '●';
+          _privatePass_2[_privatePass_2.indexOf('')] = number;
+        });
+      }
+
+      if (_showPass.indexOf('') == -1){
+        print(_privatePass);
+        print(_privatePass_2);
+        if (_privatePass.join() == _privatePass_2.join()){
+          Fluttertoast.showToast(msg: '비밀번호가 설정되었습니다.');
+          _prefs.setString('secret_number', _privatePass.join(''));
+          Navigator.pop(context, 'OK');
+        }else{
+          Fluttertoast.showToast(msg: '비밀번호가 맞지 않습니다. 다시 설정해주세요..');
+          setState(() {
+            _passCheckCnt = 0;
+            _showPass = ['','','','',];
+            _privatePass = ['','','','',];
+            _privatePass_2 = ['','','','',];
+          });
+        }
+      }
+    }
+  }
+
+  void _backArrow(){
+    if (_passCheckCnt == 0) {
+      if (_showPass.indexOf('') == 0) {
+        return;
+      }
+
+      if (_showPass.indexOf('') > 0) {
+        setState(() {
+          _showPass[_showPass.indexOf('') - 1] = '';
+          _privatePass[_privatePass.indexOf('') - 1] = '';
+        });
+        return;
+      }
+
+      if (_showPass.indexOf('') == -1) {
+        setState(() {
+          _showPass[3] = '';
+          _privatePass[3] = '';
+        });
+        return;
+      }
+    }
+    else{
+      if (_showPass.indexOf('') == 0) {
+        return;
+      }
+
+      if (_showPass.indexOf('') > 0) {
+        setState(() {
+          _showPass[_showPass.indexOf('') - 1] = '';
+          _privatePass_2[_privatePass_2.indexOf('') - 1] = '';
+        });
+        return;
+      }
+
+      if (_showPass.indexOf('') == -1) {
+        setState(() {
+          _showPass[3] = '';
+          _privatePass_2[3] = '';
+        });
+        return;
+      }
+    }
+
+
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _initSharedPreferences();
 
     for(var i=9 ; i > 0; i--){
       _btnList.add(
@@ -73,7 +153,7 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   @override
-  void didUpdateWidget(LockScreen oldWidget) {
+  void didUpdateWidget(LockSettingScreen oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }
@@ -90,8 +170,16 @@ class _LockScreenState extends State<LockScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              SizedBox(height: maxHeight / 5,),
-              Text('비밀번호', style: Mnote.textFiledLabel,),
+              SizedBox(height: maxHeight / 20,),
+              Row(
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.keyboard_backspace, color: Colors.black,), onPressed: ()=>{
+                    Navigator.pop(context)
+                  }),
+                ],
+              ),
+              SizedBox(height: maxHeight / 10,),
+              Text(_passCheckString[_passCheckCnt], style: Mnote.textFiledLabel,),
               SizedBox(height: maxHeight / 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -223,26 +311,7 @@ class _LockScreenState extends State<LockScreen> {
                   ),
                   MaterialButton(
                     onPressed: (){
-                      if (_showPass.indexOf('') == 0) {
-                        return;
-                      }
-
-                      if (_showPass.indexOf('') > 0) {
-                        setState(() {
-                          _showPass[_showPass.indexOf('') - 1] = '';
-                          _privatePass[_privatePass.indexOf('') - 1] = '';
-                        });
-                        return;
-                      }
-
-                      if (_showPass.indexOf('') == -1) {
-                        setState(() {
-                          _showPass[3] = '';
-                          _privatePass[3] = '';
-                        });
-                        return;
-                      }
-
+                      _backArrow();
                     },
                     child: _btnList[10],
                   ),
@@ -251,7 +320,7 @@ class _LockScreenState extends State<LockScreen> {
             ],
           ),
           Opacity(
-            opacity: 0.0,
+            opacity: 1.0,
             child:
             MaterialButton(
               onPressed: () => {

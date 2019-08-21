@@ -12,7 +12,7 @@ class Mnote {
   static String homeEditMode = 'ON'; // ON / OFF
   static String todayAlarmMode = 'OFF'; // ON / OFF
   static String secretMode = 'OFF'; // ON / OFF
-  static String secretNumber = '1234';
+  static String secretNumber = '';
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =

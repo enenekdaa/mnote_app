@@ -112,16 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('무제노트',),
         actions: <Widget>[
           // 작성완료 버튼 보임/숨김 처리
-          visibilityEditFinishBtn == false || currentPageIndex == 1
-              ? FlatButton(
-            child: Text(''),
-            onPressed: () => null,
-          )
+          visibilityEditFinishBtn == false
+              ? FlatButton(child: Text(''),onPressed: () => null,)
               : FlatButton(
-            child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
-            padding: EdgeInsets.only(right: 30),
-            onPressed: () => _editFinishBtnClick(),
-          )
+                  child: Text('작성완료', style: Mnote.appBarRightOkBtnText),
+                  padding: EdgeInsets.only(right: 30),
+                  onPressed: () => _editFinishBtnClick(),
+                )
         ],
       ),
       body: PageView(
