@@ -65,7 +65,7 @@ class _OpenNoteBookListScreenState extends State<OpenNoteBookListScreen> {
     double maxHeight = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Mnote.nightModeBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading:
@@ -91,7 +91,7 @@ class _OpenNoteBookListScreenState extends State<OpenNoteBookListScreen> {
                   children: <Widget>[
                     Text(
                       '공개 노트',
-                      style: Mnote.textFiledLabel,
+                      style: TextStyle(color: Mnote.nightModeTextColor, fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     OrangeLine()
                   ],
@@ -157,7 +157,7 @@ class _OpenNoteBookListScreenState extends State<OpenNoteBookListScreen> {
           width: MediaQuery.of(context).size.width / 3.5,
           child: Text(
             book.bookTitle,
-            style: Mnote.noteBoxBottomText,
+            style: TextStyle(fontSize: 15, color: Mnote.nightModeTextColor),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

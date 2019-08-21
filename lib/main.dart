@@ -22,6 +22,8 @@ import 'package:mnote_app/page/daily_view_list_screen.dart';
 import 'package:mnote_app/page/daily_my_screen.dart';
 import 'package:mnote_app/page/daily_main_screen.dart';
 import 'package:mnote_app/page/daily_view_screen.dart';
+import 'package:mnote_app/utils/mnote.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var routes = <String, WidgetBuilder>{
   "/home": (BuildContext context) => HomeScreen(),
@@ -49,16 +51,28 @@ var routes = <String, WidgetBuilder>{
   "/navigation": (BuildContext context) => NavigationScreen(),
 };
 
-void main() {
+void main() async{
 //  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
 //    systemNavigationBarColor: Colors.black,
 //    statusBarColor: Colors.black,
 //  ));
-  runApp(MyApp());
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  // 글꼴 설정
+  if(_prefs.getKeys().contains('default_font_family')){
+    print(_prefs.get('default_font_family'));
+    Mnote.defaultFontFamily = _prefs.get('default_font_family');
+  }else{
+    _prefs.setString('default_font_family', 'MNote');
+  }
+
+  runApp(MyApp(fontFamily: Mnote.defaultFontFamily));
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  final String fontFamily;
+
+  MyApp({this.fontFamily});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,7 +80,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Colors.blue,
           accentColor: Colors.black12,
-          fontFamily: 'MNote'),
+          fontFamily: fontFamily
+      ),
       home: SplashScreen(),
       routes: routes,
       debugShowMaterialGrid: false,

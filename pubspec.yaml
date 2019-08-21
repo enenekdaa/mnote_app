@@ -74,6 +74,10 @@ flutter:
     - family: MNote
       fonts:
         - asset: fonts/Arita-buriM.ttf
+    - family: MNoteNanum
+      fonts:
+        - asset: fonts/NanumBarunGothic.ttf
+
   #        - asset: fonts/Arita-buriL.ttf
   #        - asset: fonts/Arita-buriSB.ttf
   #   - family: Trajan Pro

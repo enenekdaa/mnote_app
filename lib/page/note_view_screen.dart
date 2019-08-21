@@ -183,7 +183,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
             SizedBox(width: 20,)
           ],
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Mnote.nightModeBackgroundColor,
         body:
         widget.chapterList.length - 1 == widget.idx // 마지막인 페이지인 경우에만 우측 슬라이드 가능하도록 한다.
             ? PageView(
@@ -231,7 +231,10 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                               chapterModel.chapterTitle,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
-                                              style: Mnote.noteTitleFiledHint,
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  color: Mnote.nightModeTextColor
+                                              ),
                                             ),
                                             SizedBox(
                                               height: 10,
@@ -240,15 +243,20 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                             Container(
                                               margin: EdgeInsets.only(bottom: 15),
                                               child:
-                                              Text(Mnote.getDateFormat_2(chapterModel.chapterStartDate), textAlign: TextAlign.justify,
-                                                  style: Mnote.noteSubTitleFiledHint,)
+                                              Text(Mnote.getDateFormat_2(chapterModel.chapterStartDate),
+                                                textAlign: TextAlign.justify,
+                                                style: Mnote.noteSubTitleFiledHint,)
                                             ),
                                             // 주황색 선
                                             OrangeLine(),
                                             SizedBox(height: 2,),
                                             Text(chapterModel.contents,
                                               textAlign: TextAlign.justify,
-                                              style: TextStyle(height: 1.5, fontSize: 16),
+                                              style: TextStyle(
+                                                  height: 1.5,
+                                                  fontSize: 16,
+                                                  color: Mnote.nightModeTextColor
+                                              ),
                                             )
                                           ],
                                         ),
@@ -347,7 +355,10 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                           chapterModel.chapterTitle,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: Mnote.noteTitleFiledHint,
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              color: Mnote.nightModeTextColor
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 12,
@@ -363,7 +374,11 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                         SizedBox(height: 12,),
                                         Text(chapterModel.contents,
                                           textAlign: TextAlign.justify,
-                                          style: TextStyle(height: 1.5, fontSize: 16),
+                                          style: TextStyle(
+                                              height: 1.5,
+                                              fontSize: 16,
+                                              color: Mnote.nightModeTextColor
+                                          ),
                                         )
                                       ],
                                     ),

@@ -179,7 +179,7 @@ class _SignUpScreen extends State<SignUnScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Mnote.black, width: 0.3)),
+                          border: Border.all(color: Mnote.mnoteBlack, width: 0.3)),
                     )
                   ],
                 ),
@@ -247,7 +247,7 @@ class _SignUpScreen extends State<SignUnScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Mnote.black, width: 0.3)),
+                          border: Border.all(color: Mnote.mnoteBlack, width: 0.3)),
                     )
                   ],
                 ),

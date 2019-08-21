@@ -99,7 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Mnote.nightMode == 'OFF'
+          ? Colors.white
+          : Mnote.nightModeBackgroundColor,
+          //: Mnote.homeEditMode == 'ON' && currentPageIndex == 0
+          //? Mnote.mnoteEditBackgroundColor
+          //: Mnote.homeEditMode == 'OFF' && currentPageIndex == 1
+          //? Mnote.mnoteEditBackgroundColor
+          //: Colors.white,
       drawer: NavigationScreen(),
       appBar: AppBar(
         backgroundColor: Colors.black,

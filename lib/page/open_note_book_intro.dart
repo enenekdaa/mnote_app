@@ -69,7 +69,7 @@ class _OpenNoteBookIntroScreenState extends State<OpenNoteBookIntroScreen> {
           SizedBox(width: 10,)
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Mnote.nightModeBackgroundColor,
       body: Container(
         margin: EdgeInsets.all(MediaQuery.of(context).size.width / 15),
         child:
@@ -79,17 +79,17 @@ class _OpenNoteBookIntroScreenState extends State<OpenNoteBookIntroScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: MediaQuery.of(context).size.width / 15,),
-              Text(bookTitle, maxLines: 1, style: Mnote.noteTitleFiledHint,),
+              Text(bookTitle, maxLines: 1, style: TextStyle(fontSize: 24, color: Mnote.nightModeTextColor),),
               SizedBox(height: 10,),
               Text(bookSubtitle, style: Mnote.noteSubTitleFiledHint,),
               SizedBox(height: MediaQuery.of(context).size.width / 15,),
-              Text(bookIntro, style: Mnote.textBlack_16,),
+              Text(bookIntro, style: TextStyle(fontSize: 16, color: Mnote.nightModeTextColor),),
               SizedBox(height: MediaQuery.of(context).size.width / 15,),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text(bookWriterName, style: Mnote.textBlackUnder_16,),
+                  Text(bookWriterName, style: TextStyle(fontSize: 16, color: Mnote.nightModeTextColor, decoration: TextDecoration.underline),),
                 ],
               )
             ],

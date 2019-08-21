@@ -319,19 +319,19 @@ class _LockSettingScreenState extends State<LockSettingScreen> {
               ),
             ],
           ),
-          Opacity(
-            opacity: 1.0,
-            child:
-            MaterialButton(
-              onPressed: () => {
-                Navigator.popAndPushNamed(context, '/home')
-              },
-              color: Mnote.orange,
-              minWidth: MediaQuery.of(context).size.width,
-              height: 60,
-              child: Text('설정하기', style: Mnote.screenBottomBtnWText,),
-            )
-          ),
+//          Opacity(
+//            opacity: 1.0,
+//            child:
+//            MaterialButton(
+//              onPressed: () => {
+//                Navigator.popAndPushNamed(context, '/home')
+//              },
+//              color: Mnote.orange,
+//              minWidth: MediaQuery.of(context).size.width,
+//              height: 60,
+//              child: Text('설정하기', style: Mnote.screenBottomBtnWText,),
+//            )
+//          ),
         ],
       )
     );

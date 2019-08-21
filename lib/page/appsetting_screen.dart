@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/dialog/font_dialog.dart';
 import 'package:mnote_app/page/lock_setting_screen.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,13 +20,33 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
 
   String tv = 'http://www.abc.com';
 
+  String _defaultFontFamily;
+
   void _nightModeChanged(){
     if (_nightMode){
-
+      setState(() => _nightMode = false);
+      _prefs.setString('night_mode', 'OFF');
+      Mnote.nightMode = 'OFF';
+      Mnote.nightModeBackgroundColor = Colors.white;
+      Mnote.nightModeTextColor = Colors.black;
     }
     else{
-
+      setState(() => _nightMode = true);
+      _prefs.setString('night_mode', 'ON');
+      Mnote.nightMode = 'ON';
+      Mnote.nightModeBackgroundColor = Color.fromRGBO(46, 46, 46, 1);
+      Mnote.nightModeTextColor = Color.fromRGBO(255, 255, 255, 1);
     }
+  }
+
+  void _fontModeClick(){
+    showDialog(context: context, builder: (_) => FontDialog()).then((result){
+      if (result != null && result != _defaultFontFamily){
+        _prefs.setString('default_font_family', result);
+        Fluttertoast.showToast(msg: '폰트가 변경되었습니다. 앱을 재시작해주세요.');
+        return;
+      }
+    });
   }
 
   void _secretChanged() {
@@ -71,6 +93,8 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     _firstWrite = Mnote.homeEditMode == 'ON';
     _todayAlarm = Mnote.todayAlarmMode == 'ON';
     _secret = Mnote.secretMode == 'ON';
+    _nightMode = Mnote.nightMode == 'ON';
+    _defaultFontFamily = Mnote.defaultFontFamily;
   }
 
   @override
@@ -116,7 +140,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
             Container(
               padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               child: GestureDetector(
-                onTap: () => {},
+                onTap: () => _fontModeClick(),
                 child: Container(
                   child: Text('글꼴 선택', style: TextStyle(fontSize: 18),),
                 ),

@@ -92,8 +92,8 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                       items: <String>['구독하기', '노트보기', '신고하기'].map((String value) {
                         return new DropdownMenuItem<String>(
                           value: value,
-                          child: GestureDetector(
-                            onTap: ()=>_boxTopRightMenuBtnClick(value),
+                          child: MaterialButton(
+                            onPressed: ()=>_boxTopRightMenuBtnClick(value),
                             child: Text(value),
                           ),
                         );

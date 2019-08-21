@@ -70,7 +70,9 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
                   book != null ? book.bookTitle : '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: Mnote.noteTitleFiledHint,
+                  style: TextStyle(
+                      fontSize: 24, color: Mnote.nightModeTextColor
+                  ),
                 ),
                 SizedBox(
                   height: 10,
@@ -90,7 +92,7 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
                   children: <Widget>[
                     Text('발행', style: Mnote.textHint_13_5,),
                     SizedBox(width: 10,),
-                    Text(book != null ? book.bookStartDate : '', style: Mnote.textBlack_13_5),
+                    Text(book != null ? book.bookStartDate : '', style: TextStyle(fontSize: 13.5, color: Mnote.nightModeTextColor)),
                   ],
                 ),
                 SizedBox(
@@ -100,7 +102,7 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
                   children: <Widget>[
                     Text('저자', style: Mnote.textHint_13_5,),
                     SizedBox(width: 10,),
-                    Text(book != null ? book.writerName : '', style: Mnote.textBlack_13_5),
+                    Text(book != null ? book.writerName : '', style: TextStyle(fontSize: 13.5, color: Mnote.nightModeTextColor)),
                   ],
                 ),
                 SizedBox(
@@ -110,7 +112,7 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
                   children: <Widget>[
                     Text('펴낸곳', style: Mnote.textHint_13_5,),
                     SizedBox(width: 10,),
-                    Text('무제노트', style: Mnote.textBlack_13_5),
+                    Text('무제노트', style: TextStyle(fontSize: 13.5, color: Mnote.nightModeTextColor)),
                   ],
                 ),
               ],
@@ -123,7 +125,7 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
               children: <Widget>[
                 Text('UNBN 19-004-000001', style: Mnote.noteSubTitleFiledHint,),
                 SizedBox(height: 10,),
-                Text('무제노트', style: Mnote.noteSubTitleFiled,)
+                Text('무제노트', style: TextStyle(fontSize: 13.5, color: Mnote.nightModeTextColor),)
               ],
             ),
           ),

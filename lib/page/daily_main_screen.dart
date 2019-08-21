@@ -79,7 +79,7 @@ class _DailyMainScreenState extends State<DailyMainScreen> {
           )
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Mnote.nightModeBackgroundColor,
       body:
       Container(
         padding: EdgeInsets.all(30),
@@ -92,7 +92,7 @@ class _DailyMainScreenState extends State<DailyMainScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text(dailyModel.dailyTitle, style: TextStyle(height: 1.5, fontSize: 22.5)),
+                  Text(dailyModel.dailyTitle, style: TextStyle(height: 1.5, fontSize: 22.5, color: Mnote.nightModeTextColor)),
                   SizedBox(height: 20,),
                   Text(dailyModel.dailyDate, style: Mnote.textHint_13_5,),
                 ],
@@ -105,7 +105,7 @@ class _DailyMainScreenState extends State<DailyMainScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(dailyModel.dailySentence,
-                    style: TextStyle(height: 1.8, fontSize: 16),
+                    style: TextStyle(height: 1.8, fontSize: 16, color: Mnote.nightModeTextColor),
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 20,),

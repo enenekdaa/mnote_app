@@ -32,7 +32,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
   // 리스트 조회 (초기화) 기본 전체 작가
   void _initDailyList() async {
     List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
-    List<WriterAll> subList = await getWriterListSub(newPageNo.toString());
+    List<WriterAll> subList = await getWriterListSub(subPageNo.toString());
     setState(() {
       tapList.addAll(newList);
       writerAllList.addAll(newList);
@@ -46,7 +46,6 @@ class _OpenListScreenState extends State<OpenListScreen> {
   // 작가 목록 데이터 가져오기 (무한로딩)
   void _initNewList() async {
     List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
-    print('_initNewList $newPageNo');
     if (newList.length > 0){
       setState(() {
         writerAllList.addAll(newList);
@@ -61,7 +60,6 @@ class _OpenListScreenState extends State<OpenListScreen> {
   // 작가 목록 데이터 가져오기 (무한로딩)
   void _initSubList() async {
     List<WriterAll> subList = await getWriterListSub(newPageNo.toString());
-    print('_initNewList $subPageNo');
     if (subList.length > 0){
       setState(() {
         writerSubList.addAll(subList);
@@ -101,6 +99,20 @@ class _OpenListScreenState extends State<OpenListScreen> {
         tapList.addAll(duplicateItems);
       });
     }
+  }
+
+  // 구독하기
+  void _subBtnClick(String writerEmail, int listIndex) async {
+    await updateSubState(writerEmail, tapList[listIndex].subscribeYN == '0' ? '1' : '0');
+    List<WriterAll> subList = await getWriterListSub(subPageNo.toString());
+
+    writerSubList.clear();
+    subPageNo = 1;
+
+    setState(() {
+      writerSubList.addAll(subList);
+      tapList[listIndex].subscribeYN = tapList[listIndex].subscribeYN == '0' ? '1' : '0';
+    });
   }
 
   @override
@@ -265,7 +277,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
           height: MediaQuery.of(context).size.width / 2.7,
           decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Mnote.black, width: 0.5)),
+              border: Border.all(color: Mnote.mnoteBlack, width: 0.5)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -281,7 +293,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
                   ),
                   GestureDetector(
                     onTap: (){
-
+                      _subBtnClick(list[index].writerEmail, index);
                     },
                     child: Image.asset(
                       list[index].subscribeYN == '0'

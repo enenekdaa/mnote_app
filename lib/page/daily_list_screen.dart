@@ -41,7 +41,6 @@ class _DailyListScreenState extends State<DailyListScreen> {
 
   // 하루글감 아이템 클릭시 이동
   void _dailyItemClick(DailyModel dailyModel) {
-    print('dailyListNo: $dailyModel');
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -179,7 +178,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
           height: MediaQuery.of(context).size.width / 2.7,
           decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Mnote.black, width: 0.5)),
+              border: Border.all(color: Mnote.mnoteBlack, width: 0.5)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/dialog/note_chapter_remove_dialog.dart';
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/model/chapter_model.dart';
 import 'package:mnote_app/page/note_view_screen.dart';
@@ -73,6 +74,19 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
             settings: RouteSettings(name: '/daily_main')));
   }
 
+  // 챕터 롱클릭
+  void _chapterLongClick(String chapterNo, int index) {
+    showDialog(
+      context: context,
+      builder: (_) => NoteChapterRemoveDialog(),
+    ).then((result) async {
+      if (result == 'OK'){
+        await deleteChapter(widget.bookNo, chapterNo);
+        _initBookInfo();
+      }
+    });
+  }
+
   // 글쓰기 (챕터 생성)
   void _writeNewChapterClick() async {
     // TODO:: 글쓰기 new_chapter: null ERROR
@@ -132,7 +146,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
         ],
       ),
       body: Container(
-        color: Colors.white,
+        color: Mnote.nightModeBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -160,7 +174,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                       },
                       child: Text(bookTitle,
                         maxLines: 1,
-                        style: Mnote.noteTitleFiledHint,
+                        style: TextStyle(fontSize: 24, color: Mnote.nightModeTextColor),
                       ),
                     ),
                     // 하루글감일 경우 서브 텍스트는 안보임
@@ -189,7 +203,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                     )
                         : Row(crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[Text(bookWriterName, style: Mnote.textBlackUnder_16,),],)
+                              children: <Widget>[Text(bookWriterName, style: TextStyle(fontSize: 16, color: Mnote.nightModeTextColor, decoration: TextDecoration.underline),),],)
                   ],
                 ),
               ),
@@ -220,6 +234,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   Widget _note(int index, List<ChapterModel> noteList) {
     return GestureDetector(
         onTap: () => _chapterClick(noteList[index].chapterNo, index),
+        onLongPress: () => _chapterLongClick(noteList[index].chapterNo, index),
         child: Padding(
           padding: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 20),
           child: Row(
@@ -238,7 +253,10 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
                   noteList[index].chapterTitle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Mnote.black, fontSize: 16),
+                  style: TextStyle(
+                      color: Mnote.nightModeTextColor,
+                      fontSize: 16
+                  ),
                 ),
               ),
             ],

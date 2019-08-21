@@ -6,7 +6,7 @@ class WriterAll {
 
   final String bookCount;
   final String subscribeCount;
-  final String subscribeYN;
+  String subscribeYN;
 
 
   WriterAll({this.writerEmail, this.writerName, this.writerIntro, this.bookCount,

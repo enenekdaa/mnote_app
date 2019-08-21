@@ -71,20 +71,27 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   }
 
   void _changeTextAlignmentValue(String align){
+    Mnote.alignValue = align;
 
-    widget.textAlignmentValue = align;
     String origin =  widget.contentsController.text;
     String temp = origin + ' ';
-    widget.contentsController.clear();
-    widget.contentsController.text = temp;
+    // widget.contentsController.clear();
 
     var cursorPos = widget.contentsController.selection;
     int offset = origin.length;
     cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
 
     setState(() {
+      widget.textAlignmentValue = align;
+      widget.contentsController.text = temp;
       widget.contentsController.selection = cursorPos;
     });
+
+    if(widget.contentsFocusNode.hasFocus){
+      // widget.contentsFocusNode.unfocus();
+    }else{
+      FocusScope.of(context).requestFocus(widget.contentsFocusNode);
+    }
   }
 
   @override
@@ -101,6 +108,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     if (widget.chapterModel != null){
       _initChapterDetail();
     }
+
+    Mnote.alignValue = chapterModel.contentsAlignCenter;
   }
 
   @override
@@ -153,10 +162,15 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                               }
                             },
                             controller: widget.titleController,
-                            style: Mnote.noteTitleFiledHint,
+                            style: TextStyle(
+                                fontSize: 24, color: Mnote.nightModeTextColor
+                            ),
                             decoration: InputDecoration(
                                 hintText: '제목을 입력해주세요.',
-                                hintStyle: Mnote.noteTitleFiledHint,
+                                hintStyle: TextStyle(
+                                  fontSize: 24,
+                                  color: Mnote.nightModeTextColor
+                                ),
                                 border: InputBorder.none,
                             ),
                             enabled: widget.mode != 'daily',
@@ -194,20 +208,25 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                         : TextAlign.right,
                     focusNode: widget.contentsFocusNode,
                     controller: widget.contentsController,
-                    style: TextStyle(height: 1.5, fontSize: 16),
+                    style: TextStyle(height: 1.5, fontSize: 16, color: Mnote.nightModeTextColor,),
                     decoration: InputDecoration(
                       hintText: '내용을 입력해주세요.',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Mnote.nightModeBackgroundColor,
                       border: InputBorder.none,
-                      hintStyle: TextStyle(fontSize: 16),
+                      hintStyle: TextStyle(
+                          fontSize: 16,
+                          color: Mnote.nightModeTextColor,
+                      ),
                     ),
                   ),
                 ),
               ),
+              SizedBox(height: visibilityEditor ? 30 : 1,)
             ],
           ),
         ),
+        SizedBox(height: 30,),
         // 키보드 에디터 바
         visibilityEditor
             ? Container(

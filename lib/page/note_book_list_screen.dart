@@ -81,9 +81,18 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
     });
     // 서버에서 값 가져오는 시간
     Timer(Duration(milliseconds: 500), () {
-      setState(() {
-        _myNoteBookList.add(BookModel(bookTitle: '**&&**new book add**&&**'));
+      bool isNewBookBtnAdded = false;
+      _myNoteBookList.forEach((noteBook){
+        if (noteBook.bookTitle ==  '**&&**new book add**&&**'){
+          isNewBookBtnAdded = true;
+        }
       });
+
+      if (isNewBookBtnAdded == false){
+        setState(() {
+          _myNoteBookList.add(BookModel(bookTitle: '**&&**new book add**&&**'));
+        });
+      }
     });
   }
 
@@ -139,7 +148,11 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
                   children: <Widget>[
                     Text(
                       '나의 노트',
-                      style: Mnote.textFiledLabel,
+                      style: TextStyle(
+                          color: Mnote.nightModeTextColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                     OrangeLine()
                   ],
@@ -171,7 +184,11 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
                         Expanded(
                           child: Text(
                             '공개 노트',
-                            style: Mnote.textFiledLabel,
+                            style: TextStyle(
+                                color: Mnote.nightModeTextColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                            ),
                           ),
                         ),
                         /*SizedBox(
@@ -261,7 +278,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
                 // image: NetworkImage('http://icomerict.cafe24.com/untitled_note/cover/1.jpg'),
                 fit: BoxFit.cover
             ),
-            //color: Colors.black12
+            color: Mnote.nightModeBackgroundColor,
           ),
 // 책 제목 영역
 //          child: Text(
@@ -275,7 +292,10 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
           width: MediaQuery.of(context).size.width / 3.5,
           child: Text(
             book.bookTitle,
-            style: Mnote.noteBoxBottomText,
+            style: TextStyle(
+              fontSize: 15,
+              color: Mnote.nightModeTextColor
+            ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

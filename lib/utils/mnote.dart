@@ -13,6 +13,12 @@ class Mnote {
   static String todayAlarmMode = 'OFF'; // ON / OFF
   static String secretMode = 'OFF'; // ON / OFF
   static String secretNumber = '';
+  static String nightMode  = 'OFF';
+  static String defaultFontFamily = 'MNote'; // MNoteNanum
+
+  // edit status
+  static String alignValue = '0'; // 0,1,2,3
+  
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
@@ -23,8 +29,7 @@ class Mnote {
   TextStyle(color: Colors.black, fontSize: 20);
 
   // 기본 본문 타이틀 필드 라벨 텍스트
-  static TextStyle textFiledLabel =
-  TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
+  static TextStyle textFiledLabel = TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
   static TextStyle textFiledLabelDisabled =
   TextStyle(color: Colors.grey, fontSize: 18);
 
@@ -32,8 +37,7 @@ class Mnote {
   static TextStyle textFiledHint = TextStyle(color: Colors.black12,);
 
   // 노트 제목 텍스트 필드 힌트 텍스트
-  static TextStyle noteTitleFiledHint = TextStyle(
-      fontSize: 24, color: Colors.black);
+  static TextStyle noteTitleFiledHint = TextStyle(fontSize: 24, color: Colors.black);
 
   // 노트 부제목 텍스트 필드 힌트 텍스트
   static TextStyle noteSubTitleFiledHint = TextStyle(fontSize: 15, color: gray153);
@@ -73,7 +77,11 @@ class Mnote {
   static Color gray245 = Color.fromRGBO(245, 245, 245, 1);
 
   // 블랙 컬러
-  static Color black = Color.fromRGBO(46, 46, 46, 1);
+  static Color mnoteBlack = Color.fromRGBO(46, 46, 46, 1);
+
+  // 야간모드에 따른  배경 색
+  static Color nightModeBackgroundColor = Colors.white; // or Color.fromRGBO(46, 46, 46, 1) splash_screen 에서 설정
+  static Color nightModeTextColor = Colors.black; // or Color.fromRGBO(46, 46, 46, 1) splash_screen 에서 설정
 
   // 날짜 포멧 1
   static String getDateFormat_1(String date){

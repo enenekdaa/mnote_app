@@ -4,6 +4,7 @@ import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/service/books_chapter_service.dart';
 import 'package:mnote_app/service/books_my_service.dart';
+import 'package:mnote_app/utils/mnote.dart';
 
 import 'package:mnote_app/utils/my_navigator.dart';
 
@@ -46,7 +47,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
 
   // 챕터 업데이트
   void _updateChapter(String bookNo, String chapterNo) async {
-    await updateChapter(bookNo, chapterNo, widget.title, widget.contents, '0').then((result){
+    await updateChapter(bookNo, chapterNo, widget.title, widget.contents, Mnote.alignValue).then((result){
       if (result != 'fail'){
         Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
         Navigator.pop(context, bookNo);

@@ -70,7 +70,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
         ],
       ),
       body: Container(
-        color: Colors.white,
+        color: Mnote.nightModeBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -91,7 +91,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
                       onTap: () => {MyNavigator.goToNoteBookEdit(context)},
                       child: Text(
                         bookTitle,
-                        style: Mnote.noteTitleFiledHint,
+                        style: TextStyle(fontSize: 24, color: Mnote.nightModeTextColor),
                       ),
                     ),
                     Row(
@@ -99,7 +99,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () => {},
-                          child: Text(bookSubtitle,style: TextStyle(decoration: TextDecoration.underline, fontSize: 16),),
+                          child: Text(bookSubtitle,style: TextStyle(decoration: TextDecoration.underline, fontSize: 16, color: Mnote.nightModeTextColor),),
                         ),
                       ],
                     ),
@@ -144,7 +144,7 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
                   noteList[index].chapterTitle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Mnote.black, fontSize: 16),
+                  style: TextStyle(color: Mnote.nightModeTextColor, fontSize: 16), //Mnote.mnoteBlack
                 ),
               ),
             ],

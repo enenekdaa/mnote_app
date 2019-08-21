@@ -64,7 +64,18 @@ class _SplashScreenState extends State<SplashScreen> {
         _prefs.setString('secret_mode', 'OFF');
         _prefs.setString('secret_number', '');
       }
+      // 야간모드 모드 설정
+      if(_prefs.getKeys().contains('night_mode')){
+        Mnote.nightMode = _prefs.get('night_mode');
+        if (Mnote.nightMode == 'ON'){
+          Mnote.nightModeBackgroundColor = Color.fromRGBO(46, 46, 46, 1);
+          Mnote.nightModeTextColor = Color.fromRGBO(255, 255, 255, 1);
+        }
+      }else{
+        _prefs.setString('night_mode', 'OFF');
+      }
 
+      // 자동 로그인 설정
       if (_prefs.getKeys().contains('auto_login')) {
         _prefs.get('auto_login') == 'true'
             ? _login(_prefs.get('auto_email'), _prefs.get('auto_pw'))

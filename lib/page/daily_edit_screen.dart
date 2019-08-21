@@ -39,7 +39,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
   void _saveChapter() async {
     String result = await writeNewChapter('1');
     if (result != 'fail'){
-      _updateChapter('1', result);
+      _updateChapter('1', result); // '1' = 하루글감
     }else{
       Fluttertoast.showToast(msg: '챕터 신규 생성에 실패하였습니다.');
     }
@@ -47,7 +47,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
 
   // 챕터 업데이트
   void _updateChapter(String bookNo, String chapterNo) async {
-    await updateChapter(bookNo, chapterNo, widget.dailyModel.dailyTitle, contentsController.text, '0').then((result){
+    await updateChapter(bookNo, chapterNo, widget.dailyModel.dailyTitle, contentsController.text, Mnote.alignValue).then((result){
       if (result != 'fail'){
         Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
         Navigator.pop(context);
@@ -136,7 +136,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
                     )
             ],
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Mnote.nightModeBackgroundColor,
           body: NoteEditScreen(
             chapterModel: ChapterModel(
                 chapterTitle: widget.dailyModel.dailyTitle,

@@ -22,6 +22,7 @@ class DailyViewListScreen extends StatefulWidget {
 class _DailyViewListScreenState extends State<DailyViewListScreen> {
   int pageNo = 1;
   List<DailyWritings> dailyList = [];
+  ScrollController _scrollController = ScrollController();
 
   // 리스트 조회 (초기화)
   void _initDailyList() async{
@@ -112,6 +113,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: dailyList.length,
+                    controller: _scrollController,
                     itemBuilder: (BuildContext context, int index) {
                       if (index >= dailyList.length -1) {
                         _initDailyList();
@@ -122,7 +124,12 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
             ],
           )
       ),
-      floatingActionButton: FlatButton(onPressed: ()=>{}, child: Image.asset('images/icons/00_btn_top.png', scale: 1.6,)),
+      floatingActionButton: FlatButton(
+          onPressed: () {
+            _scrollController.animateTo(
+                0.0, duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut);
+          }, child: Image.asset('images/icons/00_btn_top.png', scale: 1.6,)),
     );
   }
 
@@ -133,10 +140,10 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
           margin: EdgeInsets.only(bottom: 15),
           padding: EdgeInsets.all(10),
           height: MediaQuery.of(context).size.width / 1.2,
-          decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Mnote.black, width: 0.5)),
+          decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Mnote.mnoteBlack, width: 0.5)),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -149,10 +156,19 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                 child: Text(noteList[index].chapterTitle, style: Mnote.textBlack_20,),),
               Expanded(
                 flex: 5,
-                child: Text(
-                  noteList[index].contents,
-                  style: TextStyle(color: Mnote.gray153, fontSize: 16, height: 1.5,),
-                  textAlign: TextAlign.center,),
+                child: Row(
+                  mainAxisAlignment: noteList[index].contentsAlignCenter == '0'
+                      ? MainAxisAlignment.start
+                      : noteList[index].contentsAlignCenter == '1'
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      noteList[index].contents,
+                      style: TextStyle(color: Mnote.gray153, fontSize: 16, height: 1.5,),
+                    ),
+                  ],
+                )
               ),
               Expanded(
                 child: Text(noteList[index].writerName, style: TextStyle(decoration: TextDecoration.underline, ),),
