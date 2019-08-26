@@ -31,8 +31,8 @@ class _OpenListScreenState extends State<OpenListScreen> {
 
   // 리스트 조회 (초기화) 기본 전체 작가
   void _initDailyList() async {
-    List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
-    List<WriterAll> subList = await getWriterListSub(subPageNo.toString());
+    List<WriterAll> newList = await getWriterListAll(context, newPageNo.toString());
+    List<WriterAll> subList = await getWriterListSub(context, subPageNo.toString());
     setState(() {
       tapList.addAll(newList);
       writerAllList.addAll(newList);
@@ -45,7 +45,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
   
   // 작가 목록 데이터 가져오기 (무한로딩)
   void _initNewList() async {
-    List<WriterAll> newList = await getWriterListAll(newPageNo.toString());
+    List<WriterAll> newList = await getWriterListAll(context, newPageNo.toString());
     if (newList.length > 0){
       setState(() {
         writerAllList.addAll(newList);
@@ -59,7 +59,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
   
   // 작가 목록 데이터 가져오기 (무한로딩)
   void _initSubList() async {
-    List<WriterAll> subList = await getWriterListSub(newPageNo.toString());
+    List<WriterAll> subList = await getWriterListSub(context, newPageNo.toString());
     if (subList.length > 0){
       setState(() {
         writerSubList.addAll(subList);
@@ -103,16 +103,19 @@ class _OpenListScreenState extends State<OpenListScreen> {
 
   // 구독하기
   void _subBtnClick(String writerEmail, int listIndex) async {
-    await updateSubState(writerEmail, tapList[listIndex].subscribeYN == '0' ? '1' : '0');
-    List<WriterAll> subList = await getWriterListSub(subPageNo.toString());
+    await updateSubState(context, writerEmail, tapList[listIndex].subscribeYN == '0' ? '1' : '0');
 
     writerSubList.clear();
     subPageNo = 1;
+
+    List<WriterAll> subList = await getWriterListSub(context, subPageNo.toString());
 
     setState(() {
       writerSubList.addAll(subList);
       tapList[listIndex].subscribeYN = tapList[listIndex].subscribeYN == '0' ? '1' : '0';
     });
+
+    subPageNo++;
   }
 
   @override

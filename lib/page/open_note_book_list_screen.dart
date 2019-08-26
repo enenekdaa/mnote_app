@@ -27,7 +27,7 @@ class _OpenNoteBookListScreenState extends State<OpenNoteBookListScreen> {
 
   // 공개 노트 초기화
   void _initOtherNoteBooks() async{
-    List<BookModel> bookList =  await getBookOtherList(widget.email);
+    List<BookModel> bookList =  await getBookOtherList(context, widget.email);
     List<BookModel> tempList = [];
     bookList.forEach((book){
       if(book.bookTitle.trim() != '') {

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mnote_app/model/sign_model.dart';
+import 'package:mnote_app/service/refresh_token_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mnote {
 
   static double deviceWidth = 0.0;
-  static String accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTg5NDIyMjYsIm5iZiI6MTU1ODk0MjIyNiwianRpIjoiYVdOdmJXVnlYM1J2YTJWdVNVUT0iLCJleHAiOjE1OTAwNDYyMjYsImVtYWlsIjoia2RtNzE3M0BnbWFpbC5jb20ifQ.VfuUXV3Tc0e5rMSecrsFrPI64YmROLnIMW6pkns_4OE';
+  static String accessToken = '';
   static String refreshToken = '';
   static String myEmail = '';
   static bool isInApp = false;
@@ -19,7 +22,6 @@ class Mnote {
 
   // edit status
   static String alignValue = '0'; // 0,1,2,3
-  
 
   // 앱바 오른쪽 완료 버튼
   static TextStyle appBarRightOkBtnText =
@@ -115,5 +117,39 @@ class Mnote {
     String endText = originText.substring(position, originText.length);
     String resultText = startText + addText + endText;
     return resultText;
+  }
+
+  // 토큰 만료
+  static Future<bool> tokenErrorCheck(String jsonResponse) async {
+    if (jsonResponse.contains('"error":"Expired token"')){
+      SignModel signModel = await getRefreshToken();
+      if (signModel == null || signModel.accessToken == '' || signModel.refreshToken == ''){
+        return false;
+      }else{
+        Mnote.accessToken = signModel.accessToken;
+        Mnote.refreshToken = signModel.refreshToken;
+        return true;
+      }
+    }
+    if (jsonResponse.contains('"error":"Signature verification failed"')){
+      return false;
+    }
+    // 에러 없을 경우
+    return true;
+  }
+
+  // 전체 설정값 초기화
+  static void logout(SharedPreferences prefs){
+    prefs.setString('auto_login', 'false');
+    prefs.setString('access_token', '');
+    prefs.setString('refresh_token', '');
+    prefs.setString('night_mode', 'OFF');
+    prefs.setString('secret_mode', 'OFF');
+    Mnote.accessToken = '';
+    Mnote.refreshToken = '';
+    Mnote.myEmail = '';
+    Mnote.isInApp = false;
+    Mnote.nightMode  = 'OFF';
+    Mnote.secretMode = 'OFF';
   }
 }

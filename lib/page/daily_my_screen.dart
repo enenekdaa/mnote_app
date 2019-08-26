@@ -29,8 +29,8 @@ class _DailyMyScreenState extends State<DailyMyScreen> {
 
   // 하루글감 정보 로드
   void _initBookInfo() async {
-    BookModel book = await getDailyInfoItem();
-    chapterList = await getDailyDetailItems();
+    BookModel book = await getDailyInfoItem(context, );
+    chapterList = await getDailyDetailItems(context, );
     setState(() {
       bookTitle = book.bookTitle;
       bookSubtitle = book.bookSubtitle;

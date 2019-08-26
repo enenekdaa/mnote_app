@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/sign_model.dart';
-import 'package:mnote_app/service/sign_service.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   SharedPreferences _prefs;
 
   void _login(String email, String pw) async {
-    SignModel signModel = await getSignIn(email, pw);
+    SignModel signModel = await getSignIn(context, email, pw);
 
     if (signModel.result == 'true') {
       _prefs.setString('access_token', signModel.accessToken);

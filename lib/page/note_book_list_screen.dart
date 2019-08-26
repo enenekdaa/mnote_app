@@ -72,7 +72,7 @@ class _NoteBookListScreenState extends State<NoteBookListScreen> with WidgetsBin
 
   // 나의 노트 초기화
   void _initMyNoteBooks() async{
-    List<BookModel> bookList =  await getBooksMy();
+    List<BookModel> bookList =  await getBooksMy(context, );
     _myNoteBookList.clear();
     bookList.forEach((book){
       if(book.bookTitle.trim().replaceAll(' ', '') != '') {

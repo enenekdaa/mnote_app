@@ -57,6 +57,7 @@ Future<List<PurchaseDetails>> getHistoryInApp() async {
 
   }else {
     //연결 실패 ...
+    print('test inapp purchase 연결실패');
   }
 }
 

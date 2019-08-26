@@ -21,7 +21,7 @@ class _NoteLastScreenState extends State<NoteLastScreen> {
 
   // 책 정보 로드
   void _initBookInfo() async{
-    BookModel newBook = await getBookInfoItem(widget.bookNo);
+    BookModel newBook = await getBookInfoItem(context, widget.bookNo);
     setState(() {
       book = newBook;
     });

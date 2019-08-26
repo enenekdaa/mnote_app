@@ -23,7 +23,7 @@ class _DailyMainScreenState extends State<DailyMainScreen> {
 
   // 하루 글감 정보 조회
   void _initDailyToday() async {
-    DailyModel newDailyModel = await getDailyToday();
+    DailyModel newDailyModel = await getDailyToday(context, );
     setState(() {
       dailyModel = newDailyModel;
     });

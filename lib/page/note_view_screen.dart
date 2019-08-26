@@ -44,7 +44,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
         return;
       }
       
-      await updateChapter(widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
+      await updateChapter(context, widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
         if (result != 'fail'){
           Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
           _updateState(widget.bookNo, widget.chapterNo);
@@ -120,8 +120,8 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
 
   void _updateState(bookNo, chapterNo) async {
     ChapterModel updateChapter = widget.bookEmail == ''
-        ? await getChapterDetail(bookNo, chapterNo)
-        : await getBookOtherChapterDetail(widget.bookEmail, bookNo, chapterNo);
+        ? await getChapterDetail(context, bookNo, chapterNo)
+        : await getBookOtherChapterDetail(context, widget.bookEmail, bookNo, chapterNo);
     chapterModel = updateChapter;
     setState(() {
       chapterModel = updateChapter;

@@ -22,6 +22,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
 
   String _defaultFontFamily;
 
+  // 야간모드
   void _nightModeChanged(){
     if (_nightMode){
       setState(() => _nightMode = false);

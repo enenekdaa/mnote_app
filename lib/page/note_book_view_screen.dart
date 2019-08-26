@@ -36,8 +36,8 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   // 책 정보 로드
   void _initBookInfo() async {
     if (widget.otherEmail == ''){
-      BookModel book = await getBookInfoItem(widget.bookNo);
-      chapterList = await getBookDetailItems(widget.bookNo);
+      BookModel book = await getBookInfoItem(context, widget.bookNo);
+      chapterList = await getBookDetailItems(context, widget.bookNo);
       setState(() {
         bookTitle = book.bookTitle;
         bookSubtitle = book.bookSubtitle;
@@ -46,8 +46,8 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
         bookWriterName = book.writerName;
       });
     }else{
-      BookModel book = await getBookOtherWritingsDetail(widget.otherEmail, widget.bookNo);
-      chapterList = await getBookOtherWritingsDetailList(widget.otherEmail, widget.bookNo);
+      BookModel book = await getBookOtherWritingsDetail(context, widget.otherEmail, widget.bookNo);
+      chapterList = await getBookOtherWritingsDetailList(context, widget.otherEmail, widget.bookNo);
       setState(() {
         bookTitle = book.bookTitle;
         bookSubtitle = book.bookSubtitle;
@@ -81,7 +81,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
       builder: (_) => NoteChapterRemoveDialog(),
     ).then((result) async {
       if (result == 'OK'){
-        await deleteChapter(widget.bookNo, chapterNo);
+        await deleteChapter(context, widget.bookNo, chapterNo);
         _initBookInfo();
       }
     });
@@ -93,8 +93,8 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
     // flutter: http://icomerict.cafe24.com/untitled_note/json/write_new_chapter.php
     // flutter: {result: true, new_chapter: null}
 
-    String chapterNo = await writeNewChapter(widget.bookNo);
-    chapterList = await getBookDetailItems(widget.bookNo);
+    String chapterNo = await writeNewChapter(context, widget.bookNo);
+    chapterList = await getBookDetailItems(context, widget.bookNo);
 
     if(chapterNo != 'fail'){
       Navigator.push(
@@ -108,7 +108,7 @@ class _NoteBookViewScreenState extends State<NoteBookViewScreen> {
   }
 
   void _updateBookShowState(String show) async {
-    await updateBookShowState(widget.bookNo, show);
+    await updateBookShowState(context, widget.bookNo, show);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/daily_model.dart';
 import 'package:mnote_app/model/daily_writings.dart';
 import 'package:mnote_app/page/daily_edit_screen.dart';
@@ -19,22 +20,28 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
 
   // 글쓰기 버튼 클릭
   void _editBtnClick() async{
-    DailyModel dailyModel = await getDailyToday();
+    DailyModel dailyModel = await getDailyToday(context, );
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyEditScreen(dailyModel: dailyModel,)));
   }
 
   void _boxTopRightMenuBtnClick(String mode) async{
     if (mode == '구독하기'){
-      await updateSubState(widget.dailyWritings.email, '1');
+      await updateSubState(context, widget.dailyWritings.email, '1');
+      Fluttertoast.showToast(msg: '구독되었습니다.');
+      Navigator.pop(context);
       return;
     }
 
     if (mode == '노트보기'){
+      Navigator.pop(context);
       Navigator.push(context,MaterialPageRoute(builder: (context) => OpenNoteBookListScreen(email: widget.dailyWritings.email,)));
       return;
     }
 
     if (mode == '신고하기'){
+      //TODO:: 신고하기 API 연동
+      Fluttertoast.showToast(msg: '신고되었습니다.');
+      Navigator.pop(context);
       return;
     }
   }

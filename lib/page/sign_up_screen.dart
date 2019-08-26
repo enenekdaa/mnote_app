@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/sign_model.dart';
-import 'package:mnote_app/service/sign_service.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +36,7 @@ class _SignUpScreen extends State<SignUnScreen> {
     String writerName = writerNameController.text;
     String writerIntro = writerIntroController.text;
     SignModel signModel =
-    await getSignUp(email, password, password2, writerName, writerIntro);
+    await getSignUp(context, email, password, password2, writerName, writerIntro);
 
     if (signModel.result == 'true') {
       Fluttertoast.showToast(msg: '회원가입이 완료되었습니다.');
@@ -69,7 +69,7 @@ class _SignUpScreen extends State<SignUnScreen> {
       return;
     }
 
-    emailCheck = await getEmailCheck(email);
+    emailCheck = await getEmailCheck(context, email);
     if (emailCheck) {
       Fluttertoast.showToast(msg: '사용 가능한 이메일 입니다.');
     } else {
@@ -85,7 +85,7 @@ class _SignUpScreen extends State<SignUnScreen> {
       return;
     }
 
-    writerNameCheck = await getWriterNameCheck(name);
+    writerNameCheck = await getWriterNameCheck(context, name);
     if (writerNameCheck) {
       Fluttertoast.showToast(msg: '사용 가능한 필명 입니다.');
     } else {

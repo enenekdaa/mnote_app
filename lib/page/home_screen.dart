@@ -6,6 +6,7 @@ import 'package:mnote_app/service/purchase_service.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/dialog/report_dialog.dart';
 import 'package:mnote_app/utils/mnote.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'navigation_screen.dart';
 import 'note_edit_screen.dart';
@@ -26,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController contentsController = TextEditingController(); // 본문 컨트롤러
   FocusNode titleFocusNode = FocusNode(); // 제목 포커스 노드
   FocusNode contentsFocusNode = FocusNode(); // 내용 포커스 노드
+
+  SharedPreferences _prefs;
 
   void _onPageChanged(int index){
     setState(() {
@@ -70,6 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+  void _initSharedPreferences() {
+    SharedPreferences.getInstance().then((prefs) {
+      _prefs = prefs;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -78,8 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
     noteListPageIndex = Mnote.homeEditMode == 'ON' ? 1 : 0; // 첫화면 글쓰기일 경우 1페이지가 노트리스트페이지 Index
 
     setInitSubscription();
-    super.initState();
     getHistoryInApp();
+
+    _initSharedPreferences();
+
+    super.initState();
   }
 
   @override
@@ -96,9 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     print('home screen didUpdateWidget');
-//    setState(() {
-//      Mnote.homeEditMode;
-//    });
+    _prefs.setString('access_token', Mnote.accessToken);
+    _prefs.setString('refresh_token', Mnote.refreshToken);
   }
 
   @override

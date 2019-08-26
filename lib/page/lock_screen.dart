@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/sign_model.dart';
-import 'package:mnote_app/service/sign_service.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +30,7 @@ class _LockScreenState extends State<LockScreen> {
     if (_showPass.indexOf('') == -1){
       print(_privatePass.join(''));
       if(_privatePass.join('') == Mnote.secretNumber){
-        Navigator.pop(context);
+        //Navigator.pop(context);
         Navigator.pushReplacementNamed(context, '/home');
       }else{
         setState(() {
@@ -138,24 +138,23 @@ class _LockScreenState extends State<LockScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('7');
+                      _changeNumber('1');
                     },
-                    child: _btnList[2],
+                    child: _btnList[8],
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('8');
+                      _changeNumber('2');
                     },
-                    child: _btnList[1],
+                    child: _btnList[7],
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('9');
+                      _changeNumber('3');
                     },
-                    child: _btnList[0],
+                    child: _btnList[6],
                   ),
                 ],
               ),
@@ -185,23 +184,24 @@ class _LockScreenState extends State<LockScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('1');
+                      _changeNumber('7');
                     },
-                    child: _btnList[8],
+                    child: _btnList[2],
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('2');
+                      _changeNumber('8');
                     },
-                    child: _btnList[7],
+                    child: _btnList[1],
                   ),
                   MaterialButton(
                     onPressed: (){
-                      _changeNumber('3');
+                      _changeNumber('9');
                     },
-                    child: _btnList[6],
+                    child: _btnList[0],
                   ),
                 ],
               ),

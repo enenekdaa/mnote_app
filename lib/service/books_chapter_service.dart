@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:mnote_app/model/book_model.dart';
+import 'package:flutter/material.dart';
 import 'package:mnote_app/model/chapter_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mnote_app/utils/mnote.dart';
 
-Future<ChapterModel> getChapterDetail(String bookNo, String chapterNo) async {
+Future<ChapterModel> getChapterDetail(BuildContext context, String bookNo, String chapterNo) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/books_chapter_detail.php';
 
@@ -14,14 +14,17 @@ Future<ChapterModel> getChapterDetail(String bookNo, String chapterNo) async {
     body: {'book_no': bookNo, 'chapter_no': chapterNo},
   );
 
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(jsonResponse);
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     ChapterModel chapterDetail =
     new ChapterModel.fromJson(jsonResponse['chapter_detail']);
     return chapterDetail;
   } else {
-    throw Exception('Failed to load post');
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -44,7 +47,7 @@ Future<ChapterModel> getChapterDetail(String bookNo, String chapterNo) async {
 * row 생성 실패하면 false 출력됩니다.
 */
 
-Future<String> writeNewChapter(String bookNo) async {
+Future<String> writeNewChapter(BuildContext context, String bookNo) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/write_new_chapter.php';
   final response = await http.post(
@@ -54,18 +57,20 @@ Future<String> writeNewChapter(String bookNo) async {
       'book_no': bookNo,
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     if(jsonResponse['result'] == 'true'){
       return jsonResponse['new_chapter']['chapter_no'];
     }else{
       return 'fail';
     }
   } else {
-    print('writeNewChapter() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -88,6 +93,7 @@ Future<String> writeNewChapter(String bookNo) async {
 */
 
 Future<String> updateChapter(
+    BuildContext context,
     String bookNo,
     String chapterNo,
     String chapterTitle,
@@ -108,14 +114,16 @@ Future<String> updateChapter(
       'show': show
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     return jsonResponse['result'];
   } else {
-    print('updateChapter() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -135,6 +143,7 @@ Future<String> updateChapter(
 */
 
 Future<String> deleteChapter(
+    BuildContext context,
     String bookNo,
     String chapterNo,) async {
   String dataURL =
@@ -147,13 +156,15 @@ Future<String> deleteChapter(
       'chapter_no': chapterNo,
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     return jsonResponse['result'];
   } else {
-    print('deleteChapter() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }

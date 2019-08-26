@@ -12,9 +12,9 @@ class SignModel {
   factory SignModel.fromJson(Map<String, dynamic> json) {
     return json != null
         ? SignModel(
-      result : json['result'],
-      accessToken: json['access_token'],
-      refreshToken: json['refresh_token'],
+      result : json['result'] == null ? '' : json['result'],
+      accessToken: json['access_token'] == null ? '' : json['access_token'],
+      refreshToken: json['refresh_token'] == null ? '' : json['refresh_token'],
     ) : null;
   }
 }

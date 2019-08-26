@@ -32,7 +32,8 @@ class _OpenNoteBookIntroScreenState extends State<OpenNoteBookIntroScreen> {
 
   // 책 정보 로드
   void _initBookInfo() async {
-    BookModel book = await getBookOtherIntroList(widget.email, widget.bookNo);
+    BookModel book = await getBookOtherIntroList(context, widget.email, widget.bookNo);
+
     setState(() {
       bookTitle = book.bookTitle;
       bookSubtitle = book.bookSubtitle;

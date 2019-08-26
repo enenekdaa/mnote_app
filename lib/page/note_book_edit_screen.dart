@@ -34,8 +34,8 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
   }
 
   void _initBookInfo() async {
-    //BookModel bookInfo = await getBookInfoItem(widget.bookNo);
-    BookModel bookInfo = await getBooksMyIntro(widget.bookNo);
+    //BookModel bookInfo = await getBookInfoItem(context, widget.bookNo);
+    BookModel bookInfo = await getBooksMyIntro(context, widget.bookNo);
     setState(() {
       bookTitle = bookInfo.bookTitle;
       bookSubTitle = bookInfo.bookSubtitle;
@@ -58,7 +58,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
     }
 
     // TODO:: coverImgNo 설정하기
-    String newBook = await writeNewBook(saveBookTitle, saveBookSubTitle, saveBookIntro, '2', bookShow);
+    String newBook = await writeNewBook(context, saveBookTitle, saveBookSubTitle, saveBookIntro, '2', bookShow);
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) => NoteBookViewScreen(bookNo: newBook)));
   }
@@ -74,7 +74,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
     }
 
     // TODO:: coverImgNo 설정하기
-    String updateBookResult = await updateBook(widget.bookNo, saveBookTitle, saveBookSubTitle, saveBookIntro, '1', bookShow);
+    String updateBookResult = await updateBook(context, widget.bookNo, saveBookTitle, saveBookSubTitle, saveBookIntro, '1', bookShow);
 
     if (updateBookResult == 'true'){
       Fluttertoast.showToast(msg: '성공적으로 수정되었습니다.');
@@ -88,7 +88,7 @@ class _NoteBookEditScreenState extends State<NoteBookEditScreen> {
   }
 
   void _updateBookShowState(String show) async {
-    await updateBookShowState(widget.bookNo, show);
+    await updateBookShowState(context, widget.bookNo, show);
   }
 
   @override

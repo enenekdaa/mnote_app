@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/dialog/find_password_dialog.dart';
 import 'package:mnote_app/model/sign_model.dart';
-import 'package:mnote_app/service/sign_service.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class _SignInScreen extends State<SignInScreen> {
   void _value1Changed(bool value) => setState(() => _isAutoLoginCheck = value);
 
   void _login(String email, String pw) async {
-    SignModel signModel = await getSignIn(email, pw);
+    SignModel signModel = await getSignIn(context, email, pw);
 
     if (signModel.result == 'true') {
       _prefs.setString('access_token', signModel.accessToken);
@@ -47,6 +48,7 @@ class _SignInScreen extends State<SignInScreen> {
   void _initSharedPreferences() {
     SharedPreferences.getInstance().then((prefs) {
       _prefs = prefs;
+      Mnote.logout(prefs); // 설정값 초기화 작업
     });
   }
 
@@ -147,7 +149,12 @@ class _SignInScreen extends State<SignInScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           FlatButton(
-                            onPressed: () => {},
+                            onPressed: (){
+                              showDialog(
+                                context: context,
+                                builder: (_) => FindPasswordDialog(),
+                              );
+                            },
                             child: Row(
                               children: <Widget>[
                                 SizedBox(

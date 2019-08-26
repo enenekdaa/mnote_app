@@ -27,7 +27,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
 
   // 리스트 조회 (초기화)
   void _initDailyList() async {
-    List<DailyModel> newDailyList = await getDailyList(pageNo.toString());
+    List<DailyModel> newDailyList = await getDailyList(context, pageNo.toString());
     if (newDailyList.length != 0){
       print('newDailyList.length : ${newDailyList.length}');
       print('dailyList.length : ${dailyList.length}');

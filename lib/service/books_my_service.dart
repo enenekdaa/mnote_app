@@ -1,24 +1,28 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
-Future<List<BookModel>> getBooksMy() async {
+Future<List<BookModel>> getBooksMy(BuildContext context,) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/books_my.php';
   final response = await http.post(
     dataURL,
     headers: {'access_token': Mnote.accessToken},
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     final items = (jsonResponse['books_my'] as List)
         .map((i) => new BookModel.fromJson(i));
     return items.toList();
   } else {
-    print('getMyNoteBookList() fail');
-    return [];
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -32,22 +36,23 @@ Future<List<BookModel>> getBooksMy() async {
 * 이 화면에서 수정 후 저장하기 클릭 시 다음 슬라이드의 표지 업데이트 api로 연결되면 됩니다.
 */
 
-Future<BookModel> getBooksMyIntro(String bookNo) async {
+Future<BookModel> getBooksMyIntro(BuildContext context, String bookNo) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/books_my_intro.php';
   final response = await http.post(
       dataURL,
       headers: {'access_token': Mnote.accessToken},
       body: {'book_no': bookNo});
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     BookModel bookInfo = BookModel.fromJson(jsonResponse['books_my_intro']);
-    print(jsonResponse['books_my_intro']);
     return bookInfo;
   } else {
-    print('getMyNoteBookList() fail');
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
     return null;
   }
 }
@@ -66,7 +71,7 @@ Future<BookModel> getBooksMyIntro(String bookNo) async {
    나머지는 빈 값이여도 됩니다. 추후 노트 보기 시 null이면 hint로 ~를 입력해 주세요.
  */
 
-Future<String> writeNewBook(String title, String subtitle,
+Future<String> writeNewBook(BuildContext context, String title, String subtitle,
     String intro, String coverImgNo, String show) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/write_new_book.php';
@@ -81,10 +86,11 @@ Future<String> writeNewBook(String title, String subtitle,
       'show': show
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     if (jsonResponse['result'] == 'true'){
       return jsonResponse['new_book']['book_no'];
     }
@@ -92,8 +98,9 @@ Future<String> writeNewBook(String title, String subtitle,
       return 'fail';
     }
   } else {
-    print('writeNewBook() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -109,7 +116,7 @@ Future<String> writeNewBook(String title, String subtitle,
 *
 */
 
-Future<String> updateBook(String bookNo, String title, String subtitle,
+Future<String> updateBook(BuildContext context, String bookNo, String title, String subtitle,
     String intro, String coverImgNo, String show) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/update_book.php';
@@ -125,14 +132,16 @@ Future<String> updateBook(String bookNo, String title, String subtitle,
       'show': show
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     return jsonResponse['result'];
   } else {
-    print('getMyNoteBookList() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -147,7 +156,7 @@ Future<String> updateBook(String bookNo, String title, String subtitle,
 *
 */
 
-Future<String> deleteBook(String bookNo) async {
+Future<String> deleteBook(BuildContext context, String bookNo) async {
   String dataURL =
       'http://icomerict.cafe24.com/untitled_note/json/delete_book.php';
   final response = await http.post(
@@ -157,14 +166,16 @@ Future<String> deleteBook(String bookNo) async {
       'book_no': bookNo,
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     return jsonResponse['result'];
   } else {
-    print('getMyNoteBookList() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }
 
@@ -181,7 +192,7 @@ Future<String> deleteBook(String bookNo) async {
 *
 */
 
-Future<String> updateBookShowState(String bookNo, String show) async {
+Future<String> updateBookShowState(BuildContext context, String bookNo, String show) async {
   String dataURL ='http://icomerict.cafe24.com/untitled_note/json/update_book_show_state.php';
   final response = await http.post(
     dataURL,
@@ -191,13 +202,15 @@ Future<String> updateBookShowState(String bookNo, String show) async {
       'show': show
     },
   );
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    print(dataURL);
-    print(jsonResponse);
+
+  final jsonResponse = json.decode(response.body);
+  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 || isTokenOk) {
     return jsonResponse['result'];
   } else {
-    print('updateBookShowState() fail');
-    return 'fail';
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/sign_in');
+    return null;
   }
 }

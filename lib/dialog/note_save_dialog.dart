@@ -27,7 +27,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
 
   // 나의 노트 리스트 설정
   void _initMyNoteBooks() async{
-    List<BookModel> bookList =  await getBooksMy();
+    List<BookModel> bookList =  await getBooksMy(context, );
     bookList.forEach((book){
       if(book.bookTitle.trim() != '' && book.bookNo != '1') {
         _myNoteBookList.add(book);
@@ -37,7 +37,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
 
   // 챕터 저장
   void _saveChapter(String bookNo) async {
-    String result = await writeNewChapter(bookNo);
+    String result = await writeNewChapter(context, bookNo);
     if (result != 'fail'){
       _updateChapter(bookNo, result);
     }else{
@@ -47,7 +47,7 @@ class _NoteSaveDialogState extends State<NoteSaveDialog>
 
   // 챕터 업데이트
   void _updateChapter(String bookNo, String chapterNo) async {
-    await updateChapter(bookNo, chapterNo, widget.title, widget.contents, Mnote.alignValue).then((result){
+    await updateChapter(context, bookNo, chapterNo, widget.title, widget.contents, Mnote.alignValue).then((result){
       if (result != 'fail'){
         Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
         Navigator.pop(context, bookNo);

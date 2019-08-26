@@ -39,17 +39,24 @@ class NoteEditScreen extends StatefulWidget{
 class _NoteEditScreenState extends State<NoteEditScreen> {
   ChapterModel chapterModel;
 
-  bool visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
-  bool visibilityOpenNote = false; // 공개노트설정버튼 보이기 on/off
+  bool _visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
+  bool _visibilityOpenNote = false; // 공개노트설정버튼 보이기 on/off
 
-  TextField contentsTextField;
+  TextAlign _contentsTextAlign = TextAlign.justify; // 기본값
 
 
   void _initChapterDetail() async{
+    Mnote.alignValue = chapterModel.contentsAlignCenter;  // 서버에 저장할 정렬값 저장
+
     setState(() {
       chapterModel = widget.chapterModel;
       widget.titleController.text = chapterModel.chapterTitle;
       widget.contentsController.text = chapterModel.contents;
+      _contentsTextAlign = chapterModel.contentsAlignCenter == '0'
+          ? TextAlign.justify
+          : chapterModel.contentsAlignCenter == '1'
+          ? TextAlign.center
+          : TextAlign.right;
     });
   }
 
@@ -73,26 +80,22 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   }
 
   void _changeTextAlignmentValue(String align){
-    Mnote.alignValue = align;
+    Mnote.alignValue = align;  // 서버에 저장할 정렬값 저장
 
     String origin =  widget.contentsController.text;
     String temp = origin + ' ';
     // widget.contentsController.clear();
 
     var cursorPos = widget.contentsController.selection;
-    int offset = origin.length;
+    int offset = origin.length -1;
     cursorPos = TextSelection.fromPosition(TextPosition(offset: offset));
 
     setState(() {
-      widget.textAlignmentValue = align;
       widget.contentsController.text = temp;
       widget.contentsController.selection = cursorPos;
+      _contentsTextAlign = align == '0' ? TextAlign.justify : align == '1' ? TextAlign.center : TextAlign.right;
 
-      if(widget.contentsFocusNode.hasFocus){
-        widget.contentsFocusNode.unfocus();
-      }else{
-        FocusScope.of(context).requestFocus(widget.contentsFocusNode);
-      }
+
     });
 
   }
@@ -120,7 +123,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     print('note_edit_screen didUpdateWidget');
-    visibilityEditor = widget.contentsFocusNode.hasFocus;
+    _visibilityEditor = widget.contentsFocusNode.hasFocus;
   }
 
   @override
@@ -132,7 +135,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    visibilityOpenNote = ModalRoute.of(context).settings.name == '/daily_edit';
+    _visibilityOpenNote = ModalRoute.of(context).settings.name == '/daily_edit';
 
     // TODO: implement build
     return Stack(
@@ -179,7 +182,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                             enabled: widget.mode != 'daily',
                           ),
                         ),
-                        visibilityOpenNote
+                        _visibilityOpenNote
                             ? SizedBox(
                           child: Image.asset('images/icons/00_toggle_02_on.png', scale: 1.8,),
                         )
@@ -204,11 +207,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                   child: TextField(
                     maxLines: 100,
                     onTap: () => {print('작업시작 ')},
-                    textAlign: widget.textAlignmentValue == '0'
-                        ? TextAlign.left
-                        : widget.textAlignmentValue == '1'
-                        ? TextAlign.center
-                        : TextAlign.right,
+                    textAlign: _contentsTextAlign,
                     focusNode: widget.contentsFocusNode,
                     controller: widget.contentsController,
                     style: TextStyle(height: 1.5, fontSize: 16, color: Mnote.nightModeTextColor,),
@@ -226,13 +225,13 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: visibilityEditor ? 30 : 1,)
+              SizedBox(height: _visibilityEditor ? 30 : 1,)
             ],
           ),
         ),
         SizedBox(height: 30,),
         // 키보드 에디터 바
-        visibilityEditor
+        _visibilityEditor
             ? Container(
           padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
           decoration: BoxDecoration(

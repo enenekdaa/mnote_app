@@ -26,10 +26,10 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 리스트 조회 (초기화)
   void _initDailyList() async{
-    //List<DailyWritings> newDailyList = await getDailyTodayWritings(pageNo.toString());
+    //List<DailyWritings> newDailyList = await getDailyTodayWritings(context, pageNo.toString());
     List<DailyWritings> newDailyList = widget.dailyModel == null
-        ? await getDailyTodayWritings(pageNo.toString())
-        : await getDailyWritings(widget.dailyModel.dailyListNo, pageNo.toString());
+        ? await getDailyTodayWritings(context, pageNo.toString())
+        : await getDailyWritings(context, widget.dailyModel.dailyListNo, pageNo.toString());
     if (newDailyList.length != 0){
       setState(() {
         dailyList.addAll(newDailyList);
@@ -40,7 +40,7 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
 
   // 글쓰기 버튼 클릭
   void _editBtnClick() async{
-    DailyModel dailyModel = widget.dailyModel == null ? await getDailyToday() : widget.dailyModel;
+    DailyModel dailyModel = widget.dailyModel == null ? await getDailyToday(context, ) : widget.dailyModel;
     Navigator.push(context, MaterialPageRoute(builder: (context) => DailyEditScreen(dailyModel: dailyModel,)));
   }
 

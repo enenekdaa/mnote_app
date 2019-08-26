@@ -37,7 +37,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
 
   // 챕터 저장
   void _saveChapter() async {
-    String result = await writeNewChapter('1');
+    String result = await writeNewChapter(context, '1');
     if (result != 'fail'){
       _updateChapter('1', result); // '1' = 하루글감
     }else{
@@ -47,7 +47,7 @@ class _DailyEditScreenState extends State<DailyEditScreen> {
 
   // 챕터 업데이트
   void _updateChapter(String bookNo, String chapterNo) async {
-    await updateChapter(bookNo, chapterNo, widget.dailyModel.dailyTitle, contentsController.text, Mnote.alignValue).then((result){
+    await updateChapter(context, bookNo, chapterNo, widget.dailyModel.dailyTitle, contentsController.text, Mnote.alignValue).then((result){
       if (result != 'fail'){
         Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
         Navigator.pop(context);
