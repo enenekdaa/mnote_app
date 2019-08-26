@@ -42,6 +42,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   bool visibilityEditor = false; // 내용입력 에디터 폼 보이기 on/off
   bool visibilityOpenNote = false; // 공개노트설정버튼 보이기 on/off
 
+  TextField contentsTextField;
+
 
   void _initChapterDetail() async{
     setState(() {
@@ -85,13 +87,14 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       widget.textAlignmentValue = align;
       widget.contentsController.text = temp;
       widget.contentsController.selection = cursorPos;
+
+      if(widget.contentsFocusNode.hasFocus){
+        widget.contentsFocusNode.unfocus();
+      }else{
+        FocusScope.of(context).requestFocus(widget.contentsFocusNode);
+      }
     });
 
-    if(widget.contentsFocusNode.hasFocus){
-      // widget.contentsFocusNode.unfocus();
-    }else{
-      FocusScope.of(context).requestFocus(widget.contentsFocusNode);
-    }
   }
 
   @override

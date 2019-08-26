@@ -36,6 +36,7 @@ dependencies:
 
   fluttertoast: ^3.1.0
   shared_preferences: ^0.4.2
+  in_app_purchase: ^0.2.1
 
   in_app_purchase: ^0.2.0+6
 

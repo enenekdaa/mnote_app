@@ -156,15 +156,18 @@ class _DailyViewListScreenState extends State<DailyViewListScreen> {
                 child: Text(noteList[index].chapterTitle, style: Mnote.textBlack_20,),),
               Expanded(
                 flex: 5,
-                child: Row(
-                  mainAxisAlignment: noteList[index].contentsAlignCenter == '0'
-                      ? MainAxisAlignment.start
-                      : noteList[index].contentsAlignCenter == '1'
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.end,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
                       noteList[index].contents,
+                      textAlign: noteList[index].contentsAlignCenter == '0'
+                        ? TextAlign.justify
+                        : noteList[index].contentsAlignCenter == '1'
+                        ? TextAlign.center
+                        : TextAlign.right,
+                      maxLines: 6,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Mnote.gray153, fontSize: 16, height: 1.5,),
                     ),
                   ],

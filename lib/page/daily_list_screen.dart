@@ -175,7 +175,7 @@ class _DailyListScreenState extends State<DailyListScreen> {
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
           padding: EdgeInsets.all(15),
-          height: MediaQuery.of(context).size.width / 2.7,
+          height: MediaQuery.of(context).size.width /2.3,
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Mnote.mnoteBlack, width: 0.5)),

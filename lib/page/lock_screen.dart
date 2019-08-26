@@ -31,7 +31,7 @@ class _LockScreenState extends State<LockScreen> {
       print(_privatePass.join(''));
       if(_privatePass.join('') == Mnote.secretNumber){
         Navigator.pop(context);
-        MyNavigator.goToHome(context);
+        Navigator.pushReplacementNamed(context, '/home');
       }else{
         setState(() {
           _showPass = ['','','','',];
