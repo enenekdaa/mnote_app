@@ -216,7 +216,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                           fontSize: 16,
-                          color: Mnote.nightModeTextColor,
+                          // color: Mnote.nightModeTextColor,
+                          color: Mnote.gray153,
                       ),
                     ),
                   ),

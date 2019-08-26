@@ -111,7 +111,11 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                 SizedBox(height: MediaQuery.of(context).size.height / 35,),
                 Text(widget.dailyWritings.contents,
                   style: TextStyle(color: Mnote.gray153, fontSize: 16, height: 1.5,),
-                  textAlign: TextAlign.center,
+                  textAlign: widget.dailyWritings.contentsAlignCenter == '0'
+                      ? TextAlign.justify
+                      : widget.dailyWritings.contentsAlignCenter == '1'
+                      ? TextAlign.center
+                      : TextAlign.right,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 35,),
                 Text(Mnote.getDateFormat_1(widget.dailyWritings.dailyDate), style: Mnote.textHint_13_5,),

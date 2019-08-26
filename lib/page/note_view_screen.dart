@@ -373,7 +373,11 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                                         OrangeLine(),
                                         SizedBox(height: 12,),
                                         Text(chapterModel.contents,
-                                          textAlign: TextAlign.justify,
+                                          textAlign: chapterModel.contentsAlignCenter == '0'
+                                          ? TextAlign.justify
+                                          : chapterModel.contentsAlignCenter == '1'
+                                          ? TextAlign.center
+                                          : TextAlign.right,
                                           style: TextStyle(
                                               height: 1.5,
                                               fontSize: 16,

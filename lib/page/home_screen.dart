@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/note_save_dialog.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
+import 'package:mnote_app/service/purchase_service.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
 import 'package:mnote_app/dialog/report_dialog.dart';
 import 'package:mnote_app/utils/mnote.dart';
@@ -75,7 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
     titleFocusNode.addListener(_titleFieldFocusListener);
     contentsFocusNode.addListener(_contentFieldFocusListener);
     noteListPageIndex = Mnote.homeEditMode == 'ON' ? 1 : 0; // 첫화면 글쓰기일 경우 1페이지가 노트리스트페이지 Index
+
+    setInitSubscription();
     super.initState();
+    getHistoryInApp();
   }
 
   @override
@@ -83,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement dispose
     titleFocusNode.dispose();
     contentsFocusNode.dispose();
+    disposeSubscription();
     super.dispose();
   }
 
