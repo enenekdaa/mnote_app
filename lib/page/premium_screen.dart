@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/service/purchase_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PremiumScreen extends StatefulWidget {
   @override
@@ -14,21 +12,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   @override
   void initState() {
-    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      print('test init subscript : : : ' + subscription.isPaused.toString());
-      orPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
-      print('test init error : : : ' + error);
-    });
+    // 구독 init
+    setInitSubscription();
     super.initState();
   }
 
   @override
   void dispose() {
+    // 구독 dispose
     subscription.cancel();
     super.dispose();
   }
@@ -155,7 +146,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
             ),
             MaterialButton(
               onPressed: () {
-                getHistoryInApp();
+                if (Mnote.isInApp == false){
+                  startInApp();
+                }else{
+                  Fluttertoast.showToast(msg: '이미 구독중인 상태입니다.');
+                }
               },
               color: Mnote.orange,
               minWidth: MediaQuery.of(context).size.width,

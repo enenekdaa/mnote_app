@@ -3,8 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/note_save_dialog.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/service/purchase_service.dart';
-import 'package:mnote_app/utils/my_navigator.dart';
-import 'package:mnote_app/dialog/report_dialog.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,6 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _initInApp() async {
+    bool isInApp = await getHistoryInApp();
+    Mnote.isInApp = isInApp;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -89,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // 인앱 셋팅
     setInitSubscription();
-    getHistoryInApp();
+    _initInApp();
 
     // 프리퍼런스 셋팅
     _initSharedPreferences();
