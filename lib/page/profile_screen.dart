@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/model/writer_all.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:mnote_app/utils/my_navigator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -10,24 +12,78 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  SharedPreferences prefs;
+  WriterAll writerAll;
+  bool writerNameCheck = false;
+  TextEditingController writerNameController = TextEditingController();
+  TextEditingController introController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController2 = TextEditingController();
 
   void _logout(){
     Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.pushReplacementNamed(context, '/sign_in');
   }
 
-  void _initSharedPreferences() {
-    SharedPreferences.getInstance().then((p) {
-      prefs = p;
+  void _initProfile() async {
+    writerAll = await getMyProfile(context);
+    // TODO:: API 확인되면 NULl 체크 하지 않아도 됨
+    setState(() {
+      introController.text = writerAll == null ? '안녕하세요 내 소개글입니다. ' : writerAll.writerIntro;
+      writerNameController.text = writerAll == null ? '필명입니다. ' : writerAll.writerName;
     });
+  }
+
+  void _changeMyProfile() async {
+
+    if (passwordController.text != passwordController2.text) {
+      Fluttertoast.showToast(msg: '비밀번호 재확인이 맞는지 확인해주세요.');
+      return;
+    }
+
+    if (writerNameCheck == false) {
+      Fluttertoast.showToast(msg: '필명 중복 확인을 해주세요.');
+      return;
+    }
+
+    String result = await changeMyProfile(
+        context,
+        Mnote.myEmail,
+        writerNameController.text,
+        introController.text,
+        passwordController.text,
+        passwordController2.text
+    );
+
+    if (result == 'true') {
+      Fluttertoast.showToast(msg: '저장되었습니다.');
+      Navigator.pop(context);
+    }else{
+      Fluttertoast.showToast(msg: '저장에 실패하였습니다. 필명 중복확인 또는 비밀번호를 확인해주세요.');
+    }
+  }
+
+  // 필명 체크
+  void _writerNameCheckClick() async {
+    String name = writerNameController.text.trim().replaceAll(' ', '');
+
+    if(name == ''){
+      Fluttertoast.showToast(msg: '필명을 입력해 주세요.');
+      return;
+    }
+
+    writerNameCheck = await getWriterNameCheck(context, name);
+    if (writerNameCheck) {
+      Fluttertoast.showToast(msg: '사용 가능한 필명 입니다.');
+    } else {
+      Fluttertoast.showToast(msg: '이미 사용중인 필명 입니다.');
+    }
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initSharedPreferences();
+    _initProfile();
   }
 
   @override
@@ -50,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 '저장',
                 style: Mnote.appBarRightOkBtnText,
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => _changeMyProfile(),
             ),
           ],
         ),
@@ -65,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      'adsadsasd@asdasda.ccc',
+                      Mnote.myEmail,
                       style: Mnote.textFiledLabel,
                     ),
                   ),
@@ -83,6 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: <Widget>[
                         Expanded(
                           child: TextField(
+                            controller: writerNameController,
                             decoration: InputDecoration(
                                 hintText: '나의 필명',
                                 hintStyle: Mnote.textFiledHint,
@@ -91,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         MaterialButton(
-                          onPressed: () => {},
+                          onPressed: () => _writerNameCheckClick(),
                           color: Colors.black,
                           shape: StadiumBorder(),
                           elevation: 0,
@@ -114,8 +171,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   Container(
-                    child: Text('내 소개 내용 여기 더블 터치하면 수정가능  최대 글자 \n' +
-                        '수 제한 50자 2줄까지 들어갈 수 있습니다. '),
+                    child: TextField(
+                      controller: introController,
+                      minLines: 1,
+                      maxLines: 2,
+                      maxLength: 50,
+                      decoration: InputDecoration(hintText: '내 소개를 입력해주세요.', hintStyle: TextStyle(color: Colors.grey)),
+                    )
                   ),
                   SizedBox(
                     height: 30,
@@ -129,14 +191,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextField(
                     obscureText: true,
-                    decoration: InputDecoration(hintText: '비밀번호 입력...'),
+                    controller: passwordController,
+                    decoration: InputDecoration(hintText: '비밀번호 입력'),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   TextField(
                     obscureText: true,
-                    decoration: InputDecoration(hintText: '비밀번호 재입력...'),
+                    controller: passwordController2,
+                    decoration: InputDecoration(hintText: '비밀번호 재입력'),
                   ),
                 ],
               ),

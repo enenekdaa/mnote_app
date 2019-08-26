@@ -193,6 +193,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
+                      _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
                       isAllList = true;
                       tapList.clear();
                       tapList.addAll(writerAllList);
@@ -217,6 +218,7 @@ class _OpenListScreenState extends State<OpenListScreen> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
+                      _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
                       isAllList = false;
                       tapList.clear();
                       tapList.addAll(writerSubList);

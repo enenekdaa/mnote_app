@@ -7,16 +7,17 @@ import 'package:mnote_app/utils/mnote.dart';
 final String testID = 'android.test.purchased';
 
 // inapp purchase
-
-StreamSubscription<List<PurchaseDetails>> _subscription;
+StreamSubscription<List<PurchaseDetails>> subscription;
 bool available = true;
+
 /// The In App Purchase plugin
 InAppPurchaseConnection _iap = InAppPurchaseConnection.instance;
-/// Products for sale
-List<ProductDetails> _products = [];
-List<PurchaseDetails> _purchases = [];
 
-Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
+/// Products for sale
+List<ProductDetails> products = [];
+List<PurchaseDetails> purchases = [];
+
+Future<bool> verifyPurchase(PurchaseDetails purchaseDetails) {
   // IMPORTANT!! Always verify a purchase before delivering the product.
   // For the purpose of an example, we directly return true.
 
@@ -38,21 +39,36 @@ Future<List<PurchaseDetails>> getHistoryInApp() async {
       return null;
     }
     for (PurchaseDetails purchase in response.pastPurchases) {
-      _verifyPurchase(purchase);
+      verifyPurchase(purchase);
       if (Platform.isIOS) {
         InAppPurchaseConnection.instance.completePurchase(purchase);
 
       }
     }
-    _purchases = response.pastPurchases;
+
+    purchases = response.pastPurchases;
     print('test inapp History _purchases ');
 
-    if (_purchases.length == 0) {
-      //  startInApp();
+    if (purchases.length == 0) {
+      startInApp();
       print('test inapp purchase null');
-      Mnote.isInApp = true;
+      Mnote.isInApp = false;
     }else {
-      print('test inapp History _purchases ' + _purchases.elementAt(0).status.toString());
+      print('test inapp History _purchases ' + purchases.elementAt(0).status.toString());
+      purchases.forEach((PurchaseDetails pd){
+        print('pd.billingClientPurchase.orderId :: ' + pd.billingClientPurchase.orderId);
+        print('pd.billingClientPurchase.packageName :: ' + pd.billingClientPurchase.packageName);
+        print('pd.billingClientPurchase.purchaseTime :: ' + pd.billingClientPurchase.purchaseTime.toString());
+        print('pd.billingClientPurchase.purchaseToken :: ' + pd.billingClientPurchase.purchaseToken);
+        print('pd.billingClientPurchase.signature :: ' + pd.billingClientPurchase.signature);
+        print('pd.billingClientPurchase.sku :: ' + pd.billingClientPurchase.sku);
+        print('pd.productID :: ' + pd.productID);
+        print('pd.purchaseID :: ' + pd.purchaseID);
+        print('pd.verificationData :: ' + pd.verificationData.toString());
+        print(pd.status);
+        print(pd.transactionDate);
+        // startInApp();
+      });
     }
 
   }else {
@@ -63,22 +79,20 @@ Future<List<PurchaseDetails>> getHistoryInApp() async {
 
 
 Future startInApp() async {
-  print('test isinApp : : :  ' + Mnote.isInApp.toString());
-  if(!Mnote.isInApp) {
-    print('tes isInApp : : : ' + Mnote.isInApp.toString());
-    return;
+  // 판매 제품 조회
+  ProductDetailsResponse response = await _iap.queryProductDetails(Mnote.kIds);
+  if (response.notFoundIDs.isEmpty == false) {
+    print('판매 제품이 로드되지 않았습니다.');
   }
-  Set<String> ids = <String>[testID].toSet();
-  ProductDetailsResponse response = await _iap.queryProductDetails(ids.toSet());
-  if (!response.notFoundIDs.isEmpty) {
-    //error
-  }
-  _products = response.productDetails;
+  products = response.productDetails;
 
-  ProductDetails pp = response.productDetails.elementAt(0);
-  PurchaseParam purchaseParam =  PurchaseParam(productDetails: pp);
-  _iap.buyNonConsumable(purchaseParam: purchaseParam);
-  print('test inapp start purchase : : : ');
+  // 구매 연동
+  ProductDetails pp = products.elementAt(0);
+  PurchaseParam purchaseParam = PurchaseParam(productDetails: pp);
+  _iap.buyNonConsumable(purchaseParam: purchaseParam).then((result){
+    print('구매결과');
+    print(result);
+  });
 }
 
 void orPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
@@ -94,7 +108,7 @@ void orPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
         Mnote.isInApp = true;
         //error
       }else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        bool valid = await _verifyPurchase(purchaseDetails);
+        bool valid = await verifyPurchase(purchaseDetails);
         print('test inapp update purchased status : : : ' + valid.toString());
         Mnote.isInApp = false;
         if(valid) {
@@ -110,16 +124,16 @@ void orPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
 void setInitSubscription() {
   Stream purchaseUpdated =
       InAppPurchaseConnection.instance.purchaseUpdatedStream;
-  _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+  subscription = purchaseUpdated.listen((purchaseDetailsList) {
     orPurchaseUpdated(purchaseDetailsList);
   }, onDone: () {
-    _subscription.cancel();
+    subscription.cancel();
   }, onError: (error) {
     // handle error here.
   });
 }
 
 void disposeSubscription() {
-  _subscription.cancel();
+  subscription.cancel();
 }
 

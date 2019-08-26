@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 class FindPasswordDialog extends StatefulWidget {
@@ -79,11 +80,20 @@ class _FindPasswordDialogState extends State<FindPasswordDialog>
                       child: Text('취소'),
                     ),
                     FlatButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if(Mnote.validateEmail(emailController.text) != null){
                           Fluttertoast.showToast(msg: '이메일 형식을 확인해 주세요.');
                           return;
                         }
+                        String result = await changePasswordMail(context, emailController.text);
+                        if (result == 'true'){
+                          Fluttertoast.showToast(msg: '임시 비밀번호가 발송되었습니다.');
+                        }else if (result == 'false'){
+                          Fluttertoast.showToast(msg: '메일 발송에 실패하였습니다. 다시 시도해주세요.');
+                        }else{ //email_incorrect
+                          Fluttertoast.showToast(msg: '존재하지 않는 회원입니다. 회원 가입 시 입력한 이메일 계정을 확인해주세요.');
+                        }
+                        Navigator.pop(context);
                       },
                       child: Text('확인'),
                     ),

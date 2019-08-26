@@ -87,9 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
     contentsFocusNode.addListener(_contentFieldFocusListener);
     noteListPageIndex = Mnote.homeEditMode == 'ON' ? 1 : 0; // 첫화면 글쓰기일 경우 1페이지가 노트리스트페이지 Index
 
+    // 인앱 셋팅
     setInitSubscription();
     getHistoryInApp();
 
+    // 프리퍼런스 셋팅
     _initSharedPreferences();
 
     super.initState();

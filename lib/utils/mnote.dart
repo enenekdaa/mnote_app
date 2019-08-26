@@ -10,7 +10,10 @@ class Mnote {
   static String accessToken = '';
   static String refreshToken = '';
   static String myEmail = '';
-  static bool isInApp = false;
+
+  // 구독 상품 관련
+  static bool isInApp = false; // false == 미구독 유저 true == 구독 유저
+  static Set<String> kIds = {'a.001',};
 
   // setting
   static String homeEditMode = 'ON'; // ON / OFF
