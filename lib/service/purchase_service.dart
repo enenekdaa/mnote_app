@@ -30,10 +30,11 @@ Future<bool> getHistoryInApp() async {
 
   if(available) {
     print('test inapp History');
-    QueryPurchaseDetailsResponse response =
-    await _iap.queryPastPurchases();
+    QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
+    print(response.toString());
     if(response.error != null) {
       // error
+      print('error');
       return null;
     }
     for (PurchaseDetails purchase in response.pastPurchases) {
@@ -46,8 +47,10 @@ Future<bool> getHistoryInApp() async {
     purchases = response.pastPurchases;
 
     if (purchases.length == 0) {
+      print('inapp purchase 0');
       return false; // 미구독 상태
     }else {
+      print('inapp purchase 구독중');
       return true; // 구독 상태
     }
   }else {
@@ -58,21 +61,29 @@ Future<bool> getHistoryInApp() async {
 
 
 Future startInApp() async {
+  print('startInApp');
   // 판매 제품 조회
   ProductDetailsResponse response = await _iap.queryProductDetails(Mnote.kIds);
+  print(response.toString());
   if (response.notFoundIDs.isEmpty == false) {
     print('판매 제품이 로드되지 않았습니다.');
+    return false;
   }
   products = response.productDetails;
-
   // 구매 연동
   ProductDetails pp = products.elementAt(0);
+  print(pp.toString());
   PurchaseParam purchaseParam = PurchaseParam(productDetails: pp);
   _iap.buyNonConsumable(purchaseParam: purchaseParam).then((result){
     if (result.toString() == 'true'){
       Mnote.isInApp = true;
+      return true;
+    }else{
+      return false;
     }
   });
+
+
 }
 
 void orPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {

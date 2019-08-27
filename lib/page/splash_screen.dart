@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/model/sign_model.dart';
 import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
@@ -83,6 +82,15 @@ class _SplashScreenState extends State<SplashScreen> {
       }else{
         Navigator.pushReplacementNamed(context, '/sign_in');
       }
+
+      // 구독
+      // ㄴ 여기서는 프리퍼런스 값만 저장하며 실제 유효한 값은 home_screen.dart 에서 구글 API 호출하여 조회한다.
+      if (_prefs.getKeys().contains('is_in_app')) {
+        Mnote.isInApp = _prefs.get('is_in_app') == 'Y';
+      }else{
+        _prefs.setString('is_in_app', 'Y');
+      }
+
     });
   }
 

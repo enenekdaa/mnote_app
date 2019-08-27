@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "593367634230",
+    "firebase_url": "https://untitlednote-b9d59.firebaseio.com",
+    "project_id": "untitlednote-b9d59",
+    "storage_bucket": "untitlednote-b9d59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593367634230:android:0a2d86fd5a04dbd2",
+        "android_client_info": {
+          "package_name": "com.icommer.mnote_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593367634230-jlcjtjldg66fqgm2pvg0g2ega24ltl7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm8l7J67dK6c_tcqfVDZmEC8NahRT0WM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593367634230-jlcjtjldg66fqgm2pvg0g2ega24ltl7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

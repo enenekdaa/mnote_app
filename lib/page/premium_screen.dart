@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/service/purchase_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PremiumScreen extends StatefulWidget {
   @override
@@ -9,9 +10,17 @@ class PremiumScreen extends StatefulWidget {
 }
 
 class _PremiumScreenState extends State<PremiumScreen> {
+  SharedPreferences _prefs;
+
+  void _initSharedPreferences() {
+    SharedPreferences.getInstance().then((prefs) {
+      _prefs = prefs;
+    });
+  }
 
   @override
   void initState() {
+    _initSharedPreferences();
     // 구독 init
     setInitSubscription();
     super.initState();
@@ -145,9 +154,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
             ),
             MaterialButton(
-              onPressed: () {
+              onPressed: () async {
                 if (Mnote.isInApp == false){
-                  startInApp();
+                  bool inAppBuyResult = await startInApp();
+                  if (inAppBuyResult){
+                    _prefs.setString('is_in_app', 'Y');
+                    Mnote.isInApp = true;
+                    Fluttertoast.showToast(msg: '구독이 완료되었습니다.');
+                  }else{
+                    Fluttertoast.showToast(msg: '구독에 실패하였습니다.');
+                  }
                 }else{
                   Fluttertoast.showToast(msg: '이미 구독중인 상태입니다.');
                 }

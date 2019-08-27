@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/note_save_dialog.dart';
@@ -27,6 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
   FocusNode contentsFocusNode = FocusNode(); // 내용 포커스 노드
 
   SharedPreferences _prefs;
+
+  // 푸시
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  StreamSubscription iosSubscription;
 
   void _onPageChanged(int index){
     setState(() {
@@ -97,6 +105,51 @@ class _HomeScreenState extends State<HomeScreen> {
     // 프리퍼런스 셋팅
     _initSharedPreferences();
 
+    // push
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        // save the token  OR subscribe to a topic here
+        print('iosSubscription ----------------');
+      });
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    }
+    print('FCM TOKEN !! ---------');
+    print(_fcm.getToken().then((result){
+      print(result);
+    }));
+    print('');
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO optional
+      },
+    );
+
+
     super.initState();
   }
 
@@ -116,6 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('home screen didUpdateWidget');
     _prefs.setString('access_token', Mnote.accessToken);
     _prefs.setString('refresh_token', Mnote.refreshToken);
+    _prefs.setString('is_in_app', Mnote.isInApp ? 'Y' : 'N');
   }
 
   @override
