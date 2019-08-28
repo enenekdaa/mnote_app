@@ -12,16 +12,20 @@ Future<List<DailyWritings>> getDailyWritings(BuildContext context, String dailyL
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['daily_writings'] as List).map((i) => new DailyWritings.fromJson(i));
     return items.toList();
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getDailyWritings(context, dailyListNo, pageNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 Future<List<DailyWritings>> getDailyTodayWritings(BuildContext context, String pageNo) async {
@@ -32,14 +36,18 @@ Future<List<DailyWritings>> getDailyTodayWritings(BuildContext context, String p
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['daily_today_writings'] as List).map((i) => new DailyWritings.fromJson(i));
     return items.toList();
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getDailyTodayWritings(context, pageNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }

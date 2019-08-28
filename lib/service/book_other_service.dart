@@ -18,17 +18,21 @@ Future<List<BookModel>> getBookOtherList(BuildContext context, String email) asy
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['books_other'] as List)
         .map((i) => new BookModel.fromJson(i));
     return items.toList();
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherList(context, email);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 /*
@@ -45,16 +49,20 @@ Future<BookModel> getBookOtherIntroList(BuildContext context, String email, Stri
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     BookModel bookOtherIntro = new BookModel.fromJson(jsonResponse['books_other_intro']);
     return bookOtherIntro;
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherIntroList(context, email, bookNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -71,16 +79,20 @@ Future<BookModel> getBookOtherWritingsDetail(BuildContext context, String email,
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     BookModel bookInfo = BookModel.fromJson(jsonResponse['book_info']);
     return bookInfo;
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherWritingsDetail(context, email, bookNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -96,16 +108,20 @@ Future<List<ChapterModel>> getBookOtherWritingsDetailList(BuildContext context, 
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['book_detail'] as List).map((i) => new ChapterModel.fromJson(i));
     return items.toList();
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherWritingsDetailList(context, email, bookNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -124,17 +140,21 @@ Future<ChapterModel> getBookOtherChapterDetail(BuildContext context, String emai
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     ChapterModel chapterDetail =
     new ChapterModel.fromJson(jsonResponse['chapter_detail']);
     return chapterDetail;
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherChapterDetail(context, email, bookNo, chapterNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -150,17 +170,19 @@ Future<BookModel> getBookOtherWritings(BuildContext context, String email) async
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
-
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     BookModel bookOtherWritings = new BookModel.fromJson(jsonResponse['book_info']);
     return bookOtherWritings;
-
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBookOtherWritings(context, email);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 
 }

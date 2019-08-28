@@ -44,10 +44,10 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
         return;
       }
       
-      await updateChapter(context, widget.bookNo, widget.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
+      await updateChapter(context, widget.bookNo, chapterModel.chapterNo, titleController.text, contentsController.text, noteEditScreen.textAlignmentValue,).then((result){
         if (result != 'fail'){
           Fluttertoast.showToast(msg: '챕터 수정에 성공하였습니다.');
-          _updateState(widget.bookNo, widget.chapterNo);
+          _updateState(widget.bookNo, chapterModel.chapterNo);
         }else{
           Fluttertoast.showToast(msg: '챕터 수정에 실패하였습니다.');
         }
@@ -103,16 +103,12 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
   }
 
   void _contentFieldFocusListener() {
-    print('_contentFieldFocusListener');
-    print("Has focus: ${contentsFocusNode.hasFocus}");
     setState(() {
       contentsFocusNode.hasFocus;
     });
   }
 
   void _titleFieldFocusListener(){
-    print('_titleFieldFocusListener');
-    print("Has focus: ${titleFocusNode.hasFocus}");
     setState(() {
       titleFocusNode.hasFocus;
     });
@@ -132,8 +128,9 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('init....');
     chapterModel = widget.chapterList[widget.idx]; // 완전히 로드 되기 전까지 null 에러 안나도록 호출
-    _updateState(widget.bookNo, widget.chapterNo);
+    _updateState(widget.bookNo, chapterModel.chapterNo);
     _editorMode = widget.editorMode;
     titleFocusNode.addListener(_titleFieldFocusListener);
     contentsFocusNode.addListener(_contentFieldFocusListener);

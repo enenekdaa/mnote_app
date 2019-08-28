@@ -19,19 +19,20 @@ Future<List<WriterAll>> getWriterListAll(BuildContext context, String pageNo) as
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['writer_list'] as List).map((i) => new WriterAll.fromJson(i));
     return items.toList();
-
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
 
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getWriterListAll(context, pageNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 // 구독 작가 목록
@@ -44,20 +45,23 @@ Future<List<WriterAll>> getWriterListSub(BuildContext context, String pageNo) as
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     if (!jsonResponse.toString().contains('my_sub_list')){
       return [];
     }
     final items = (jsonResponse['my_sub_list'] as List).map((i) => new WriterAll.fromJson(i));
     return items.toList();
-
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getWriterListSub(context, pageNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -94,12 +98,17 @@ Future<String> updateSubState(BuildContext context, String writerEmail, String s
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     return jsonResponse['result'];
-  } else {
-    print('updateBookShowState() fail');
-    return 'fail';
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await updateSubState(context, writerEmail, sub);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }

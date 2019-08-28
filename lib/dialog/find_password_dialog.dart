@@ -39,69 +39,75 @@ class _FindPasswordDialogState extends State<FindPasswordDialog>
         color: Colors.transparent,
         child: ScaleTransition(
           scale: scaleAnimation,
-          child: Container(
-            padding: EdgeInsets.only(top: 10, bottom: 10, left: 30, right: 30),
-            width: maxSize / 1.4,
-            height: maxSize / 1.6,
-            decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0.0))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: maxSize / 1.6 / 10),
-                  child: Text('임시 비밀번호 받기'),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: maxSize / 1.6 / 10, bottom: maxSize / 1.6 / 10),
-                  child: Text('회원 가입 시 이용하신 이메일 주소를 입력해 주세요. 해당 메일로 임시 비밀번호가 발송됩니다.'),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: Mnote.validateEmail,
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(
-                          borderSide:
-                          BorderSide(width: 0.2, color: Colors.black38)),
-                    ),
-                  ),
-                ),
-                Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10, left: 30, right: 30),
+                width: maxSize / 1.4,
+                height: maxSize / 1.6,
+                decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0))),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    FlatButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text('취소'),
+                    Padding(
+                      padding: EdgeInsets.only(top: maxSize / 1.6 / 10),
+                      child: Text('임시 비밀번호 받기'),
                     ),
-                    FlatButton(
-                      onPressed: () async {
-                        if(Mnote.validateEmail(emailController.text) != null){
-                          Fluttertoast.showToast(msg: '이메일 형식을 확인해 주세요.');
-                          return;
-                        }
-                        String result = await changePasswordMail(context, emailController.text);
-                        if (result == 'true'){
-                          Fluttertoast.showToast(msg: '임시 비밀번호가 발송되었습니다.');
-                        }else if (result == 'false'){
-                          Fluttertoast.showToast(msg: '메일 발송에 실패하였습니다. 다시 시도해주세요.');
-                        }else{ //email_incorrect
-                          Fluttertoast.showToast(msg: '존재하지 않는 회원입니다. 회원 가입 시 입력한 이메일 계정을 확인해주세요.');
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: Text('확인'),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: maxSize / 1.6 / 10, bottom: maxSize / 1.6 / 10),
+                      child: Text('회원 가입 시 이용하신 이메일 주소를 입력해 주세요. 해당 메일로 임시 비밀번호가 발송됩니다.'),
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: Mnote.validateEmail,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(
+                              borderSide:
+                              BorderSide(width: 0.2, color: Colors.black38)),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('취소'),
+                        ),
+                        FlatButton(
+                          onPressed: () async {
+                            if(Mnote.validateEmail(emailController.text) != null){
+                              Fluttertoast.showToast(msg: '이메일 형식을 확인해 주세요.');
+                              return;
+                            }
+                            String result = await changePasswordMail(context, emailController.text);
+                            if (result == 'true'){
+                              Fluttertoast.showToast(msg: '임시 비밀번호가 발송되었습니다.');
+                            }else if (result == 'false'){
+                              Fluttertoast.showToast(msg: '메일 발송에 실패하였습니다. 다시 시도해주세요.');
+                            }else{ //email_incorrect
+                              Fluttertoast.showToast(msg: '존재하지 않는 회원입니다. 회원 가입 시 입력한 이메일 계정을 확인해주세요.');
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Text('확인'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+              Container()
+            ],
+          )
         ),
       ),
     );

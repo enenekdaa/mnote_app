@@ -88,6 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           leading: FlatButton(
@@ -111,125 +112,134 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(30),
+        body:
+        SingleChildScrollView(
+          padding: EdgeInsets.only(left: deviceHeight/30, right: deviceHeight/30),
+          child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: deviceHeight,
+              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    child: Text(
-                      Mnote.myEmail,
-                      style: Mnote.textFiledLabel,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom:
-                            BorderSide(color: Colors.black, width: 0.5))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    padding: EdgeInsets.all(30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            controller: writerNameController,
-                            decoration: InputDecoration(
-                                hintText: '나의 필명',
-                                hintStyle: Mnote.textFiledHint,
-                                border: UnderlineInputBorder(
-                                    borderSide: BorderSide.none)),
+                        Container(
+                          child: Text(
+                            Mnote.myEmail,
+                            style: Mnote.textFiledLabel,
                           ),
                         ),
-                        MaterialButton(
-                          onPressed: () => _writerNameCheckClick(),
-                          color: Colors.black,
-                          shape: StadiumBorder(),
-                          elevation: 0,
-                          child: Text(
-                            '중복확인',
-                            style: TextStyle(color: Colors.white),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom:
+                                  BorderSide(color: Colors.black, width: 0.5))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: TextField(
+                                  controller: writerNameController,
+                                  decoration: InputDecoration(
+                                      hintText: '나의 필명',
+                                      hintStyle: Mnote.textFiledHint,
+                                      border: UnderlineInputBorder(
+                                          borderSide: BorderSide.none)),
+                                ),
+                              ),
+                              MaterialButton(
+                                onPressed: () => _writerNameCheckClick(),
+                                color: Colors.black,
+                                shape: StadiumBorder(),
+                                elevation: 0,
+                                child: Text(
+                                  '중복확인',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            '나의 소개',
+                            style: Mnote.textFiledLabel,
+                          ),
+                        ),
+                        Container(
+                            child: TextField(
+                              controller: introController,
+                              minLines: 1,
+                              maxLines: 2,
+                              maxLength: 50,
+                              decoration: InputDecoration(hintText: '내 소개를 입력해주세요.', hintStyle: TextStyle(color: Colors.grey)),
+                            )
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            '비밀번호 재설정',
+                            style: Mnote.textFiledLabel,
+                          ),
+                        ),
+                        TextField(
+                          obscureText: true,
+                          controller: passwordController,
+                          decoration: InputDecoration(hintText: '비밀번호 입력'),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          obscureText: true,
+                          controller: passwordController2,
+                          decoration: InputDecoration(hintText: '비밀번호 재입력'),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      '나의 소개',
-                      style: Mnote.textFiledLabel,
-                    ),
-                  ),
-                  Container(
-                    child: TextField(
-                      controller: introController,
-                      minLines: 1,
-                      maxLines: 2,
-                      maxLength: 50,
-                      decoration: InputDecoration(hintText: '내 소개를 입력해주세요.', hintStyle: TextStyle(color: Colors.grey)),
-                    )
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      '비밀번호 재설정',
-                      style: Mnote.textFiledLabel,
-                    ),
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(hintText: '비밀번호 입력'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController2,
-                    decoration: InputDecoration(hintText: '비밀번호 재입력'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        onPressed: () => {MyNavigator.goToPremium(context)},
+                        height: 60,
+                        child: Text('프리미엄 구매', style: Mnote.screenBottomBtnWText),
+                        color: Mnote.orange,
+                        textColor: Colors.white,
+                        minWidth: MediaQuery.of(context).size.width / 2,
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          _logout();
+                        },
+                        height: 60,
+                        child: Text('로그아웃', style: Mnote.screenBottomBtnWText),
+                        color: Colors.black,
+                        textColor: Colors.white,
+                        minWidth: MediaQuery.of(context).size.width / 2,
+                      ),
+                    ],
                   ),
                 ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                MaterialButton(
-                  onPressed: () => {MyNavigator.goToPremium(context)},
-                  height: 60,
-                  child: Text('프리미엄 구매', style: Mnote.screenBottomBtnWText),
-                  color: Mnote.orange,
-                  textColor: Colors.white,
-                  minWidth: MediaQuery.of(context).size.width / 2,
-                ),
-                MaterialButton(
-                  onPressed: () {
-                    _logout();
-                  },
-                  height: 60,
-                  child: Text('로그아웃', style: Mnote.screenBottomBtnWText),
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  minWidth: MediaQuery.of(context).size.width / 2,
-                ),
-              ],
-            ),
-          ],
+              )),
         ));
+
   }
 }

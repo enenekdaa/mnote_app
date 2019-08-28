@@ -14,6 +14,7 @@ Future<SignModel> getRefreshToken() async {
   final response = await http.post(resultURL, headers: {'refresh_token' : Mnote.refreshToken},);
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
+    print(jsonResponse.toString());
     SignModel signUpModel = new SignModel.fromJson(jsonResponse);
     return signUpModel;
   } else {

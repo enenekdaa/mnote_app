@@ -123,22 +123,26 @@ class Mnote {
   }
 
   // 토큰 만료
-  static Future<bool> tokenErrorCheck(String jsonResponse) async {
-    if (jsonResponse.contains('"error":"Expired token"')){
+  static Future<String> tokenErrorCheck(String jsonResponse) async {
+    print('만료체크 ??????????? ');
+    print(jsonResponse);
+    if (jsonResponse.contains('Expired token')){
       SignModel signModel = await getRefreshToken();
       if (signModel == null || signModel.accessToken == '' || signModel.refreshToken == ''){
-        return false;
+        print('실패');
+        return '실패';
       }else{
+        print('갱신');
         Mnote.accessToken = signModel.accessToken;
         Mnote.refreshToken = signModel.refreshToken;
-        return true;
+        return '갱신';
       }
     }
-    if (jsonResponse.contains('"error":"Signature verification failed"')){
-      return false;
+    if (jsonResponse.contains('Signature verification failed')){
+      return '만료';
     }
     // 에러 없을 경우
-    return true;
+    return '정상';
   }
 
   // 전체 설정값 초기화

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mnote_app/dialog/note_save_dialog.dart';
 import 'package:mnote_app/page/note_book_view_screen.dart';
 import 'package:mnote_app/service/purchase_service.dart';
+import 'package:mnote_app/service/user_service.dart';
 import 'package:mnote_app/utils/mnote.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     print('FCM TOKEN !! ---------');
     print(_fcm.getToken().then((result){
+      // TODO:: 토큰 서버 저장 작업
       print(result);
     }));
     print('');
@@ -122,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+// TODO:: 앱 켰을때 받은 메시지 보여주고 싶을때
 //        showDialog(
 //          context: context,
 //          builder: (context) => AlertDialog(
@@ -168,7 +171,11 @@ class _HomeScreenState extends State<HomeScreen> {
     print('home screen didUpdateWidget');
     _prefs.setString('access_token', Mnote.accessToken);
     _prefs.setString('refresh_token', Mnote.refreshToken);
-    _prefs.setString('is_in_app', Mnote.isInApp ? 'Y' : 'N');
+    if ((_prefs.getString('is_in_app') == 'Y') != Mnote.isInApp){
+      // 프리퍼런스 값과 틀릴때만 저장한다.
+      updateSubscribeYN(context, Mnote.isInApp ? 'Y' : 'N');
+      _prefs.setString('is_in_app', Mnote.isInApp ? 'Y' : 'N');
+    }
   }
 
   @override

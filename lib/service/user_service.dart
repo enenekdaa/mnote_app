@@ -12,16 +12,15 @@ Future<SignModel> getSignIn(BuildContext context, String email, String password)
   final response = await http.post(dataURL, body: {'email': email, 'password': password});
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200) {
     SignModel signModel = new SignModel.fromJson(jsonResponse);
     return signModel;
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 // 회원 가입
@@ -46,9 +45,8 @@ Future<SignModel> getSignUp(
 
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200) {
     SignModel signModel = new SignModel.fromJson(jsonResponse);
     return signModel;
   } else {
@@ -67,9 +65,8 @@ Future<bool> getEmailCheck(BuildContext context, String email) async {
 
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200) {
     return jsonResponse['result'] == 'true'; // true : 사 가능
   } else {
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -86,9 +83,8 @@ Future<bool> getWriterNameCheck(BuildContext context, String name) async {
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200) {
     return jsonResponse['result'] == 'true'; // true : 사용 가능
   } else {
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -118,9 +114,8 @@ Future<String> changePasswordMail(BuildContext context, String email) async {
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200) {
     return jsonResponse['result']; // true : 사용 가능
   } else {
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -138,19 +133,21 @@ Future<WriterAll> getMyProfile(BuildContext context,) async {
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     print(jsonResponse);
-    return null;
-    // TODO:: API 확인 후 값이 올경우 주석 해제하면 된다.
-    // WriterAll profile = new WriterAll.fromJson(jsonResponse['my_profile']);
-    // return profile; // true : 사용 가능
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
+    WriterAll profile = new WriterAll.fromJson(jsonResponse['my_profile']);
+    return profile;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getMyProfile(context);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 // 내 프로필 변경
@@ -181,7 +178,7 @@ Future<String> changeMyProfile(
     String password,
     String passwordConfirm
     ) async {
-  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/my_profile.php';
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/update_my_profile.php';
   final response = await http.post(dataURL ,
       headers: {'access_token': Mnote.accessToken},
       body: {
@@ -193,15 +190,46 @@ Future<String> changeMyProfile(
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
   print(jsonResponse);
-  if (response.statusCode == 200 || isTokenOk) {
-    return jsonResponse['result']; // true : 사용 가능
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
+
+  if (response.statusCode == 200 && isTokenOk == '정상') {
+    print(jsonResponse['result']);
+    return jsonResponse['result'];
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await changeMyProfile(context, email, writerName, intro, password, passwordConfirm);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
+// 구독 업데이트 
+// subscribeYN = 0 (구독x)
+// subscribeYN = 1 (구독 중)
+Future<String> updateSubscribeYN(BuildContext context, String yn) async {
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/sign_in/subscribeYN.php';
+  final response = await http.post(dataURL ,
+    headers: {'access_token': Mnote.accessToken},
+    body: {'subscribeYN': yn == 'Y' ? '1' : '0'}
+  );
 
+  final jsonResponse = json.decode(response.body);
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+
+  if (response.statusCode == 200 && isTokenOk == '정상') {
+    return jsonResponse['result'];
+  }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await updateSubscribeYN(context, yn);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
+}

@@ -5,25 +5,29 @@ import 'package:mnote_app/model/book_model.dart';
 import 'package:mnote_app/utils/mnote.dart';
 
 Future<List<BookModel>> getBooksMy(BuildContext context,) async {
-  String dataURL =
-      'http://icomerict.cafe24.com/untitled_note/json/books_my.php';
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_my.php';
   final response = await http.post(
     dataURL,
     headers: {'access_token': Mnote.accessToken},
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     final items = (jsonResponse['books_my'] as List)
         .map((i) => new BookModel.fromJson(i));
     return items.toList();
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBooksMy(context);
+  }
+
+  // 여기까지 오는건 비정상 접근이므로 로그아웃 처리
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 /*
@@ -37,24 +41,28 @@ Future<List<BookModel>> getBooksMy(BuildContext context,) async {
 */
 
 Future<BookModel> getBooksMyIntro(BuildContext context, String bookNo) async {
-  String dataURL =
-      'http://icomerict.cafe24.com/untitled_note/json/books_my_intro.php';
+  String dataURL = 'http://icomerict.cafe24.com/untitled_note/json/books_my_intro.php';
   final response = await http.post(
       dataURL,
       headers: {'access_token': Mnote.accessToken},
       body: {'book_no': bookNo});
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     BookModel bookInfo = BookModel.fromJson(jsonResponse['books_my_intro']);
     return bookInfo;
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await getBooksMyIntro(context, bookNo);
+  }
+
+  // 여기까지 오는건 비정상 접근이므로 로그아웃 처리
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 /*
@@ -88,20 +96,25 @@ Future<String> writeNewBook(BuildContext context, String title, String subtitle,
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     if (jsonResponse['result'] == 'true'){
       return jsonResponse['new_book']['book_no'];
     }
     else{
       return 'fail';
     }
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await writeNewBook(context, title, subtitle, intro, coverImgNo, show);
+  }
+
+  // 여기까지 오는건 비정상 접근이므로 로그아웃 처리
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 /*
@@ -134,15 +147,20 @@ Future<String> updateBook(BuildContext context, String bookNo, String title, Str
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     return jsonResponse['result'];
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await updateBook(context, bookNo, title, subtitle, intro, coverImgNo, show);
+  }
+
+  // 여기까지 오는건 비정상 접근이므로 로그아웃 처리
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -168,15 +186,19 @@ Future<String> deleteBook(BuildContext context, String bookNo) async {
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     return jsonResponse['result'];
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await deleteBook(context, bookNo);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
 
 
@@ -204,13 +226,17 @@ Future<String> updateBookShowState(BuildContext context, String bookNo, String s
   );
 
   final jsonResponse = json.decode(response.body);
-  bool isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
+  String isTokenOk = await Mnote.tokenErrorCheck(jsonResponse.toString());
 
-  if (response.statusCode == 200 || isTokenOk) {
+  if (response.statusCode == 200 && isTokenOk == '정상') {
     return jsonResponse['result'];
-  } else {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/sign_in');
-    return null;
   }
+
+  if (isTokenOk == '갱신') { // API 재호출 작업
+    return await updateBookShowState(context, bookNo, show);
+  }
+
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/sign_in');
+  return null;
 }
